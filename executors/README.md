@@ -25,4 +25,5 @@ Human-assisted publishing follows platform rules and preserves human judgment fo
 
 ## Available executors / 已有执行器
 
+- [`generate-image/`](generate-image/)：通过 Gemini 或 OpenAI API 执行文生图与参考图编辑。
 - [`indexnow/`](indexnow/)：向 IndexNow 提交已经上线、更新或删除的 URL。

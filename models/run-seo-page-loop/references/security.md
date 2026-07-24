@@ -10,7 +10,7 @@ Supported variables:
 - `INDEXNOW_KEY`
 - `INDEXNOW_KEY_LOCATION`
 - `SITE_URL`
-- optional image Client variables documented by the product workspace, such as `OPENAI_API_KEY`, `OPENAI_BASE_URL`, `GEMINI_API_KEY`, and `GOOGLE_GEMINI_BASE_URL`
+- image Executor variables: `OPENAI_API_KEY`, `OPENAI_BASE_URL`, `GEMINI_API_KEY`, and `GOOGLE_GEMINI_BASE_URL`
 
 ## Handle secrets
 

@@ -60,11 +60,11 @@ Include the metadata, canonical URL, social preview, structured data, sitemap en
 
 ### 4. Create page images
 
-Read [image-creation.md](references/image-creation.md). Inventory the exact images the page needs. Use the Runtime's native image-generation capability when available. Reuse product screenshots and existing brand assets when they explain the product more accurately.
+Read [image-creation.md](references/image-creation.md). Inventory the exact images the page needs. Reuse product screenshots and existing brand assets when they explain the product more accurately. For a new generated asset, call `executors/generate-image/generate-image.mjs` with the appropriate provider and prompt.
 
 For each generated image, define its purpose, subject, composition, aspect ratio, palette, exact text, and exclusions. Inspect the result visually, verify every rendered word, place the selected asset in the product's normal public asset directory, and add descriptive alt text and explicit dimensions.
 
-When the product workspace provides an external image Client, read its API key and base URL from its documented environment variables. Never place a key in a script, prompt file, README, generated asset metadata, or committed environment file.
+Read the image provider's API key and optional base URL from its documented environment variables. Never place a key in a script, prompt file, README, generated asset metadata, or committed environment file.
 
 ### 5. Verify, deploy, and notify IndexNow
 
@@ -108,6 +108,11 @@ node collectors/bing-webmaster/bing-webmaster.mjs page-stats \
 node collectors/bing-webmaster/bing-webmaster.mjs page-query-stats \
   --site "$SITE_URL" --page "$PAGE_URL" \
   --out seo-work/bing-page-queries.json
+
+# Image generation
+node executors/generate-image/generate-image.mjs \
+  --out public/seo/page-image.png \
+  --prompt-file seo-work/image-prompt.txt
 
 # IndexNow
 node executors/indexnow/submit-indexnow.mjs "$PAGE_URL"

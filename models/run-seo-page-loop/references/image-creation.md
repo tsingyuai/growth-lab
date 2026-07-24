@@ -16,7 +16,9 @@ Specify:
 - details that must appear;
 - artifacts, logos, watermarks, and unrelated text to exclude.
 
-Generate with the Runtime's native image tool when available. If the product workspace uses an external image Client, provide credentials through environment variables such as `OPENAI_API_KEY` or `GEMINI_API_KEY` and follow that Client's documented interface.
+Generate new assets with `executors/generate-image/generate-image.mjs`. Choose Gemini or OpenAI according to the available provider and the needs of the asset. Provide credentials through `GEMINI_API_KEY` or `OPENAI_API_KEY`; use `GOOGLE_GEMINI_BASE_URL` or `OPENAI_BASE_URL` only when the environment requires a compatible endpoint.
+
+For long or multilingual prompts, write the prompt to a local ignored file and pass it with `--prompt-file`. Use `--ref` for each reference image when editing or carrying visual context forward.
 
 ## Verify the asset
 
