@@ -214,20 +214,6 @@ Runtime 从已有资料开始工作，并按照 Skill 判断哪些信息与当�
 - Executor Skills for concrete creation, publishing, human collaboration, and review methods / 承载具体创作、发布、人类协作与复盘方法的 Executor Skills；
 - Example workspaces showing complete growth journeys / 展示完整增长过程的示例 workspace。
 
-## First loop: SEO pages / 第一条闭环：SEO 页面
-
-The first working loop is [`run-seo-page-loop`](models/run-seo-page-loop/SKILL.md). It guides the Agent through keyword demand research, live SERP analysis, page and image creation, product-native verification, IndexNow submission, Bing Webmaster measurement, and the next iteration.
-
-第一条可运行闭环是 [`run-seo-page-loop`](models/run-seo-page-loop/SKILL.md)。它引导 Agent 完成热词调研、实时 SERP 分析、页面与配图创作、产品原生检验、IndexNow 提交、Bing Webmaster 数据评估和下一轮迭代。
-
-The loop uses Runtime-native browser, search, scraping, screenshot, and page-testing capabilities. Growth Lab adds API Clients only for [Bing Webmaster data](collectors/bing-webmaster/) and [IndexNow submission](executors/indexnow/).
-
-这条闭环直接使用 Runtime 原生的浏览器、搜索、抓取、截图与页面测试能力。Growth Lab 只为 [Bing Webmaster 数据](collectors/bing-webmaster/) 和 [IndexNow 提交](executors/indexnow/) 提供 API Client。
-
-The Model coordinates dedicated Skills for [demand research](collectors/research-seo-demand/SKILL.md), [page creation](executors/create-seo-page/SKILL.md), [image generation](executors/generate-image/SKILL.md), [adversarial page review](executors/review-seo-page/SKILL.md), and [performance review](executors/review-seo-performance/SKILL.md).
-
-Model 通过独立 Skill 协调[需求调研](collectors/research-seo-demand/SKILL.md)、[页面创作](executors/create-seo-page/SKILL.md)、[图片生成](executors/generate-image/SKILL.md)、[对抗式页面审查](executors/review-seo-page/SKILL.md)和[效果复盘](executors/review-seo-performance/SKILL.md)。
-
 ## Available capabilities / 现有能力
 
 One capability is one complete observation-action-review loop, and every loop is represented by one Model. The Model coordinates Collectors and Executors, then preserves operational evidence, outcomes, and next actions in its own Memory.
