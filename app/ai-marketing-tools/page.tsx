@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
 import { JsonLd } from '@/components/json-ld';
 import { SeoShell } from '@/components/seo-shell';
-import { getSiteUrl } from '@/lib/site';
+import { getSiteUrl, languageAlternates } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'AI Marketing Tools: Choose by the Work You Need Done',
   description: 'A practical framework for choosing AI marketing tools by product context, execution depth, feedback, and the growth work your team needs completed.',
-  alternates: { canonical: '/ai-marketing-tools' },
+  alternates: { canonical: '/ai-marketing-tools', languages: languageAlternates('/ai-marketing-tools') },
   openGraph: { title: 'AI Marketing Tools: Choose by the Work You Need Done', description: 'Compare AI marketing tools by the work they can observe, execute, and learn from.', url: '/ai-marketing-tools' },
 };
 

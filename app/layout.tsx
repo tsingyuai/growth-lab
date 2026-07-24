@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
+import { headers } from 'next/headers';
 import { Bricolage_Grotesque, IBM_Plex_Mono, Inter } from 'next/font/google';
 import { Analytics } from '@/components/analytics';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
-import { getSiteUrl } from '@/lib/site';
+import { getSiteUrl, languageAlternates } from '@/lib/site';
 import './globals.css';
 
 const display = Bricolage_Grotesque({ subsets: ['latin'], variable: '--font-display' });
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
   title: { default: 'Growth Lab — Your coding agent, from code to market', template: '%s · Growth Lab' },
   description: 'An open-source, end-to-end growth tool executed by Codex and Claude Code inside your product workspace.',
-  alternates: { canonical: '/' },
+  alternates: { canonical: '/', languages: languageAlternates('/') },
   openGraph: {
     type: 'website',
     title: 'Growth Lab — Your coding agent, from code to market',
@@ -25,9 +26,10 @@ export const metadata: Metadata = {
   twitter: { card: 'summary_large_image' },
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const locale = (await headers()).get('x-growth-locale') === 'zh' ? 'zh-CN' : 'en';
   return (
-    <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable}`}>
+    <html lang={locale} className={`${display.variable} ${body.variable} ${mono.variable}`}>
       <body>
         <SiteHeader />
         {children}

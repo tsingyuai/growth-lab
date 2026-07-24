@@ -17,3 +17,18 @@ export const seoPages = [
   '/ai-marketing-agent',
   '/ai-seo-agent',
 ] as const;
+
+export type Locale = 'en' | 'zh';
+
+export function localizedPath(path: string, locale: Locale) {
+  const normalized = path === '/' ? '' : path;
+  return locale === 'zh' ? `/zh${normalized}` || '/zh' : normalized || '/';
+}
+
+export function languageAlternates(path: string) {
+  return {
+    'en': localizedPath(path, 'en'),
+    'zh-CN': localizedPath(path, 'zh'),
+    'x-default': localizedPath(path, 'en'),
+  };
+}

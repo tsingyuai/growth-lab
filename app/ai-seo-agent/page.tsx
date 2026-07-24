@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
 import { JsonLd } from '@/components/json-ld';
 import { SeoShell } from '@/components/seo-shell';
-import { getSiteUrl } from '@/lib/site';
+import { getSiteUrl, languageAlternates } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'AI SEO Agent: From User Scenario to Measured Page',
   description: 'See how an AI SEO agent researches real searches, creates an information-rich page, submits it to IndexNow, and reviews Bing outcomes.',
-  alternates: { canonical: '/ai-seo-agent' },
+  alternates: { canonical: '/ai-seo-agent', languages: languageAlternates('/ai-seo-agent') },
   openGraph: { title: 'AI SEO Agent: From User Scenario to Measured Page', description: 'A complete SEO page loop executed inside the product workspace.', url: '/ai-seo-agent' },
 };
 

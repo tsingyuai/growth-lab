@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
 import { JsonLd } from '@/components/json-ld';
 import { SeoShell } from '@/components/seo-shell';
-import { getSiteUrl } from '@/lib/site';
+import { getSiteUrl, languageAlternates } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'AI Marketing Agent for Products at Day Zero',
   description: 'An AI marketing agent can begin from a product idea or repository, collect demand evidence, execute growth work, connect analytics, and review outcomes.',
-  alternates: { canonical: '/ai-marketing-agent' },
+  alternates: { canonical: '/ai-marketing-agent', languages: languageAlternates('/ai-marketing-agent') },
   openGraph: { title: 'AI Marketing Agent for Products at Day Zero', description: 'Start from code, collect evidence, execute growth actions, and learn from real outcomes.', url: '/ai-marketing-agent' },
 };
 

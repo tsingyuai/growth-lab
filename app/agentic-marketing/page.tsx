@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
 import { JsonLd } from '@/components/json-ld';
 import { SeoShell } from '@/components/seo-shell';
-import { getSiteUrl } from '@/lib/site';
+import { getSiteUrl, languageAlternates } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'Agentic Marketing: A Practical Operating Model',
   description: 'Agentic marketing connects observation, tool use, execution, measurement, and memory. Learn the operating model and build a first useful loop.',
-  alternates: { canonical: '/agentic-marketing' },
+  alternates: { canonical: '/agentic-marketing', languages: languageAlternates('/agentic-marketing') },
   openGraph: { title: 'Agentic Marketing: A Practical Operating Model', description: 'A concrete guide to building marketing loops that observe, act, review, and remember.', url: '/agentic-marketing' },
 };
 
