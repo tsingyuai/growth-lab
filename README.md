@@ -61,57 +61,6 @@ Loop coordination methodology lives in the Model and evolves through direct edit
 
 闭环怎样观察、行动和复盘的方法论保存在 Model 中，并通过直接修改 Skill 与 references 持续演进。Memory 记录 Model 被实际使用后发生了什么。
 
-## Three domains / 三个领域
-
-Growth Lab is organized into three domains that connect intelligence, decisions, and action.
-
-Growth Lab 由三个领域组成，把情报、决策和行动连接成完整闭环。
-
-### 1. Collectors / 数据采集器
-
-Collectors give the Agent access to the outside world and the product's internal signals. They collect four kinds of growth intelligence:
-
-数据采集器负责让 Agent 连接外部世界与产品内部信号，主要采集四类增长情报：
-
-- Demand intelligence: user problems, questions, search intent, community discussions, and buying signals / 需求情报：用户问题、搜索意图、社区讨论与购买信号；
-- Competitive intelligence: positioning, features, pricing, distribution, launches, and user feedback / 竞品情报：定位、功能、定价、渠道、发布动态与用户反馈；
-- High-performing content: topics, formats, hooks, narratives, engagement, and distribution patterns / 爆款内容：选题、形式、开头、叙事、互动与传播模式；
-- Product growth data: acquisition, activation, retention, revenue, referrals, experiments, and qualitative feedback / 产品内部增长数据：获客、激活、留存、收入、推荐、实验与定性反馈。
-
-Collectors can be Clients, CLIs, MCP servers, browser workflows, official APIs, or instructions for reading user-provided exports. See [`collectors/`](collectors/).
-
-数据采集器可以采用 Client、CLI、MCP Server、浏览器工作流、官方 API，或读取用户导出数据的操作指引。详见 [`collectors/`](collectors/)。
-
-### 2. Models / 数据模型
-
-Models contain the methodology for running an observation-action-review loop. A Model decides when to observe, which Collector or Executor to invoke, how to turn evidence into the next action, when to review the outcome, and what to preserve in its Memory.
-
-数据模型只承载“观察—行动—复盘”闭环的方法论。Model 决定何时观察、调用哪个 Collector 或 Executor、如何从证据选择下一步行动、何时复盘结果，以及哪些运营记忆需要持久化。
-
-Models coordinate capabilities and maintain loop continuity through Memory. They keep collection and execution techniques in their respective domains. See [`models/`](models/).
-
-数据模型通过 Memory 维持闭环连续性，并协调各领域能力。具体采集技巧和执行技巧分别保存在 Collector 与 Executor 中。详见 [`models/`](models/)。
-
-### 3. Executors / 执行器
-
-Executors contain concrete skills, principles, and tools for turning decisions into growth actions: content and page creation, copy and media craft, adversarial review, channel adaptation, publishing, and outcome review.
-
-执行器承载把决策转化为增长行动所需的具体 Skill、创作原则和工具，包括页面与内容创作、文案与素材技巧、对抗式审查、渠道适配、发布和效果复盘。
-
-Publishing can be completed through an official API or through human collaboration. In a human-assisted flow, the Agent prepares the final post, assets, channel settings, and step-by-step instructions; a person publishes through the platform's normal interface. This keeps account activity aligned with platform rules and makes human judgment part of the distribution process. See [`executors/`](executors/).
-
-发布可以通过官方 API 完成，也可以由 Agent 召唤人类协作完成。在人类协作模式中，Agent 准备最终内容、素材、渠道设置和操作说明，由人通过平台正常界面完成发布。这种方式让账号行为符合平台规则，并把人的判断纳入分发过程。详见 [`executors/`](executors/)。
-
-```text
-Collectors / 数据采集器
-        ↓
-Models / 数据模型（观察 → 调用能力 → 行动 → 复盘 → Memory）
-        ↓
-Executors / 执行器（创作 → 发布 → 复盘）
-        ↓
-New evidence returns to Collectors / 新证据回到采集器
-```
-
 ## What it can become / 它可以带来什么
 
 ### Product-native understanding / 原生理解产品
@@ -227,25 +176,6 @@ One capability is one complete observation-action-review loop, and every loop is
 These figures describe one observed run and provide evidence for continued iteration. Results depend on the product, domain, search demand, page quality, site authority, and observation window.
 
 这些数字记录了一次实际运行结果，并作为后续迭代的证据。具体效果会受到产品、域名、搜索需求、页面质量、站点权重和观察窗口影响。
-
-## Principles / 原则
-
-- Ground recommendations in product evidence / 建议应建立在产品证据之上；
-- Separate facts, hypotheses, and creative ideas / 区分事实、假设与创意；
-- Prefer official and authorized data access / 优先使用官方或已授权的数据访问方式；
-- Keep the method readable and changeable / 保持方法可读、可修改；
-- Let the Runtime own reasoning and workflow control / 由 Runtime 负责推理与流程控制；
-- Shape data around the question at hand / 围绕当前问题组织数据；
-- Let the Agent collect, analyze, and persist the information each task needs / 由 Agent 为每个任务采集、分析并持久化所需信息；
-- Give every Model its own persistent Memory / 每个 Model 拥有独立的持久化 Memory；
-- Keep operational history in Memory and methodology in the Model / 运营历史进入 Memory，方法论直接写入 Model；
-- Keep collection techniques in Collectors and creation techniques in Executors / 采集技巧进入 Collector，创作与执行技巧进入 Executor；
-- Generate task-specific HTML views at analysis time / 在分析现场生成面向当前任务的 HTML 视图；
-- Optimize for learning and real product outcomes / 面向学习和真实产品结果。
-
-Growth Lab uses adaptive data structures created by the Agent for each task. Knowledge lives in readable workspace files, and visual analysis is rendered as HTML when it is needed. The question determines the data, the analysis, and the view.
-
-Growth Lab 采用由 Agent 根据任务现场形成的自适应数据结构。知识保存在 workspace 中可直接阅读的文件里，可视化分析在需要时现场生成 HTML。问题决定需要什么数据、如何分析，以及如何呈现。
 
 ## Status / 当前状态
 
