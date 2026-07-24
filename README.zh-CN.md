@@ -1,12 +1,15 @@
-# Growth Lab
+<div align="center">
+
+# 🧪 Growth Lab
+
+<p>理解你的产品，发现真实需求，采取行动，再从结果中找到下一步。</p>
+
+[![GitHub stars](https://img.shields.io/github/stars/tsingyuai/growth-lab?style=for-the-badge&logo=github&color=071a2b)](https://github.com/tsingyuai/growth-lab/stargazers)
+[![开源](https://img.shields.io/badge/OPEN_SOURCE-YES-2667FF?style=for-the-badge)](https://github.com/tsingyuai/growth-lab)
 
 [English](README.md)
 
-> 由 Codex 与 Claude Code Skills 驱动的 AI 原生增长工作空间。
-
-Growth Lab 是一个从代码到市场的开源端到端增长工具。它由 Coding Agent 驱动，理解产品、连接所需工具与渠道、研究市场、创作增长内容、执行增长行动，并基于真实数据完成复盘，持续改进下一轮增长。
-
-> 项目目前处于构思阶段。本 README 描述的是我们准备公开构建的方向。
+</div>
 
 ## 为什么做 Growth Lab
 
@@ -44,27 +47,23 @@ AI 会话负责控制整个工作流程。
 
 闭环方法论保存在 Model 中，并通过直接修改 Skill 与 references 持续演进。Memory 记录 Model 被实际使用后发生了什么。
 
-## 它可以带来什么
+## Growth Lab 有什么不同
 
-### 原生理解产品
+### 覆盖每个增长渠道的完整生命周期
 
-Growth Lab 与产品共同运行，因此能够同时理解源码、产品文档、落地页、配置、数据定义和历史增长资料。它的决策建立在真实产品上下文和持续积累的证据之上。
+Growth Lab 的设计目标是覆盖全部增长渠道，从理解机会、选择行动，到执行、度量和决定下一步。SEO 是 Case #1，是已经实现的第一个完整闭环，不是产品能力的边界。
 
-### 连续的增长上下文
+### 通过自然语言持续协作
 
-研究、策略、内容、实验和结果与产品共同存在于文件系统中。Runtime 复用历史发现，并把新证据连接到过去的决策。
+自动化不等于一个永远脱离人类运行的后台程序。用户用自然语言持续提出目标、接收已经完成的工作与结果、提供反馈，再让 Agent 继续跟进。对话就是操作入口。
 
-### 从建议走向执行
+### 连接信息、方法与执行
 
-提出建议的同一场会话能够检查网站、分析数据、准备 Campaign、生成素材、修改产品，或调用已授权的发布 API。
+增长信息通常留在报表中，方法存在于专家经验中，执行散落在不同工具里。Growth Lab 把三者放进同一个工作区，让 Agent 获取证据、应用方法、完成行动，再把真实结果带进下一轮。
 
-### 透明且可演进
+### 开源、数据归用户、让知识自由流动
 
-Skills、Clients、Memory 和产物都是普通本地文件。团队可以检查方法、替换连接，并在使用过程中改进工作流。
-
-### 本地优先与开放
-
-Workspace 始终由用户控制，并可以使用 Git 管理。Growth Lab 复用团队已经信任的工具与服务，让产品和增长数据保留在团队选择的环境中。
+Growth Lab 完全开源，产品资料、运营数据、Memory 和产物都保存在用户自己的工作区。它不持有用户数据，不通过私有格式和封闭流程制造迁移壁垒；它致力于让有效的增长知识可以被检查、修改和自由使用。
 
 ## 如何使用
 
@@ -110,7 +109,7 @@ Runtime 会读取已有 Model，建立缺失的产品和市场上下文，调用
 
 ## 当前状态
 
-Growth Lab 目前刚刚开始。我们先公开这个想法，再通过真实的产品增长工作，把它逐步构建成一套可用的 Model、Collector 和 Executor。
+Growth Lab 已实现 SEO 页面增长闭环，覆盖需求调研、竞品分析、页面创作、对抗式审查、生图、IndexNow 提交、Bing 效果复盘与持久化 Memory。后续增长闭环将继续通过真实产品增长工作加入。
 
 如果你认同这个方向，欢迎提交 Issue，告诉我们你正在增长什么产品、当前工作流断在哪里，以及你希望 Runtime 能够使用哪些工具。
 

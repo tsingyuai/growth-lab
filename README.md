@@ -1,12 +1,15 @@
-# Growth Lab
+<div align="center">
+
+# 🧪 Growth Lab
+
+<p>Understand your product, find real demand, take action, and learn what to do next.</p>
+
+[![GitHub stars](https://img.shields.io/github/stars/tsingyuai/growth-lab?style=for-the-badge&logo=github&color=071a2b)](https://github.com/tsingyuai/growth-lab/stargazers)
+[![Open Source](https://img.shields.io/badge/OPEN_SOURCE-YES-2667FF?style=for-the-badge)](https://github.com/tsingyuai/growth-lab)
 
 [中文](README.zh-CN.md)
 
-> AI-native growth workspace powered by Codex and Claude Code skills.
-
-Growth Lab is an open-source, end-to-end growth tool that takes a product from code to market. Powered by coding agents, it understands the product, connects the tools and channels it needs, researches the market, creates growth assets, executes campaigns, and reviews real-world data to improve the next round of growth.
-
-> This repository is currently at the idea stage. This README describes the direction we intend to build in public.
+</div>
 
 ## Why Growth Lab
 
@@ -44,27 +47,23 @@ Every Model is an observation-action-review loop. Every Model owns persistent Me
 
 Loop methodology lives in the Model and evolves through direct edits to its Skill and references. Memory records what happened when the Model was used.
 
-## What it enables
+## What makes Growth Lab different
 
-### Product-native understanding
+### Every channel, through its full lifecycle
 
-Growth Lab runs alongside the product, so it can study source code, documentation, landing pages, configuration, analytics definitions, and previous growth work together. Its decisions are grounded in actual product context and accumulated evidence.
+Growth Lab is designed to cover every growth channel from understanding the opportunity and choosing an action to execution, measurement, and the next decision. SEO is Case #1: the first complete loop already implemented, not the boundary of the product.
 
-### One continuous context
+### Continuous collaboration through natural language
 
-Research, strategy, content, experiments, and results live alongside the product. The Runtime reuses previous findings and connects new evidence to earlier decisions.
+Automation does not have to mean an unattended process running forever. People give the Agent goals in natural language, receive completed work and results, provide feedback, and ask it to continue. The conversation is the interface.
 
-### From advice to action
+### Information, methods, and execution connected
 
-The same session that produces a recommendation can inspect a website, analyze metrics, prepare a campaign, generate assets, edit the product, or call an authorized publishing API.
+Growth information usually lives in reports, methods live in specialists' experience, and execution lives across disconnected tools. Growth Lab brings them into one workspace so the Agent can collect evidence, apply a method, complete the action, and carry the result into the next round.
 
-### Transparent and adaptable
+### Open source, user-owned data, accessible knowledge
 
-Skills, Clients, Memory, and outputs are ordinary local files. Teams can inspect the method, replace an integration, and improve the workflow while using it.
-
-### Local-first and open
-
-The workspace remains under the user's control and can be versioned with Git. Growth Lab works with tools and services the team already trusts while keeping product and growth data in the team's chosen environment.
+Growth Lab is open source and stores product context, operational data, Memory, and outputs in the user's own workspace. It does not hold user data or create lock-in through private formats and closed workflows. Its purpose is to make effective growth knowledge inspectable, adaptable, and available to everyone.
 
 ## How to use it
 
@@ -110,7 +109,7 @@ These figures describe one observed run and provide evidence for continued itera
 
 ## Status
 
-Growth Lab is at the beginning. We are publishing the idea first, then turning it into a practical set of Models, Collectors, and Executors through real product-growth work.
+Growth Lab includes a working SEO Page Growth Loop with demand research, competitor analysis, page creation, adversarial review, image generation, IndexNow submission, Bing performance review, and persistent Memory. New growth loops will be added through real product-growth work.
 
 If this direction resonates with you, open an issue and tell us what product you are growing, where the current workflow breaks, and which tools the Runtime should be able to use.
 
