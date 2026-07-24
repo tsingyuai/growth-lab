@@ -53,6 +53,14 @@ The AI session controls the entire workflow.
 
 AI 会话负责控制整个工作流程。
 
+Every Model is an observation-action-review loop. Every Model owns a persistent Memory that accumulates time-based operational data analysis, synthesis, outcomes, and recommended next actions. The next run reads that Memory before making a new observation.
+
+每个 Model 都是一个“观察—行动—复盘”闭环。每个 Model 都拥有独立的持久化 Memory，用来积累按时间采集的运营数据分析、总结、行动结果和下一步动作建议。下一轮工作在开始观察前读取这些 Memory。
+
+Loop methodology lives in the Model and evolves through direct edits to its Skill and references. Memory records what happened when the Model was used.
+
+闭环方法论保存在 Model 中，并通过直接修改 Skill 与 references 持续演进。Memory 记录 Model 被实际使用后发生了什么。
+
 ## Three domains / 三个领域
 
 Growth Lab is organized into three domains that connect intelligence, decisions, and action.
@@ -225,6 +233,8 @@ The loop uses Runtime-native browser, search, scraping, screenshot, and page-tes
 - Let the Runtime own reasoning and workflow control / 由 Runtime 负责推理与流程控制；
 - Shape data around the question at hand / 围绕当前问题组织数据；
 - Let the Agent collect, analyze, and persist the information each task needs / 由 Agent 为每个任务采集、分析并持久化所需信息；
+- Give every Model its own persistent Memory / 每个 Model 拥有独立的持久化 Memory；
+- Keep operational history in Memory and methodology in the Model / 运营历史进入 Memory，方法论直接写入 Model；
 - Generate task-specific HTML views at analysis time / 在分析现场生成面向当前任务的 HTML 视图；
 - Optimize for learning and real product outcomes / 面向学习和真实产品结果。
 

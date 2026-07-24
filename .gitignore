@@ -4,3 +4,10 @@
 
 # Agent 现场分析产物
 seo-work/
+
+# 真实运营 Memory 默认保留在本地；目录说明和占位文件进入版本控制
+memory/**
+!memory/
+!memory/README.md
+!memory/**/
+!memory/**/.gitkeep

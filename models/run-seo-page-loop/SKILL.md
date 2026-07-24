@@ -1,11 +1,19 @@
 ---
 name: run-seo-page-loop
-description: Run an end-to-end SEO page growth loop from keyword demand research through SERP analysis, page creation, image generation, live-page verification, IndexNow submission, Bing Webmaster measurement, and the next iteration. Use when creating or improving an SEO landing page, researching high-potential search terms, submitting a page for indexing, evaluating a page with Bing data, or reviewing SEO outcomes.
+description: Run an end-to-end SEO page observation-action-review loop with persistent Memory, from keyword demand research through SERP analysis, page creation, image generation, live-page verification, IndexNow submission, Bing Webmaster measurement, and the next iteration. Use when creating or improving an SEO landing page, researching high-potential search terms, submitting a page for indexing, evaluating a page with Bing data, or reviewing SEO outcomes.
 ---
 
 # Run the SEO page loop
 
-Operate inside the product workspace. Let the current Codex or Claude Code session control the work. Persist research and useful outputs as ordinary files chosen for the task.
+Operate inside the product workspace. Let the current Codex or Claude Code session control the work. Use `memory/run-seo-page-loop/` as this Model's persistent Memory.
+
+This Model is an observation-action-review loop:
+
+```text
+Read Memory → Observe → Decide → Act → Review → Write Memory → Next observation
+```
+
+Read [memory.md](references/memory.md) before starting a run. Recover relevant historical observations, previous actions, outcomes, conclusions, and next-action recommendations. At the end of useful work, persist the new operational evidence, analysis, synthesis, and next actions back to this Model's Memory.
 
 ## Keep these boundaries
 
@@ -13,6 +21,8 @@ Operate inside the product workspace. Let the current Codex or Claude Code sessi
 - Use existing product commands and tests to inspect routes, metadata, rendering, links, responsive behavior, and accessibility.
 - Add a Client only for an external API or action the Runtime cannot perform natively.
 - Shape research files and the final HTML analysis around the current question. Create no fixed application schema, database, dashboard, or workflow state.
+- Store time-based operational evidence, analysis, reviews, and next-action recommendations in `memory/run-seo-page-loop/`.
+- Apply improvements to the loop methodology directly to this Model's `SKILL.md` or references. Keep methodology-change suggestions out of Memory.
 - Read every credential from environment variables. Keep secrets out of source, prompts, output files, command output, URLs shown to users, and commits.
 
 ## Run the loop
@@ -27,7 +37,7 @@ Read [keyword-research.md](references/keyword-research.md), then:
 2. Use Runtime search and browser capabilities to inspect autocomplete, related searches, communities, competitor language, and live SERPs.
 3. When `BING_WEBMASTER_API_KEY` is available, query comparable weekly demand with the Bing collector.
 4. Choose a page opportunity from demand, intent fit, competition, seasonality, product fit, and the evidence gap the page can fill.
-5. Save the research in a task-appropriate Markdown, CSV, JSON, or HTML file under a local working directory such as `seo-work/`.
+5. Save research artifacts in a task-appropriate form, then preserve useful dated observations and conclusions in this Model's Memory.
 
 ### 2. Learn from the winning pages
 
@@ -69,7 +79,7 @@ After the live URL returns the intended page:
 
 ### 6. Measure the page and decide the next iteration
 
-Read [measurement.md](references/measurement.md). Preserve the page URL, launch date, target intent, and baseline evidence in a form useful to the current analysis.
+Read [measurement.md](references/measurement.md). Preserve the page URL, launch date, target intent, and baseline evidence in this Model's Memory in a form useful to the current analysis.
 
 When Bing has accumulated data:
 
@@ -77,8 +87,9 @@ When Bing has accumulated data:
 2. Compare impressions, clicks, click-through rate, average impression position, average click position, queries, and the page's product outcomes across comparable periods.
 3. Inspect Bing AI Performance in the signed-in browser when available: cited pages, citations, and grounding queries.
 4. Diagnose discovery, ranking, snippet, intent, content, and conversion separately.
-5. Generate a standalone HTML review for this page when a visual comparison helps. Build the HTML directly from the current evidence and open it with the Runtime browser.
+5. Generate a standalone HTML review for this page when a visual comparison helps. Build the HTML directly from the current evidence, open it with the Runtime browser, and keep it in this Model's Memory when it supports future comparison.
 6. Choose the next action: strengthen the page, improve the snippet, add missing evidence, adjust conversion, build a supporting page, or leave the page to accumulate more data.
+7. Write the dated evidence, summary, review, and next-action recommendation to `memory/run-seo-page-loop/`. Link the entry to the earlier observation or action it evaluates.
 
 Return the next decision to the beginning of the loop.
 

@@ -1,8 +1,8 @@
 # Models / 数据模型
 
-Models are analysis and decision Skills. They teach the Coding Agent how to turn raw growth intelligence into evidence, hypotheses, decisions, and reusable memory.
+Models are observation-action-review loops implemented as Skills. They teach the Coding Agent how to turn raw growth intelligence into evidence, decisions, actions, reviews, and reusable Memory.
 
-数据模型是用于分析与决策的 Skills，教 Coding Agent 如何把原始增长情报转化为证据、假设、决策和可复用 Memory。
+每个数据模型都是一个由 Skill 实现的“观察—行动—复盘”闭环，教 Coding Agent 如何把原始增长情报转化为证据、决策、行动、复盘和可复用 Memory。
 
 ## Scope / 范围
 
@@ -19,6 +19,14 @@ Models are analysis and decision Skills. They teach the Coding Agent how to turn
 A Model Skill describes the reasoning method, useful evidence, questions to investigate, and ways to turn findings into action. The Agent reads the available context, chooses an appropriate representation for the task, performs the analysis, and persists useful outputs as readable files.
 
 Model Skill 描述推理方法、有价值的证据、需要调查的问题，以及如何把发现转化为行动。Agent 读取已有上下文，为当前任务选择合适的信息表示，完成分析，并把有复用价值的结果保存为可读文件。
+
+Each Model owns a persistent namespace at `memory/<model-name>/`. The Agent reads that Memory before observing, acts on the current evidence, reviews the outcome, and writes the dated operational analysis, synthesis, and next-action recommendation back to Memory.
+
+每个 Model 在 `memory/<model-name>/` 拥有独立的持久化记忆。Agent 在观察前读取 Memory，根据当前证据行动，随后复盘结果，并把带时间的运营数据分析、总结和下一步动作建议写回 Memory。
+
+Model files contain the loop methodology. Memory contains the history produced by running that methodology. Improve the method by editing the Model directly.
+
+Model 文件承载闭环方法论，Memory 承载方法运行后产生的历史记忆。需要改进方法时，直接修改 Model。
 
 The model follows the question. Each task can use the structure that best fits its evidence and decision. When a visual view helps, the Agent generates a task-specific HTML page directly from the current analysis.
 
