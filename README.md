@@ -228,6 +228,20 @@ The Model coordinates dedicated Skills for [demand research](collectors/research
 
 Model 通过独立 Skill 协调[需求调研](collectors/research-seo-demand/SKILL.md)、[页面创作](executors/create-seo-page/SKILL.md)、[图片生成](executors/generate-image/SKILL.md)、[对抗式页面审查](executors/review-seo-page/SKILL.md)和[效果复盘](executors/review-seo-performance/SKILL.md)。
 
+## Available capabilities / 现有能力
+
+One capability is one complete observation-action-review loop, and every loop is represented by one Model. The Model coordinates Collectors and Executors, then preserves operational evidence, outcomes, and next actions in its own Memory.
+
+一个能力就是一个完整的“观察—行动—复盘”闭环，每个闭环对应一个 Model。Model 协调所需的 Collector 和 Executor，并把运营证据、执行结果与下一步动作保存在自己的 Memory 中。
+
+| Name / 名称 | Introduction / 介绍 | Observed result / 实测效果 |
+|---|---|---|
+| [SEO Page Growth Loop](models/run-seo-page-loop/SKILL.md) / SEO 页面增长闭环 | Research demand and live SERPs, create and adversarially review pages, generate images, submit through IndexNow, evaluate Bing data, and continue iterating. / 调研搜索需求与实时 SERP，创作并对抗式审查页面，生成配图，通过 IndexNow 提交，分析 Bing 数据并持续迭代。 | In our own run, new pages were indexed within 1–2 days. On a 7-day average basis, overall CTR decreased by 50%, while impressions and clicks each increased by 1000%. / 在我们自己的实测中，新页面执行后 1–2 天被收录；按 7 日平均口径，整体 CTR 降低 50%，页面曝光量和点击量均提高 1000%。 |
+
+These figures describe one observed run and provide evidence for continued iteration. Results depend on the product, domain, search demand, page quality, site authority, and observation window.
+
+这些数字记录了一次实际运行结果，并作为后续迭代的证据。具体效果会受到产品、域名、搜索需求、页面质量、站点权重和观察窗口影响。
+
 ## Principles / 原则
 
 - Ground recommendations in product evidence / 建议应建立在产品证据之上；
