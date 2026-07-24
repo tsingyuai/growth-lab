@@ -23,3 +23,7 @@ Model Skill 描述推理方法、有价值的证据、需要调查的问题，�
 The model follows the question. Each task can use the structure that best fits its evidence and decision. When a visual view helps, the Agent generates a task-specific HTML page directly from the current analysis.
 
 数据模型跟随问题变化。每个任务都可以采用最适合其证据和决策的信息结构。当可视化有助于理解时，Agent 直接根据当前分析生成专用 HTML 页面。
+
+## Available models / 已有数据模型
+
+- [`run-seo-page-loop`](run-seo-page-loop/SKILL.md)：从热词调研、页面创作和生图，到 IndexNow 与 Bing 数据复盘的 SEO 页面闭环。

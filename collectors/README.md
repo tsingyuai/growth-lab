@@ -26,3 +26,7 @@ Each collector should help the Agent obtain evidence for a concrete question. Th
 Use official APIs, authorized access, public sources, and user-provided data. Follow platform terms, privacy requirements, copyright rules, and source-specific rate limits.
 
 使用官方 API、已授权访问、公开来源和用户提供的数据，并遵守平台条款、隐私要求、版权规则与来源侧速率限制。
+
+## Available collectors / 已有采集器
+
+- [`bing-webmaster/`](bing-webmaster/)：读取关键词热度、页面搜索表现、查询表现与 URL 索引信息。

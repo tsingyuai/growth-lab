@@ -206,6 +206,16 @@ Runtime 从已有资料开始工作，并按照 Skill 判断哪些信息与当�
 - Executors for content creation, publishing, human collaboration, and review / 面向内容创作、发布、人类协作与复盘的执行器；
 - Example workspaces showing complete growth journeys / 展示完整增长过程的示例 workspace。
 
+## First loop: SEO pages / 第一条闭环：SEO 页面
+
+The first working loop is [`run-seo-page-loop`](models/run-seo-page-loop/SKILL.md). It guides the Agent through keyword demand research, live SERP analysis, page and image creation, product-native verification, IndexNow submission, Bing Webmaster measurement, and the next iteration.
+
+第一条可运行闭环是 [`run-seo-page-loop`](models/run-seo-page-loop/SKILL.md)。它引导 Agent 完成热词调研、实时 SERP 分析、页面与配图创作、产品原生检验、IndexNow 提交、Bing Webmaster 数据评估和下一轮迭代。
+
+The loop uses Runtime-native browser, search, scraping, screenshot, and page-testing capabilities. Growth Lab adds API Clients only for [Bing Webmaster data](collectors/bing-webmaster/) and [IndexNow submission](executors/indexnow/).
+
+这条闭环直接使用 Runtime 原生的浏览器、搜索、抓取、截图与页面测试能力。Growth Lab 只为 [Bing Webmaster 数据](collectors/bing-webmaster/) 和 [IndexNow 提交](executors/indexnow/) 提供 API Client。
+
 ## Principles / 原则
 
 - Ground recommendations in product evidence / 建议应建立在产品证据之上；

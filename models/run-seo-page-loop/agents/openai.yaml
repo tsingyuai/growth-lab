@@ -1,0 +1,4 @@
+interface:
+  display_name: "Run SEO Page Loop"
+  short_description: "Research, ship, index, and review SEO pages"
+  default_prompt: "Use $run-seo-page-loop to research, create, publish, index, and evaluate an SEO page."

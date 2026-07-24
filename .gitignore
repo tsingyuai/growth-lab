@@ -1,0 +1,6 @@
+.env
+.env.*
+!.env.example
+
+# Agent 现场分析产物
+seo-work/

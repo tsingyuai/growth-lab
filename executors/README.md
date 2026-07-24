@@ -22,3 +22,7 @@ Agent 准备完整发布包，包括最终内容、素材、目标渠道、时�
 Human-assisted publishing follows platform rules and preserves human judgment for account-sensitive actions. Automated publishing uses official, authorized interfaces exposed through a Client.
 
 人类协作发布遵守平台规则，并在账号敏感操作中保留人的判断。自动发布通过 Client 暴露的官方授权接口执行。
+
+## Available executors / 已有执行器
+
+- [`indexnow/`](indexnow/)：向 IndexNow 提交已经上线、更新或删除的 URL。
