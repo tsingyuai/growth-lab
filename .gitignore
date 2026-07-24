@@ -2,6 +2,12 @@
 .env.*
 !.env.example
 
+# Next.js / Vercel
+node_modules/
+.next/
+.vercel/
+*.tsbuildinfo
+
 # Agent 现场分析产物
 seo-work/
 
@@ -11,3 +17,4 @@ memory/**
 !memory/README.md
 !memory/**/
 !memory/**/.gitkeep
+.vercel
