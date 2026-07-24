@@ -3,9 +3,9 @@
 > AI-native growth workspace powered by Codex and Claude Code skills.  
 > 由 Codex 与 Claude Code Skills 驱动的 AI 原生增长工作空间。
 
-Growth Lab is an open-source experiment in building a complete product-growth loop directly inside an AI coding workspace—without a frontend, backend, database, or separate orchestration service.
+Growth Lab is an open-source, end-to-end growth tool that takes a product from code to market. Powered by Coding Agents, it understands the product, connects the tools and channels it needs, researches the market, creates growth assets, executes campaigns, and reviews real-world data to improve the next round of growth.
 
-Growth Lab 是一个开源实验：不建设前端、后端、数据库或独立编排服务，直接在 AI Coding Workspace 中建立完整的产品增长闭环。
+Growth Lab 是一个从代码到市场的开源端到端增长工具。它由 Coding Agent 驱动，理解产品、连接所需工具与渠道、研究市场、创作增长内容、执行增长行动，并基于真实数据完成复盘，持续改进下一轮增长。
 
 > This repository is currently at the idea stage. The README describes the direction we intend to build in public.
 >
