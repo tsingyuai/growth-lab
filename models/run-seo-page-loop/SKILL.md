@@ -38,6 +38,16 @@ Persist useful raw evidence and a dated observation in `memory/run-seo-page-loop
 
 ## 3. Decide
 
+Before choosing a page action, confirm that the current observation contains a competitor-page breakdown for every candidate query being considered. The breakdown must cover three to five relevant leading pages and include:
+
+- each page's search presentation and winning page shape;
+- a top-to-bottom description of its visible blocks;
+- reading and conversion hooks, information density, user value, and tone;
+- evidence, unique information, authorship, and negative quality signals;
+- an information-gain gap synthesized across the leading pages.
+
+Do not invoke `$create-seo-page` from keyword volume, result snippets, or a list of ranking URLs alone. When this evidence is absent, return to Observe and complete it with `$research-seo-demand`.
+
 Choose one action supported by current evidence and historical Memory. State the expected observable result and the evidence that would confirm or challenge the decision.
 
 Possible actions include creating a page, improving an existing page, changing its snippet, strengthening evidence, adjusting conversion, resolving discovery problems, creating a supporting page, or waiting for a defined observation window.
