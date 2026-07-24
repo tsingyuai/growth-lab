@@ -236,7 +236,7 @@ One capability is one complete observation-action-review loop, and every loop is
 
 | Name / 名称 | Introduction / 介绍 | Observed result / 实测效果 |
 |---|---|---|
-| [SEO Page Growth Loop](models/run-seo-page-loop/SKILL.md) / SEO 页面增长闭环 | Research demand and live SERPs, create and adversarially review pages, generate images, submit through IndexNow, evaluate Bing data, and continue iterating. / 调研搜索需求与实时 SERP，创作并对抗式审查页面，生成配图，通过 IndexNow 提交，分析 Bing 数据并持续迭代。 | In our own run, new pages were indexed within 1–2 days. On a 7-day average basis, overall CTR decreased by 50%, while impressions and clicks each increased by 1000%. / 在我们自己的实测中，新页面执行后 1–2 天被收录；按 7 日平均口径，整体 CTR 降低 50%，页面曝光量和点击量均提高 1000%。 |
+| [SEO Page Growth Loop](models/run-seo-page-loop/SKILL.md) / SEO 页面增长闭环 | Identify the situations in which users may need your product, research what they actually search for in those situations, and create informative SEO pages that solve their problems and lead them to the product. / 思考用户在什么场景下可能会需要你的产品，调研这些场景中用户会实际搜索什么，生成具有信息量、能解决用户问题，并引流到产品的 SEO 页面。 | In our own run, new pages were indexed within 1–2 days. On a 7-day average basis, overall CTR decreased by 50%, while impressions and clicks each increased by 1000%. / 在我们自己的实测中，新页面执行后 1–2 天被收录；按 7 日平均口径，整体 CTR 降低 50%，页面曝光量和点击量均提高 1000%。 |
 
 These figures describe one observed run and provide evidence for continued iteration. Results depend on the product, domain, search demand, page quality, site authority, and observation window.
 
