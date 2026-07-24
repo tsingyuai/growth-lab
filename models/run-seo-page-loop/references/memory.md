@@ -30,6 +30,8 @@ Make these facts understandable in the file:
 
 Link to earlier Memory files when the current result confirms, updates, or overturns them.
 
-## Keep methodology in the Model
+## Keep methodology with its owner
 
-When evidence reveals a better way to research keywords, design pages, generate images, submit URLs, or evaluate performance, edit this Model's `SKILL.md` or references directly. Record the operational evidence in Memory and the improved method in the Model. Do not store a backlog of methodology-change suggestions in Memory.
+When evidence reveals a better loop sequence, invocation condition, review timing, or Memory practice, edit this Model directly. When it reveals a better collection method, edit the relevant Collector. When it reveals a better creation, execution, publishing, or task-specific review method, edit the relevant Executor.
+
+Record the operational evidence in Memory and apply the improved method directly to its owning Skill. Do not store a backlog of methodology-change suggestions in Memory.

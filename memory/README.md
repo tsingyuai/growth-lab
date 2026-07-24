@@ -32,15 +32,15 @@ The content should make its collection time, analysis window, source, observed c
 
 文件内容应让采集时间、分析窗口、来源、变化、结论和下一步动作清楚可读。这些是语义要求，不是固定 schema。
 
-## What belongs in the Model / 什么直接写入 Model
+## Where methodology changes belong / 方法改进写到哪里
 
-Instructions for running the loop, analysis methods, evaluation criteria, tool-selection rules, and improvements to the methodology belong in `models/<model-name>/`.
+Instructions for how the loop observes, chooses an action, invokes capabilities, reviews outcomes, and reads or writes Memory belong in `models/<model-name>/`.
 
-闭环执行方法、分析方法、判断标准、工具选择规则，以及对方法论的改进，直接写入 `models/<model-name>/`。
+闭环如何观察、选择行动、调用能力、复盘结果和读写 Memory，直接写入 `models/<model-name>/`。
 
-When a run reveals a better method, update the Model itself. Keep the Memory focused on real operational evidence, conclusions, reviews, and next actions.
+Collection methods belong in the relevant Collector. Creation, execution, publishing, and task-specific review methods belong in the relevant Executor. Update the owning Skill directly when a run reveals a better method.
 
-当一次运行发现了更好的工作方法，直接修改 Model。Memory 始终聚焦真实运营证据、分析结论、复盘和下一步动作。
+采集方法写入对应 Collector，创作、执行、发布和具体复盘方法写入对应 Executor。一次运行发现更好的方法时，直接修改负责该方法的 Skill。Memory 始终聚焦真实运营证据、分析结论、复盘和下一步动作。
 
 ## Privacy / 隐私
 

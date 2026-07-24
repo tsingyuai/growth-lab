@@ -1,0 +1,4 @@
+interface:
+  display_name: "Review SEO Performance"
+  short_description: "Evaluate SEO outcomes and choose the next action"
+  default_prompt: "Use $review-seo-performance to evaluate this page and recommend the next SEO action."

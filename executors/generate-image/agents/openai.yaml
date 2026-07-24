@@ -1,0 +1,4 @@
+interface:
+  display_name: "Generate Image"
+  short_description: "Generate and verify page and marketing images"
+  default_prompt: "Use $generate-image to create and verify the image needed for this page."

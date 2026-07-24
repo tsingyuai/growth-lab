@@ -25,5 +25,8 @@ Human-assisted publishing follows platform rules and preserves human judgment fo
 
 ## Available executors / 已有执行器
 
-- [`generate-image/`](generate-image/)：通过 Gemini 或 OpenAI API 执行文生图与参考图编辑。
+- [`create-seo-page`](create-seo-page/SKILL.md)：依据需求与 SERP 证据设计、创作并实现高质量 SEO 页面。
+- [`review-seo-page`](review-seo-page/SKILL.md)：用删除、反转、换标题、去品牌和图文测试对抗式审查 SEO 页面。
+- [`generate-image`](generate-image/SKILL.md)：通过 Gemini 或 OpenAI 执行生图与参考图编辑，并完成逐图质检。
+- [`review-seo-performance`](review-seo-performance/SKILL.md)：读取 Bing 与产品数据，诊断页面效果并现场生成 HTML 复盘。
 - [`indexnow/`](indexnow/)：向 IndexNow 提交已经上线、更新或删除的 URL。

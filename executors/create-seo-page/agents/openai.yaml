@@ -1,0 +1,4 @@
+interface:
+  display_name: "Create SEO Page"
+  short_description: "Design and implement a high-value SEO page"
+  default_prompt: "Use $create-seo-page to design and implement this SEO page from the research evidence."

@@ -1,121 +1,70 @@
 ---
 name: run-seo-page-loop
-description: Run an end-to-end SEO page observation-action-review loop with persistent Memory, from keyword demand research through SERP analysis, page creation, image generation, live-page verification, IndexNow submission, Bing Webmaster measurement, and the next iteration. Use when creating or improving an SEO landing page, researching high-potential search terms, submitting a page for indexing, evaluating a page with Bing data, or reviewing SEO outcomes.
+description: Run an SEO page observation-action-review loop with persistent Memory by coordinating demand research, page creation, adversarial review, image generation, IndexNow submission, and performance review. Use when taking an SEO page from opportunity discovery through publication, measurement, iteration, or continuing a previous SEO loop from Memory.
 ---
 
 # Run the SEO page loop
 
-Operate inside the product workspace. Let the current Codex or Claude Code session control the work. Use `memory/run-seo-page-loop/` as this Model's persistent Memory.
-
-This Model is an observation-action-review loop:
+Coordinate the loop inside the product workspace. Let the current Codex or Claude Code session control the work. Use `memory/run-seo-page-loop/` as this Model's persistent Memory.
 
 ```text
 Read Memory → Observe → Decide → Act → Review → Write Memory → Next observation
 ```
 
-Read [memory.md](references/memory.md) before starting a run. Recover relevant historical observations, previous actions, outcomes, conclusions, and next-action recommendations. At the end of useful work, persist the new operational evidence, analysis, synthesis, and next actions back to this Model's Memory.
+Read [memory.md](references/memory.md) before starting. Recover relevant observations, actions, outcomes, conclusions, and next-action recommendations.
 
-## Keep these boundaries
+## Boundaries
 
-- Use the Runtime's browser, search, page inspection, screenshot, and local web-testing capabilities directly.
-- Use existing product commands and tests to inspect routes, metadata, rendering, links, responsive behavior, and accessibility.
-- Add a Client only for an external API or action the Runtime cannot perform natively.
-- Shape research files and the final HTML analysis around the current question. Create no fixed application schema, database, dashboard, or workflow state.
-- Store time-based operational evidence, analysis, reviews, and next-action recommendations in `memory/run-seo-page-loop/`.
-- Apply improvements to the loop methodology directly to this Model's `SKILL.md` or references. Keep methodology-change suggestions out of Memory.
-- Read every credential from environment variables. Keep secrets out of source, prompts, output files, command output, URLs shown to users, and commits.
+- Keep this Model focused on when and why the loop moves between observation, decision, action, and review.
+- Delegate data-collection methods and source-specific interpretation to Collectors.
+- Delegate creation, implementation, publishing, inspection, and performance-review techniques to Executors.
+- Use Runtime-native browser, search, page inspection, screenshot, and local web-testing capabilities directly.
+- Add a Client only for an external API action the Runtime cannot perform natively.
+- Create no fixed schema, database, dashboard, workflow state, or task queue.
+- Store dated operational evidence, analysis, outcomes, and next-action recommendations in Memory.
+- Apply improvements to the loop itself directly to this Model. Keep methodology-change suggestions out of Memory.
 
-## Run the loop
+## 1. Read Memory
 
-### 1. Understand the product and choose the search opportunity
+Read recent Memory entries and older entries relevant to the product, page, query family, or pending action. Establish what is already known, what was attempted, what happened, and which recommendation should now be tested.
 
-Read the product code, public pages, documentation, current conversion paths, and available growth evidence. Define the target user, their search situation, and the product action that genuinely resolves their need.
+## 2. Observe
 
-Read [keyword-research.md](references/keyword-research.md), then:
+Invoke `$research-seo-demand` to collect and interpret current search demand and live SERP evidence. Combine it with product context and relevant Memory.
 
-1. Build keyword families from user problems, concepts, scenarios, actions, tools, resources, competitors, and natural-language questions.
-2. Use Runtime search and browser capabilities to inspect autocomplete, related searches, communities, competitor language, and live SERPs.
-3. When `BING_WEBMASTER_API_KEY` is available, query comparable weekly demand with the Bing collector.
-4. Choose a page opportunity from demand, intent fit, competition, seasonality, product fit, and the evidence gap the page can fill.
-5. Save research artifacts in a task-appropriate form, then preserve useful dated observations and conclusions in this Model's Memory.
+When the loop begins from an existing page, invoke `$review-seo-performance` first to observe its current outcome.
 
-### 2. Learn from the winning pages
+Persist useful raw evidence and a dated observation in `memory/run-seo-page-loop/`.
 
-Open the live SERP results with the Runtime browser. Inspect the leading pages that match the target intent. Study:
+## 3. Decide
 
-- search presentation: title, description, freshness, rich results;
-- page shape: tool, landing page, guide, catalog, comparison, or hybrid;
-- page sequence: hero, answer, proof, examples, tools, conversion, related topics;
-- information gain: original examples, data, firsthand evidence, useful artifacts, authoritative sources;
-- conversion path: what the page lets the visitor accomplish next;
-- content and image quality: relevance, clarity, uniqueness, and trust.
+Choose one action supported by current evidence and historical Memory. State the expected observable result and the evidence that would confirm or challenge the decision.
 
-Identify the shared intent pattern and the unanswered questions. Use those findings to write a concise page brief. Use Runtime-native browsing and inspection throughout; create no scraper or browser wrapper.
+Possible actions include creating a page, improving an existing page, changing its snippet, strengthening evidence, adjusting conversion, resolving discovery problems, creating a supporting page, or waiting for a defined observation window.
 
-### 3. Create the page in the product
+## 4. Act
 
-Read [page-creation.md](references/page-creation.md). Implement the page in the product's existing framework and design system. Match the search intent, deliver the useful answer on the page, and connect the page to a real product action.
+Coordinate the relevant Executors:
 
-Include the metadata, canonical URL, social preview, structured data, sitemap entry, internal links, author or owner signal, update date, citations, and accessible content that fit the product and page type. Use the product's own conventions and validation commands.
+1. Invoke `$create-seo-page` to design and implement the page.
+2. Invoke `$generate-image` when the page needs a generated or edited asset.
+3. Invoke `$review-seo-page` before release and apply accepted fixes.
+4. Use the product's own checks and Runtime-native browser testing.
+5. Deploy through the product's existing release process.
+6. After the live URL is publicly accessible, submit it with `executors/indexnow/submit-indexnow.mjs`.
 
-### 4. Create page images
+Record the action, live URL, launch time, target intent, and baseline evidence in Memory.
 
-Read [image-creation.md](references/image-creation.md). Inventory the exact images the page needs. Reuse product screenshots and existing brand assets when they explain the product more accurately. For a new generated asset, call `executors/generate-image/generate-image.mjs` with the appropriate provider and prompt.
+## 5. Review
 
-For each generated image, define its purpose, subject, composition, aspect ratio, palette, exact text, and exclusions. Inspect the result visually, verify every rendered word, place the selected asset in the product's normal public asset directory, and add descriptive alt text and explicit dimensions.
+At the appropriate observation time, invoke `$review-seo-performance`. Compare current evidence with the baseline and previous Memory. Determine whether the action improved discovery, ranking, click-through, intent fit, content usefulness, product outcomes, or AI visibility.
 
-Read the image provider's API key and optional base URL from its documented environment variables. Never place a key in a script, prompt file, README, generated asset metadata, or committed environment file.
+Invoke `$review-seo-page` again when performance evidence points to a page-quality or intent problem.
 
-### 5. Verify, deploy, and notify IndexNow
+## 6. Write Memory and continue
 
-Run the product's relevant build, type, lint, route, and SEO checks. Use Runtime-native browser testing against the local page and then the deployed page. Verify the rendered content, metadata, canonical, structured data, images, internal links, viewport behavior, console, network failures, and public accessibility.
+Write the dated operational evidence, analysis, summary, outcome, and recommended next action to `memory/run-seo-page-loop/`. Link the entry to the earlier observation or action it evaluates.
 
-After the live URL returns the intended page:
+When the run reveals a better loop, edit this Model's `SKILL.md` or `references/memory.md` directly. Record the real operational outcome in Memory and the improved method in the Model.
 
-1. Confirm the IndexNow key file is publicly reachable at the configured key location.
-2. Set `INDEXNOW_KEY` and `SITE_URL` in the local environment.
-3. Submit the live URL with `executors/indexnow/submit-indexnow.mjs`.
-4. Use Bing URL Inspection through the Runtime's signed-in browser session, or `url-info` through the Bing collector, to follow index status.
-
-### 6. Measure the page and decide the next iteration
-
-Read [measurement.md](references/measurement.md). Preserve the page URL, launch date, target intent, and baseline evidence in this Model's Memory in a form useful to the current analysis.
-
-When Bing has accumulated data:
-
-1. Read page and query performance with `page-stats` and `page-query-stats`, or export the equivalent data from Bing Webmaster Tools through the Runtime browser.
-2. Compare impressions, clicks, click-through rate, average impression position, average click position, queries, and the page's product outcomes across comparable periods.
-3. Inspect Bing AI Performance in the signed-in browser when available: cited pages, citations, and grounding queries.
-4. Diagnose discovery, ranking, snippet, intent, content, and conversion separately.
-5. Generate a standalone HTML review for this page when a visual comparison helps. Build the HTML directly from the current evidence, open it with the Runtime browser, and keep it in this Model's Memory when it supports future comparison.
-6. Choose the next action: strengthen the page, improve the snippet, add missing evidence, adjust conversion, build a supporting page, or leave the page to accumulate more data.
-7. Write the dated evidence, summary, review, and next-action recommendation to `memory/run-seo-page-loop/`. Link the entry to the earlier observation or action it evaluates.
-
-Return the next decision to the beginning of the loop.
-
-## Clients
-
-```bash
-# Keyword demand
-node collectors/bing-webmaster/bing-webmaster.mjs keyword-stats \
-  --country cn --language zh-CN --input seo-work/keywords.txt \
-  --out seo-work/keyword-stats.json
-
-# Site and page performance
-node collectors/bing-webmaster/bing-webmaster.mjs page-stats \
-  --site "$SITE_URL" --out seo-work/bing-pages.json
-
-node collectors/bing-webmaster/bing-webmaster.mjs page-query-stats \
-  --site "$SITE_URL" --page "$PAGE_URL" \
-  --out seo-work/bing-page-queries.json
-
-# Image generation
-node executors/generate-image/generate-image.mjs \
-  --out public/seo/page-image.png \
-  --prompt-file seo-work/image-prompt.txt
-
-# IndexNow
-node executors/indexnow/submit-indexnow.mjs "$PAGE_URL"
-```
-
-Read [security.md](references/security.md) before configuring any external Client.
+Return the selected next action to the beginning of the loop.

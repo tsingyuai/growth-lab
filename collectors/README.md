@@ -30,3 +30,4 @@ Use official APIs, authorized access, public sources, and user-provided data. Fo
 ## Available collectors / 已有采集器
 
 - [`bing-webmaster/`](bing-webmaster/)：读取关键词热度、页面搜索表现、查询表现与 URL 索引信息。
+- [`research-seo-demand`](research-seo-demand/SKILL.md)：扩展关键词族、验证热度、研究实时 SERP 并选择 SEO 页面机会。

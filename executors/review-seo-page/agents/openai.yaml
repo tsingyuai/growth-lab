@@ -1,0 +1,4 @@
+interface:
+  display_name: "Review SEO Page"
+  short_description: "Adversarially review and improve an SEO page"
+  default_prompt: "Use $review-seo-page to adversarially review this SEO page and fix its weaknesses."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Research SEO Demand"
+  short_description: "Find and validate SEO keyword opportunities"
+  default_prompt: "Use $research-seo-demand to research and prioritize SEO demand for this product."

@@ -57,9 +57,9 @@ Every Model is an observation-action-review loop. Every Model owns a persistent 
 
 每个 Model 都是一个“观察—行动—复盘”闭环。每个 Model 都拥有独立的持久化 Memory，用来积累按时间采集的运营数据分析、总结、行动结果和下一步动作建议。下一轮工作在开始观察前读取这些 Memory。
 
-Loop methodology lives in the Model and evolves through direct edits to its Skill and references. Memory records what happened when the Model was used.
+Loop coordination methodology lives in the Model and evolves through direct edits to its Skill and references. Memory records what happened when the Model was used.
 
-闭环方法论保存在 Model 中，并通过直接修改 Skill 与 references 持续演进。Memory 记录 Model 被实际使用后发生了什么。
+闭环怎样观察、行动和复盘的方法论保存在 Model 中，并通过直接修改 Skill 与 references 持续演进。Memory 记录 Model 被实际使用后发生了什么。
 
 ## Three domains / 三个领域
 
@@ -84,19 +84,19 @@ Collectors can be Clients, CLIs, MCP servers, browser workflows, official APIs, 
 
 ### 2. Models / 数据模型
 
-Models contain Skills that teach the Agent how to interpret collected data, connect evidence, form hypotheses, make growth decisions, and persist useful knowledge for later analysis. A model expresses a method of thinking: demand analysis, ICP discovery, competitive positioning, content pattern analysis, funnel diagnosis, experiment review, or growth strategy.
+Models contain the methodology for running an observation-action-review loop. A Model decides when to observe, which Collector or Executor to invoke, how to turn evidence into the next action, when to review the outcome, and what to preserve in its Memory.
 
-数据模型承接各种 Skill，教 Agent 如何解释采集到的数据、连接证据、形成假设、做出增长决策，并把有复用价值的知识持久化，供后续分析继续使用。这里的 Model 表示一种分析和决策方法，例如需求分析、ICP 发现、竞品定位、内容模式分析、漏斗诊断、实验复盘与增长策略。
+数据模型只承载“观察—行动—复盘”闭环的方法论。Model 决定何时观察、调用哪个 Collector 或 Executor、如何从证据选择下一步行动、何时复盘结果，以及哪些运营记忆需要持久化。
 
-Models work with the information available in the current task. The Agent determines which evidence matters, how to organize it, and what should be preserved in files. See [`models/`](models/).
+Models coordinate capabilities and maintain loop continuity through Memory. They keep collection and execution techniques in their respective domains. See [`models/`](models/).
 
-数据模型面向当前任务中的实际信息工作。Agent 判断哪些证据重要、如何组织信息，以及哪些结论值得保存到文件中。详见 [`models/`](models/)。
+数据模型通过 Memory 维持闭环连续性，并协调各领域能力。具体采集技巧和执行技巧分别保存在 Collector 与 Executor 中。详见 [`models/`](models/)。
 
 ### 3. Executors / 执行器
 
-Executors teach the Agent how to turn decisions into growth actions: choose a content format, create copy and media, adapt assets for each channel, prepare publishing materials, invoke authorized publishing tools, and review the resulting data.
+Executors contain concrete skills, principles, and tools for turning decisions into growth actions: content and page creation, copy and media craft, adversarial review, channel adaptation, publishing, and outcome review.
 
-执行器教 Agent 如何把决策转化为增长行动：选择内容形式、创作文案与素材、适配不同渠道、准备发布材料、调用已授权的发布工具，并复盘执行结果。
+执行器承载把决策转化为增长行动所需的具体 Skill、创作原则和工具，包括页面与内容创作、文案与素材技巧、对抗式审查、渠道适配、发布和效果复盘。
 
 Publishing can be completed through an official API or through human collaboration. In a human-assisted flow, the Agent prepares the final post, assets, channel settings, and step-by-step instructions; a person publishes through the platform's normal interface. This keeps account activity aligned with platform rules and makes human judgment part of the distribution process. See [`executors/`](executors/).
 
@@ -105,7 +105,7 @@ Publishing can be completed through an official API or through human collaborati
 ```text
 Collectors / 数据采集器
         ↓
-Models / 数据模型（Skills → 分析 → 决策 → Memory）
+Models / 数据模型（观察 → 调用能力 → 行动 → 复盘 → Memory）
         ↓
 Executors / 执行器（创作 → 发布 → 复盘）
         ↓
@@ -210,8 +210,8 @@ Runtime 从已有资料开始工作，并按照 Skill 判断哪些信息与当�
 ## Planned building blocks / 计划中的组成部分
 
 - Collectors for demand, competitors, content, and product growth data / 面向需求、竞品、内容与产品增长数据的采集器；
-- Model Skills for analysis, decisions, and persistent memory / 面向分析、决策与持久化 Memory 的数据模型 Skills；
-- Executors for content creation, publishing, human collaboration, and review / 面向内容创作、发布、人类协作与复盘的执行器；
+- Model Skills for coordinating observation-action-review loops and persistent Memory / 面向“观察—行动—复盘”编排与持久化 Memory 的 Model Skills；
+- Executor Skills for concrete creation, publishing, human collaboration, and review methods / 承载具体创作、发布、人类协作与复盘方法的 Executor Skills；
 - Example workspaces showing complete growth journeys / 展示完整增长过程的示例 workspace。
 
 ## First loop: SEO pages / 第一条闭环：SEO 页面
@@ -224,6 +224,10 @@ The loop uses Runtime-native browser, search, scraping, screenshot, and page-tes
 
 这条闭环直接使用 Runtime 原生的浏览器、搜索、抓取、截图与页面测试能力。Growth Lab 只为 [Bing Webmaster 数据](collectors/bing-webmaster/) 和 [IndexNow 提交](executors/indexnow/) 提供 API Client。
 
+The Model coordinates dedicated Skills for [demand research](collectors/research-seo-demand/SKILL.md), [page creation](executors/create-seo-page/SKILL.md), [image generation](executors/generate-image/SKILL.md), [adversarial page review](executors/review-seo-page/SKILL.md), and [performance review](executors/review-seo-performance/SKILL.md).
+
+Model 通过独立 Skill 协调[需求调研](collectors/research-seo-demand/SKILL.md)、[页面创作](executors/create-seo-page/SKILL.md)、[图片生成](executors/generate-image/SKILL.md)、[对抗式页面审查](executors/review-seo-page/SKILL.md)和[效果复盘](executors/review-seo-performance/SKILL.md)。
+
 ## Principles / 原则
 
 - Ground recommendations in product evidence / 建议应建立在产品证据之上；
@@ -235,6 +239,7 @@ The loop uses Runtime-native browser, search, scraping, screenshot, and page-tes
 - Let the Agent collect, analyze, and persist the information each task needs / 由 Agent 为每个任务采集、分析并持久化所需信息；
 - Give every Model its own persistent Memory / 每个 Model 拥有独立的持久化 Memory；
 - Keep operational history in Memory and methodology in the Model / 运营历史进入 Memory，方法论直接写入 Model；
+- Keep collection techniques in Collectors and creation techniques in Executors / 采集技巧进入 Collector，创作与执行技巧进入 Executor；
 - Generate task-specific HTML views at analysis time / 在分析现场生成面向当前任务的 HTML 视图；
 - Optimize for learning and real product outcomes / 面向学习和真实产品结果。
 
