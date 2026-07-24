@@ -1,17 +1,17 @@
-# GrowthLab AI
+# Growth Lab
 
-> AI-native growth workspace powered by Codex and Cloud Code skills.  
-> 由 Codex 与 Cloud Code Skills 驱动的 AI 原生增长工作空间。
+> AI-native growth workspace powered by Codex and Claude Code skills.  
+> 由 Codex 与 Claude Code Skills 驱动的 AI 原生增长工作空间。
 
-GrowthLab AI is an open-source experiment in building a complete product-growth loop directly inside an AI coding workspace—without a frontend, backend, database, or separate orchestration service.
+Growth Lab is an open-source experiment in building a complete product-growth loop directly inside an AI coding workspace—without a frontend, backend, database, or separate orchestration service.
 
-GrowthLab AI 是一个开源实验：不建设前端、后端、数据库或独立编排服务，直接在 AI Coding Workspace 中建立完整的产品增长闭环。
+Growth Lab 是一个开源实验：不建设前端、后端、数据库或独立编排服务，直接在 AI Coding Workspace 中建立完整的产品增长闭环。
 
 > This repository is currently at the idea stage. The README describes the direction we intend to build in public.
 >
 > 项目目前处于构思阶段。本 README 描述的是我们准备公开构建的方向。
 
-## Why GrowthLab AI / 为什么做 GrowthLab AI
+## Why Growth Lab / 为什么做 Growth Lab
 
 Most AI growth tools solve only one fragment of the problem. Some generate copy, some research competitors, some schedule posts, and some display analytics. The product context is repeatedly lost between these tools, while the most important decisions still depend on disconnected dashboards, documents, prompts, and manual handoffs.
 
@@ -31,15 +31,15 @@ Understand the product / 理解产品
 → Learn and improve / 学习并调整下一轮行动
 ```
 
-Modern coding agents already know how to read repositories, search the web, operate tools, edit files, reason across many kinds of context, and collaborate with people in a session. Instead of rebuilding these capabilities behind another SaaS interface, GrowthLab AI treats Codex and Cloud Code as the application runtime.
+Modern coding agents already know how to read repositories, search the web, operate tools, edit files, reason across many kinds of context, and collaborate with people in a session. Instead of rebuilding these capabilities behind another SaaS interface, Growth Lab treats Codex and Claude Code as the application runtime.
 
-现代 Coding Agent 已经能够读取代码仓库、搜索网络、操作工具、编辑文件、跨上下文推理，并在会话中与人协作。GrowthLab AI 不再把这些能力重新包装进另一个 SaaS，而是直接把 Codex 和 Cloud Code 当作应用 Runtime。
+现代 Coding Agent 已经能够读取代码仓库、搜索网络、操作工具、编辑文件、跨上下文推理，并在会话中与人协作。Growth Lab 不再把这些能力重新包装进另一个 SaaS，而是直接把 Codex 和 Claude Code 当作应用 Runtime。
 
 ## The model / 产品模型
 
 ```text
 Session = Control Plane / 会话 = 控制面
-Codex or Cloud Code = Runtime
+Codex or Claude Code = Runtime
 Skill = Growth Method / Skill = 增长方法与工作指引
 Client = Action / Client = 外部执行能力
 Filesystem = Memory / 文件系统 = 长期记忆
@@ -57,9 +57,9 @@ There is no additional workflow engine. The AI session itself controls the work.
 
 ### Product-native understanding / 原生理解产品
 
-Because GrowthLab AI runs in the product workspace, it can study the source code, README, documentation, landing pages, configuration, analytics definitions, and previous growth work together. Its recommendations can be grounded in the actual product instead of a short marketing prompt.
+Because Growth Lab runs in the product workspace, it can study the source code, README, documentation, landing pages, configuration, analytics definitions, and previous growth work together. Its recommendations can be grounded in the actual product instead of a short marketing prompt.
 
-GrowthLab AI 直接运行在产品 workspace 中，因此能够同时理解源码、README、产品文档、落地页、配置、数据定义和历史增长资料。它的建议可以建立在真实产品之上，而不是依赖一段简短的营销 Prompt。
+Growth Lab 直接运行在产品 workspace 中，因此能够同时理解源码、README、产品文档、落地页、配置、数据定义和历史增长资料。它的建议可以建立在真实产品之上，而不是依赖一段简短的营销 Prompt。
 
 ### One continuous context / 连续的增长上下文
 
@@ -81,9 +81,9 @@ Skills、模板、Clients、Memory 和产物都是普通本地文件。团队可
 
 ### Local-first and open / 本地优先与开放
 
-The workspace remains under the user's control and can be versioned with Git. GrowthLab AI can use the tools and services a team already trusts instead of forcing all product and growth data into a new hosted system.
+The workspace remains under the user's control and can be versioned with Git. Growth Lab can use the tools and services a team already trusts instead of forcing all product and growth data into a new hosted system.
 
-Workspace 始终由用户控制，并可以使用 Git 管理。GrowthLab AI 可以复用团队已经信任的工具和服务，而不必把全部产品与增长数据迁移到一个新的托管系统。
+Workspace 始终由用户控制，并可以使用 Git 管理。Growth Lab 可以复用团队已经信任的工具和服务，而不必把全部产品与增长数据迁移到一个新的托管系统。
 
 ## How to use it / 如何使用
 
@@ -92,19 +92,19 @@ The intended experience is deliberately small:
 预期的使用方式非常简单：
 
 ```bash
-git clone https://github.com/tsingyuai/growthlab-ai.git
-cd growthlab-ai
+git clone https://github.com/tsingyuai/growth-lab.git
+cd growth-lab
 ```
 
-Open the directory in Codex or Cloud Code, then start the GrowthLab Skill in a new session. Tell the Runtime which product you want to work on and what outcome you care about.
+Open the directory in Codex or Claude Code, then start the Growth Lab Skill in a new session. Tell the Runtime which product you want to work on and what outcome you care about.
 
-使用 Codex 或 Cloud Code 打开该目录，在新会话中启动 GrowthLab Skill，然后告诉 Runtime 你要接入哪个产品，以及当前关注的增长目标。
+使用 Codex 或 Claude Code 打开该目录，在新会话中启动 Growth Lab Skill，然后告诉 Runtime 你要接入哪个产品，以及当前关注的增长目标。
 
 Example prompts / 示例：
 
 ```text
-Use GrowthLab to understand this product and propose the first growth research plan.
-使用 GrowthLab 理解这个产品，并给出第一轮增长调研计划。
+Use Growth Lab to understand this product and propose the first growth research plan.
+使用 Growth Lab 理解这个产品，并给出第一轮增长调研计划。
 
 Analyze the existing product and growth materials, then identify our strongest ICP hypotheses.
 分析现有产品和增长资料，找出最值得验证的 ICP 假设。
@@ -119,17 +119,17 @@ Runtime 将按照 Skill 工作：读取相关文件，在需要时补充产品�
 
 ## Connect your product / 如何接入你的产品
 
-GrowthLab AI is designed to work with products at different stages. You can connect a product in one of three ways:
+Growth Lab is designed to work with products at different stages. You can connect a product in one of three ways:
 
-GrowthLab AI 面向不同阶段的产品，可以通过三种方式接入：
+Growth Lab 面向不同阶段的产品，可以通过三种方式接入：
 
 1. **Run it inside the product repository / 直接在产品仓库中运行**  
-   Add GrowthLab's Skill, Clients, and templates to your existing workspace. This gives the Runtime the richest product context.
-   将 GrowthLab 的 Skill、Clients 和模板加入现有产品 workspace，Runtime 可以直接读取最完整的产品上下文。
+   Add Growth Lab's Skill, Clients, and templates to your existing workspace. This gives the Runtime the richest product context.
+   将 Growth Lab 的 Skill、Clients 和模板加入现有产品 workspace，Runtime 可以直接读取最完整的产品上下文。
 
-2. **Place the product beside GrowthLab / 将产品放在相邻目录**  
-   Keep GrowthLab as its own repository and provide the Runtime with the local path to the product repository.
-   保持 GrowthLab 为独立仓库，并在会话中向 Runtime 提供产品仓库的本地路径。
+2. **Place the product beside Growth Lab / 将产品放在相邻目录**  
+   Keep Growth Lab as its own repository and provide the Runtime with the local path to the product repository.
+   保持 Growth Lab 为独立仓库，并在会话中向 Runtime 提供产品仓库的本地路径。
 
 3. **Provide a product brief / 提供产品资料**  
    For products without an accessible codebase, add the website URL, product brief, screenshots, customer notes, analytics exports, and previous campaigns to the workspace.
@@ -168,9 +168,9 @@ You do not need to normalize everything before starting. The Runtime can inspect
 
 ## Status / 当前状态
 
-GrowthLab AI is at the beginning. We are publishing the idea first, then turning it into a practical Skill and a small set of useful Clients through real product-growth work.
+Growth Lab is at the beginning. We are publishing the idea first, then turning it into a practical Skill and a small set of useful Clients through real product-growth work.
 
-GrowthLab AI 目前刚刚开始。我们先公开这个想法，再通过真实的产品增长工作，把它逐步构建成可用的 Skill 和一组必要的 Client 工具。
+Growth Lab 目前刚刚开始。我们先公开这个想法，再通过真实的产品增长工作，把它逐步构建成可用的 Skill 和一组必要的 Client 工具。
 
 If this direction resonates with you, open an issue and tell us what product you are growing, where your current workflow breaks, and which tools the Runtime should be able to use.
 
