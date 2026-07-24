@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520" role="img" aria-labelledby="title desc">
+  <title id="title">Growth Lab — from code to market</title>
+  <desc id="desc">A continuous loop connecting product understanding, market research, creation, execution, and data review.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#081120"/>
+      <stop offset="1" stop-color="#10182e"/>
+    </linearGradient>
+    <linearGradient id="flow" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#60a5fa"/>
+      <stop offset="0.5" stop-color="#a78bfa"/>
+      <stop offset="1" stop-color="#34d399"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="7" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7083a5"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="520" rx="24" fill="url(#bg)"/>
+  <g opacity="0.18" stroke="#7890b8" stroke-width="1">
+    <path d="M0 92H1200M0 184H1200M0 276H1200M0 368H1200M0 460H1200"/>
+    <path d="M100 0V520M300 0V520M500 0V520M700 0V520M900 0V520M1100 0V520"/>
+  </g>
+
+  <text x="70" y="74" fill="#f8fafc" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="30" font-weight="700">FROM CODE TO MARKET</text>
+  <text x="70" y="108" fill="#91a4c5" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="16" letter-spacing="2">ONE CONTINUOUS GROWTH LOOP</text>
+
+  <path d="M210 260H358M442 260H558M642 260H758M842 260H990" fill="none" stroke="#7083a5" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M1040 320 C1010 446 210 446 160 320" fill="none" stroke="url(#flow)" stroke-width="4" stroke-dasharray="9 8" marker-end="url(#arrow)" opacity="0.85"/>
+
+  <g font-family="Inter, ui-sans-serif, system-ui, sans-serif" text-anchor="middle">
+    <g transform="translate(160 260)">
+      <circle r="59" fill="#111d35" stroke="#60a5fa" stroke-width="3"/>
+      <circle r="6" cy="-22" fill="#60a5fa" filter="url(#glow)"/>
+      <text y="7" fill="#f8fafc" font-size="18" font-weight="700">PRODUCT</text>
+      <text y="31" fill="#91a4c5" font-size="13">代码 · 文档 · 用户</text>
+    </g>
+    <g transform="translate(400 260)">
+      <circle r="59" fill="#171a36" stroke="#818cf8" stroke-width="3"/>
+      <circle r="6" cy="-22" fill="#818cf8" filter="url(#glow)"/>
+      <text y="7" fill="#f8fafc" font-size="18" font-weight="700">RESEARCH</text>
+      <text y="31" fill="#91a4c5" font-size="13">市场 · ICP · 渠道</text>
+    </g>
+    <g transform="translate(600 260)">
+      <circle r="59" fill="#201936" stroke="#a78bfa" stroke-width="3"/>
+      <circle r="6" cy="-22" fill="#a78bfa" filter="url(#glow)"/>
+      <text y="7" fill="#f8fafc" font-size="18" font-weight="700">CREATE</text>
+      <text y="31" fill="#91a4c5" font-size="13">策略 · 内容 · 素材</text>
+    </g>
+    <g transform="translate(800 260)">
+      <circle r="59" fill="#152234" stroke="#2dd4bf" stroke-width="3"/>
+      <circle r="6" cy="-22" fill="#2dd4bf" filter="url(#glow)"/>
+      <text y="7" fill="#f8fafc" font-size="18" font-weight="700">EXECUTE</text>
+      <text y="31" fill="#91a4c5" font-size="13">连接 · 发布 · 实验</text>
+    </g>
+    <g transform="translate(1040 260)">
+      <circle r="59" fill="#122a2b" stroke="#34d399" stroke-width="3"/>
+      <circle r="6" cy="-22" fill="#34d399" filter="url(#glow)"/>
+      <text y="7" fill="#f8fafc" font-size="18" font-weight="700">LEARN</text>
+      <text y="31" fill="#91a4c5" font-size="13">数据 · 复盘 · 迭代</text>
+    </g>
+  </g>
+
+  <rect x="394" y="397" width="412" height="54" rx="27" fill="#111c31" stroke="#405275"/>
+  <text x="600" y="430" text-anchor="middle" fill="#dbeafe" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="16" font-weight="600">Evidence returns to the next decision · 证据进入下一轮决策</text>
+</svg>
