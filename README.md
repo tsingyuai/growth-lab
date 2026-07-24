@@ -53,6 +53,57 @@ The AI session controls the entire workflow.
 
 AI 会话负责控制整个工作流程。
 
+## Three domains / 三个领域
+
+Growth Lab is organized into three domains that connect intelligence, decisions, and action.
+
+Growth Lab 由三个领域组成，把情报、决策和行动连接成完整闭环。
+
+### 1. Collectors / 数据采集器
+
+Collectors give the Agent access to the outside world and the product's internal signals. They collect four kinds of growth intelligence:
+
+数据采集器负责让 Agent 连接外部世界与产品内部信号，主要采集四类增长情报：
+
+- Demand intelligence: user problems, questions, search intent, community discussions, and buying signals / 需求情报：用户问题、搜索意图、社区讨论与购买信号；
+- Competitive intelligence: positioning, features, pricing, distribution, launches, and user feedback / 竞品情报：定位、功能、定价、渠道、发布动态与用户反馈；
+- High-performing content: topics, formats, hooks, narratives, engagement, and distribution patterns / 爆款内容：选题、形式、开头、叙事、互动与传播模式；
+- Product growth data: acquisition, activation, retention, revenue, referrals, experiments, and qualitative feedback / 产品内部增长数据：获客、激活、留存、收入、推荐、实验与定性反馈。
+
+Collectors can be Clients, CLIs, MCP servers, browser workflows, official APIs, or instructions for reading user-provided exports. See [`collectors/`](collectors/).
+
+数据采集器可以采用 Client、CLI、MCP Server、浏览器工作流、官方 API，或读取用户导出数据的操作指引。详见 [`collectors/`](collectors/)。
+
+### 2. Models / 数据模型
+
+Models contain Skills that teach the Agent how to interpret collected data, connect evidence, form hypotheses, make growth decisions, and persist useful knowledge for later analysis. A model expresses a method of thinking: demand analysis, ICP discovery, competitive positioning, content pattern analysis, funnel diagnosis, experiment review, or growth strategy.
+
+数据模型承接各种 Skill，教 Agent 如何解释采集到的数据、连接证据、形成假设、做出增长决策，并把有复用价值的知识持久化，供后续分析继续使用。这里的 Model 表示一种分析和决策方法，例如需求分析、ICP 发现、竞品定位、内容模式分析、漏斗诊断、实验复盘与增长策略。
+
+Models work with the information available in the current task. The Agent determines which evidence matters, how to organize it, and what should be preserved in files. See [`models/`](models/).
+
+数据模型面向当前任务中的实际信息工作。Agent 判断哪些证据重要、如何组织信息，以及哪些结论值得保存到文件中。详见 [`models/`](models/)。
+
+### 3. Executors / 执行器
+
+Executors teach the Agent how to turn decisions into growth actions: choose a content format, create copy and media, adapt assets for each channel, prepare publishing materials, invoke authorized publishing tools, and review the resulting data.
+
+执行器教 Agent 如何把决策转化为增长行动：选择内容形式、创作文案与素材、适配不同渠道、准备发布材料、调用已授权的发布工具，并复盘执行结果。
+
+Publishing can be completed through an official API or through human collaboration. In a human-assisted flow, the Agent prepares the final post, assets, channel settings, and step-by-step instructions; a person publishes through the platform's normal interface. This keeps account activity aligned with platform rules and makes human judgment part of the distribution process. See [`executors/`](executors/).
+
+发布可以通过官方 API 完成，也可以由 Agent 召唤人类协作完成。在人类协作模式中，Agent 准备最终内容、素材、渠道设置和操作说明，由人通过平台正常界面完成发布。这种方式让账号行为符合平台规则，并把人的判断纳入分发过程。详见 [`executors/`](executors/)。
+
+```text
+Collectors / 数据采集器
+        ↓
+Models / 数据模型（Skills → 分析 → 决策 → Memory）
+        ↓
+Executors / 执行器（创作 → 发布 → 复盘）
+        ↓
+New evidence returns to Collectors / 新证据回到采集器
+```
+
 ## What it can become / 它可以带来什么
 
 ### Product-native understanding / 原生理解产品
@@ -150,11 +201,9 @@ Runtime 从已有资料开始工作，并按照 Skill 判断哪些信息与当�
 
 ## Planned building blocks / 计划中的组成部分
 
-- A core growth-loop Skill / 核心增长闭环 Skill；
-- Product-understanding and market-research methods / 产品理解与市场调研方法；
-- Content research, strategy, and creation playbooks / 内容研究、策略与生产方法；
-- Thin Client tools for useful external capabilities / 面向外部能力的轻量 Client 工具；
-- Reusable research and output templates / 可复用的研究与输出模板；
+- Collectors for demand, competitors, content, and product growth data / 面向需求、竞品、内容与产品增长数据的采集器；
+- Model Skills for analysis, decisions, and persistent memory / 面向分析、决策与持久化 Memory 的数据模型 Skills；
+- Executors for content creation, publishing, human collaboration, and review / 面向内容创作、发布、人类协作与复盘的执行器；
 - Example workspaces showing complete growth journeys / 展示完整增长过程的示例 workspace。
 
 ## Principles / 原则
@@ -164,7 +213,14 @@ Runtime 从已有资料开始工作，并按照 Skill 判断哪些信息与当�
 - Prefer official and authorized data access / 优先使用官方或已授权的数据访问方式；
 - Keep the method readable and changeable / 保持方法可读、可修改；
 - Let the Runtime own reasoning and workflow control / 由 Runtime 负责推理与流程控制；
+- Shape data around the question at hand / 围绕当前问题组织数据；
+- Let the Agent collect, analyze, and persist the information each task needs / 由 Agent 为每个任务采集、分析并持久化所需信息；
+- Generate task-specific HTML views at analysis time / 在分析现场生成面向当前任务的 HTML 视图；
 - Optimize for learning and real product outcomes / 面向学习和真实产品结果。
+
+Growth Lab uses adaptive data structures created by the Agent for each task. Knowledge lives in readable workspace files, and visual analysis is rendered as HTML when it is needed. The question determines the data, the analysis, and the view.
+
+Growth Lab 采用由 Agent 根据任务现场形成的自适应数据结构。知识保存在 workspace 中可直接阅读的文件里，可视化分析在需要时现场生成 HTML。问题决定需要什么数据、如何分析，以及如何呈现。
 
 ## Status / 当前状态
 
