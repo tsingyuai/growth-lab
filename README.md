@@ -17,9 +17,9 @@ Most AI growth tools solve only one fragment of the problem. Some generate copy,
 
 大多数 AI 增长工具只解决一个局部问题：有的生成文案，有的研究竞品，有的负责发布，有的展示数据。产品上下文在不同工具之间反复丢失，真正重要的决策仍散落在仪表盘、文档、Prompt 和人工交接中。
 
-Growth is not a single content-generation task. It is a continuous learning loop:
+Growth is a continuous learning loop:
 
-增长不是一次内容生成任务，而是一个持续学习的闭环：
+增长是一个持续学习的闭环：
 
 ```text
 Understand the product / 理解产品
@@ -31,9 +31,9 @@ Understand the product / 理解产品
 → Learn and improve / 学习并调整下一轮行动
 ```
 
-Modern coding agents already know how to read repositories, search the web, operate tools, edit files, reason across many kinds of context, and collaborate with people in a session. Instead of rebuilding these capabilities behind another SaaS interface, Growth Lab treats Codex and Claude Code as the application runtime.
+Modern coding agents can read repositories, search the web, operate tools, edit files, reason across many kinds of context, and collaborate with people in a session. Growth Lab uses Codex and Claude Code as its application runtime and turns these capabilities into an end-to-end growth workflow.
 
-现代 Coding Agent 已经能够读取代码仓库、搜索网络、操作工具、编辑文件、跨上下文推理，并在会话中与人协作。Growth Lab 不再把这些能力重新包装进另一个 SaaS，而是直接把 Codex 和 Claude Code 当作应用 Runtime。
+现代 Coding Agent 已经能够读取代码仓库、搜索网络、操作工具、编辑文件、跨上下文推理，并在会话中与人协作。Growth Lab 以 Codex 和 Claude Code 作为应用 Runtime，将这些能力组织成端到端的增长工作流。
 
 ## The model / 产品模型
 
@@ -49,23 +49,23 @@ The Skill teaches the Runtime how to understand a product, conduct research, cho
 
 Skill 教 Runtime 如何理解产品、开展研究、选择工具、形成策略、制作内容、分析反馈和决定下一步。Client 工具让 Runtime 能够使用浏览器、官方 API、数据导出、内容平台和素材生成等外部能力。文件则跨会话保存产品上下文、研究资料、决策与结果。
 
-There is no additional workflow engine. The AI session itself controls the work.
+The AI session controls the entire workflow.
 
-项目不实现额外的工作流引擎，AI 会话本身就是整个工作的控制面。
+AI 会话负责控制整个工作流程。
 
 ## What it can become / 它可以带来什么
 
 ### Product-native understanding / 原生理解产品
 
-Because Growth Lab runs in the product workspace, it can study the source code, README, documentation, landing pages, configuration, analytics definitions, and previous growth work together. Its recommendations can be grounded in the actual product instead of a short marketing prompt.
+Because Growth Lab runs in the product workspace, it can study the source code, README, documentation, landing pages, configuration, analytics definitions, and previous growth work together. Its recommendations are grounded in the actual product context and accumulated evidence.
 
-Growth Lab 直接运行在产品 workspace 中，因此能够同时理解源码、README、产品文档、落地页、配置、数据定义和历史增长资料。它的建议可以建立在真实产品之上，而不是依赖一段简短的营销 Prompt。
+Growth Lab 直接运行在产品 workspace 中，因此能够同时理解源码、README、产品文档、落地页、配置、数据定义和历史增长资料。它的建议建立在真实产品上下文和持续积累的证据之上。
 
 ### One continuous context / 连续的增长上下文
 
-Research, strategy, content, experiments, and results live alongside the product. The Runtime can reuse previous findings and connect new evidence to earlier decisions without rebuilding context in every tool.
+Research, strategy, content, experiments, and results live alongside the product. The Runtime reuses previous findings and connects new evidence to earlier decisions through one continuous context.
 
-研究、策略、内容、实验和结果与产品共同存在于文件系统中。Runtime 可以复用历史发现，把新证据连接到过去的决策，而不必在每个工具中重新建立上下文。
+研究、策略、内容、实验和结果与产品共同存在于文件系统中。Runtime 在一个连续的上下文中复用历史发现，并把新证据连接到过去的决策。
 
 ### From advice to action / 从建议走向执行
 
@@ -81,9 +81,9 @@ Skills、模板、Clients、Memory 和产物都是普通本地文件。团队可
 
 ### Local-first and open / 本地优先与开放
 
-The workspace remains under the user's control and can be versioned with Git. Growth Lab can use the tools and services a team already trusts instead of forcing all product and growth data into a new hosted system.
+The workspace remains under the user's control and can be versioned with Git. Growth Lab works with the tools and services a team already trusts while keeping product and growth data in the team's chosen environment.
 
-Workspace 始终由用户控制，并可以使用 Git 管理。Growth Lab 可以复用团队已经信任的工具和服务，而不必把全部产品与增长数据迁移到一个新的托管系统。
+Workspace 始终由用户控制，并可以使用 Git 管理。Growth Lab 复用团队已经信任的工具和服务，让产品与增长数据保留在团队选择的环境中。
 
 ## How to use it / 如何使用
 
@@ -132,8 +132,8 @@ Growth Lab 面向不同阶段的产品，可以通过三种方式接入：
    保持 Growth Lab 为独立仓库，并在会话中向 Runtime 提供产品仓库的本地路径。
 
 3. **Provide a product brief / 提供产品资料**  
-   For products without an accessible codebase, add the website URL, product brief, screenshots, customer notes, analytics exports, and previous campaigns to the workspace.
-   如果无法提供源码，可以把官网链接、产品介绍、截图、客户记录、数据导出和历史 Campaign 放入 workspace。
+   Represent the product in the workspace with its website URL, product brief, screenshots, customer notes, analytics exports, and previous campaigns.
+   可以通过官网链接、产品介绍、截图、客户记录、数据导出和历史 Campaign，在 workspace 中呈现产品的完整背景。
 
 A useful starting context includes / 推荐首先提供：
 
@@ -144,9 +144,9 @@ A useful starting context includes / 推荐首先提供：
 - Available behavioral, acquisition, and revenue data / 可用的行为、获客与收入数据；
 - Brand, legal, budget, and platform constraints / 品牌、法律、预算与平台限制。
 
-You do not need to normalize everything before starting. The Runtime can inspect what already exists and use the Skill to decide what information is relevant.
+The Runtime starts from the materials already available and uses the Skill to identify the information relevant to the current goal.
 
-开始前不需要先把所有资料标准化。Runtime 可以检查已有内容，并按照 Skill 判断哪些信息与当前任务相关。
+Runtime 从已有资料开始工作，并按照 Skill 判断哪些信息与当前目标相关。
 
 ## Planned building blocks / 计划中的组成部分
 
@@ -163,8 +163,8 @@ You do not need to normalize everything before starting. The Runtime can inspect
 - Separate facts, hypotheses, and creative ideas / 区分事实、假设与创意；
 - Prefer official and authorized data access / 优先使用官方或已授权的数据访问方式；
 - Keep the method readable and changeable / 保持方法可读、可修改；
-- Let the Runtime reason instead of rebuilding its control plane / 使用 Runtime 的推理能力，不重复建设控制面；
-- Optimize for learning and real product outcomes, not vanity metrics / 面向学习和真实产品结果，而非虚荣指标。
+- Let the Runtime own reasoning and workflow control / 由 Runtime 负责推理与流程控制；
+- Optimize for learning and real product outcomes / 面向学习和真实产品结果。
 
 ## Status / 当前状态
 
