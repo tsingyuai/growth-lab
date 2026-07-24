@@ -5,7 +5,7 @@ import { getSiteUrl, languageAlternates } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'AI SEO Agent: From User Scenario to Measured Page',
-  description: 'See how an AI SEO agent researches real searches, creates an information-rich page, submits it to IndexNow, and reviews Bing outcomes.',
+  description: 'A free, open-source AI SEO agent that understands your product and customers, then researches, creates, publishes, and reviews SEO pages end to end.',
   alternates: { canonical: '/ai-seo-agent', languages: languageAlternates('/ai-seo-agent') },
   openGraph: { title: 'AI SEO Agent: From User Scenario to Measured Page', description: 'A complete SEO page loop executed inside the product workspace.', url: '/ai-seo-agent' },
 };
@@ -15,8 +15,8 @@ export default function AiSeoAgentPage() {
   return (
     <>
       <JsonLd data={{ '@context': 'https://schema.org', '@type': 'HowTo', name: 'Run an AI SEO page growth loop', description: 'Research, create, publish, measure, and iterate an SEO page with a coding agent.', dateModified: '2026-07-24', mainEntityOfPage: url, step: ['Understand product scenarios', 'Research real searches', 'Study winning pages', 'Create and review the page', 'Deploy and submit IndexNow', 'Review Bing and product outcomes'].map((name, index) => ({ '@type': 'HowToStep', position: index + 1, name })) }} />
-      <SeoShell eyebrow="CAPABILITY / AI SEO AGENT" title="From a user scenario to a measured SEO page." intro="The Growth Lab SEO agent researches what users actually search, creates a page with information gain, ships it in the product, and uses Bing and product outcomes to choose the next action.">
-        <p>An SEO page is valuable when it resolves a real user situation and creates a natural path into the product. The agent begins with the product, discovers possible situations of need, validates the language users search, and creates the page inside the actual codebase.</p>
+      <SeoShell eyebrow="CAPABILITY / AI SEO AGENT" title="Let an AI SEO agent run the whole page loop." intro="Growth Lab understands the product, discovers customer scenarios, researches real searches, creates and publishes useful pages, and reviews Bing outcomes—free and open source inside Codex or Claude Code.">
+        <p>An SEO page is valuable when it resolves a real user situation and creates a natural path into the product. The agent begins with the product and performs the market work itself: it develops customer hypotheses, discovers situations of need, validates the language users search, and creates the page inside the actual codebase.</p>
 
         <h2>The complete SEO page loop</h2>
         <ol>
@@ -66,6 +66,7 @@ cd growth-lab
 # Open the workspace in Codex or Claude Code
 # Invoke run-seo-page-loop with your product path or URL`}</code></pre>
         <p>The Model coordinates dedicated Skills for demand research, page creation, image generation, adversarial review, IndexNow submission, and Bing performance review. Browser inspection and local page testing use the Runtime’s native abilities.</p>
+        <p>Growth Lab is free and open source. Clone it, open the workspace in Codex or Claude Code, and describe the product and goal. The coding-agent conversation is the complete interface.</p>
       </SeoShell>
     </>
   );

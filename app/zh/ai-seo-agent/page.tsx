@@ -5,7 +5,7 @@ import { getSiteUrl, languageAlternates } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'AI SEO Agent：从用户场景到可度量页面',
-  description: '了解 AI SEO Agent 如何调研真实搜索、创作高信息量页面、提交 IndexNow，并使用 Bing 数据复盘效果。',
+  description: '免费开源的 AI SEO Agent，自己理解产品和客户，端到端完成调研、创作、发布与 SEO 效果复盘。',
   alternates: { canonical: '/zh/ai-seo-agent', languages: languageAlternates('/ai-seo-agent') },
   openGraph: { title: 'AI SEO Agent：从用户场景到可度量页面', description: '在产品工作区中执行完整的 SEO 页面增长闭环。', url: '/zh/ai-seo-agent', locale: 'zh_CN' },
 };
@@ -14,8 +14,8 @@ export default function ChineseAiSeoAgentPage() {
   const url = `${getSiteUrl()}/zh/ai-seo-agent`;
   const steps = ['理解产品场景', '调研真实搜索', '分析领先页面', '创作并审查页面', '部署并提交 IndexNow', '复盘 Bing 与产品结果'];
   return <><JsonLd data={{ '@context': 'https://schema.org', '@type': 'HowTo', inLanguage: 'zh-CN', name: '运行 AI SEO 页面增长闭环', description: '用 Coding Agent 调研、创作、发布、度量并迭代 SEO 页面。', dateModified: '2026-07-24', mainEntityOfPage: url, step: steps.map((name, index) => ({ '@type': 'HowToStep', position: index + 1, name })) }} />
-    <SeoShell locale="zh" updated="2026 年 7 月 24 日" eyebrow="现有能力 / AI SEO AGENT" title="从一个用户场景，到一张可度量的 SEO 页面。" intro="Growth Lab SEO Agent 调研用户实际搜索什么，生成具有信息增量的页面，在产品中发布，并使用 Bing 与产品结果决定下一步。">
-      <p>一张 SEO 页面需要解决真实用户场景，并自然地把用户引向产品。Agent 从产品出发，发现潜在需求场景，验证用户使用的搜索语言，再直接在真实代码库中创建页面。</p>
+    <SeoShell locale="zh" updated="2026 年 7 月 24 日" eyebrow="现有能力 / AI SEO AGENT" title="让 AI SEO Agent 运行完整的页面增长闭环。" intro="Growth Lab 理解产品、发现客户场景、调研真实搜索、创作并发布有效页面，再复盘 Bing 结果。它免费开源，直接运行在 Codex 或 Claude Code 中。">
+      <p>一张 SEO 页面需要解决真实用户场景，并自然地把用户引向产品。Agent 从产品出发，自己完成市场工作：形成客户假设、发现潜在需求场景、验证用户使用的搜索语言，再直接在真实代码库中创建页面。</p>
       <h2>完整的 SEO 页面闭环</h2>
       <ol>
         <li><strong>读取 Memory。</strong>恢复产品或查询词族过去的观察、行动、结果与建议。</li>
@@ -45,5 +45,6 @@ cd growth-lab
 
 # 在 Codex 或 Claude Code 中打开工作区
 # 使用产品路径或 URL 调用 run-seo-page-loop`}</code></pre>
+      <p>Growth Lab 免费开源。Clone 仓库、在 Codex 或 Claude Code 中打开工作区、描述产品与目标即可开始；Coding Agent 的会话就是全部操作界面。</p>
     </SeoShell></>;
 }

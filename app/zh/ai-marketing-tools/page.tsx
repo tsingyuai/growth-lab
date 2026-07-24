@@ -5,7 +5,7 @@ import { getSiteUrl, languageAlternates } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'AI 营销工具：按真正要完成的工作选择',
-  description: '从产品上下文、执行深度、反馈机制和实际增长任务出发，选择适合产品阶段的 AI 营销工具。',
+  description: '免费开源的 AI 增长工具，自己理解产品与客户，通过 Codex 或 Claude Code 端到端执行产品 0→1 增长。',
   alternates: { canonical: '/zh/ai-marketing-tools', languages: languageAlternates('/ai-marketing-tools') },
   openGraph: { title: 'AI 营销工具：按真正要完成的工作选择', description: '比较不同 AI 营销工具能够观察、执行和学习的工作深度。', url: '/zh/ai-marketing-tools', locale: 'zh_CN' },
 };
@@ -13,8 +13,8 @@ export const metadata: Metadata = {
 export default function ChineseAiMarketingToolsPage() {
   const url = `${getSiteUrl()}/zh/ai-marketing-tools`;
   return <><JsonLd data={{ '@context': 'https://schema.org', '@type': 'Article', inLanguage: 'zh-CN', headline: 'AI 营销工具：按真正要完成的工作选择', dateModified: '2026-07-24', author: { '@type': 'Organization', name: 'Growth Lab' }, mainEntityOfPage: url }} />
-    <SeoShell locale="zh" updated="2026 年 7 月 24 日" eyebrow="选型指南 / AI 营销工具" title="按照它能完成的工作，选择 AI 营销工具。" intro="真正有用的分界线是执行深度：工具能理解多少产品上下文、能完成哪些行动，以及结果是否会改变它的下一次决策。">
-      <p>“AI 营销工具”覆盖了完全不同的工作。写作助手生成草稿，自动化平台路由事件，垂直工具运营单个渠道，而 Coding Agent 可以读取产品、连接工具、修改资产，并跨越整个代码仓库工作。</p>
+    <SeoShell locale="zh" updated="2026 年 7 月 24 日" eyebrow="选型指南 / AI 营销工具" title="选择能把产品从 0 带到 1 的 AI 营销工具。" intro="Growth Lab 免费开源，自己理解产品、调研客户与需求、端到端完成执行，并直接运行在你已经使用的 Codex 或 Claude Code 中。">
+      <p>“AI 营销工具”覆盖了完全不同的工作。Growth Lab 面向完整的 0→1 路径：Coding Agent 读取产品，形成客户假设，采集实时市场证据，创作并发布增长资产，再从结果中学习。用户只需要提供产品和目标，市场洞察与执行方法由 Skills 提供。</p>
       <blockquote>先明确增长任务，再选择能够观察正确证据、完成行动并返回可度量结果的最小工具。</blockquote>
       <h2>四类 AI 营销工具</h2>
       <table><thead><tr><th>类别</th><th>擅长工作</th><th>上下文</th><th>执行方式</th></tr></thead><tbody>
@@ -35,7 +35,7 @@ export default function ChineseAiMarketingToolsPage() {
       <h3>行动范围</h3><p>列出它能真正完成的操作：修改页面、生成资产、通过授权 API 发布、检查线上结果或分析数据。把已执行的行动与建议区分开。</p>
       <h3>证据与跨轮次学习</h3><p>有用的系统会区分来源、观察、假设和创作选择，并保存带时间的证据、行动、结果与下一步建议。</p>
       <h2>Growth Lab 所在的位置</h2>
-      <p>Growth Lab 是面向 Codex 与 Claude Code 的开源增长工作区。Coding Agent 是 Runtime，Skills 教会它运行完整闭环，Clients 提供外部行动，文件保存 Memory。</p>
+      <p>Growth Lab 是面向 Codex 与 Claude Code 的免费开源增长工作区。Coding Agent 是 Runtime，Skills 提供市场分析与执行方法，Clients 提供外部行动，文件保存 Memory。Clone 仓库、在已有的 Coding Agent 中打开，然后描述目标即可开始。</p>
       <div className="note-box"><strong>实测结果</strong>一次真实执行中，新页面在 1–2 天内被收录；7 天平均曝光量与点击量分别提高 1000%，整体 CTR 降低 50%。扩大后的触达与降低的 CTR 会分别进入下一次复盘。</div>
     </SeoShell></>;
 }

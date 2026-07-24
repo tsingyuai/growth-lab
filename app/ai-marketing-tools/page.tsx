@@ -5,7 +5,7 @@ import { getSiteUrl, languageAlternates } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'AI Marketing Tools: Choose by the Work You Need Done',
-  description: 'A practical framework for choosing AI marketing tools by product context, execution depth, feedback, and the growth work your team needs completed.',
+  description: 'A free, open-source AI growth tool that takes products from zero to one by understanding the product, finding customers, and executing inside Codex or Claude Code.',
   alternates: { canonical: '/ai-marketing-tools', languages: languageAlternates('/ai-marketing-tools') },
   openGraph: { title: 'AI Marketing Tools: Choose by the Work You Need Done', description: 'Compare AI marketing tools by the work they can observe, execute, and learn from.', url: '/ai-marketing-tools' },
 };
@@ -15,8 +15,8 @@ export default function AiMarketingToolsPage() {
   return (
     <>
       <JsonLd data={{ '@context': 'https://schema.org', '@type': 'Article', headline: 'AI Marketing Tools: Choose by the Work You Need Done', dateModified: '2026-07-24', author: { '@type': 'Organization', name: 'Growth Lab' }, mainEntityOfPage: url }} />
-      <SeoShell eyebrow="BUYER GUIDE / AI MARKETING TOOLS" title="Choose an AI marketing tool by the work it can finish." intro="The useful dividing line is execution depth: how much product context the tool can read, which actions it can complete, and whether results change its next decision.">
-        <p>“AI marketing tool” now describes products with very different jobs. A writing assistant drafts. An automation platform routes events. A specialist product operates one channel. A coding agent can read the product, connect tools, modify assets, and work across the full repository.</p>
+      <SeoShell eyebrow="BUYER GUIDE / AI MARKETING TOOLS" title="Choose an AI marketing tool that can take a product from zero to one." intro="Growth Lab is free and open source. It understands the product, researches customers and demand, executes the work end to end, and runs through the Codex or Claude Code interface you already use.">
+        <p>“AI marketing tool” now describes products with very different jobs. Growth Lab is built for the entire 0→1 path: a coding agent reads the product itself, develops customer hypotheses, collects live market evidence, creates the growth asset, publishes it, and learns from the result. The user supplies the product and goal; the methods live in the Skills.</p>
 
         <blockquote>Start with the growth job. Choose the smallest tool that can observe the right evidence, complete the action, and return a measurable result.</blockquote>
 
@@ -56,7 +56,7 @@ export default function AiMarketingToolsPage() {
         <p>Local files and readable Skills make methods inspectable. Standard Clients and environment-managed credentials let teams replace external services without rewriting the growth method.</p>
 
         <h2>Where Growth Lab fits</h2>
-        <p>Growth Lab is an open-source growth workspace for Codex and Claude Code. The coding agent is the runtime. Skills teach it how to run a complete growth loop. Clients provide external actions. Files preserve Memory.</p>
+        <p>Growth Lab is a free, open-source growth workspace for Codex and Claude Code. The coding agent is the runtime. Skills supply market-analysis and execution methods, Clients provide external actions, and files preserve Memory. Clone the repository, open it in the coding agent you already use, and describe the desired outcome.</p>
         <p>Its first working capability is an SEO page loop: discover situations in which users need the product, validate what they search, create useful pages, publish, measure Bing outcomes, and use the result to choose the next action.</p>
 
         <div className="note-box"><strong>Observed result</strong>In one Growth Lab run, new pages were indexed in 1–2 days. On a 7-day average, page impressions and clicks each increased 1000%, while overall CTR decreased 50%. The expanded reach and lower CTR became separate inputs for the next review.</div>

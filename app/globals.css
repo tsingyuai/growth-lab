@@ -137,6 +137,12 @@ a:focus-visible { outline: 3px solid var(--orange); outline-offset: 4px; }
 .article-hero h1 { max-width: 920px; margin: 22px 0 25px; font: 720 clamp(52px, 7vw, 92px)/.98 var(--font-display), sans-serif; letter-spacing: -.065em; }
 .article-intro { max-width: 800px; color: var(--muted); font-size: 21px; line-height: 1.65; }
 .article-meta { display: flex; gap: 28px; margin-top: 36px; color: var(--muted); font: 500 11px var(--font-mono), monospace; text-transform: uppercase; letter-spacing: .08em; }
+.positioning-grid { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 34px; border: 1px solid var(--ink); background: white; }
+.positioning-grid > div { min-height: 245px; padding: 28px 25px; border-left: 1px solid var(--ink); }
+.positioning-grid > div:first-child { border-left: 0; }
+.positioning-grid span { color: var(--blue-dark); font: 600 10px var(--font-mono), monospace; letter-spacing: .08em; }
+.positioning-grid strong { display: block; margin: 48px 0 12px; font: 680 21px/1.15 var(--font-display), sans-serif; letter-spacing: -.025em; }
+.positioning-grid p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
 .article-body { max-width: 800px; margin: 0 auto; padding: 82px 0; font-size: 18px; line-height: 1.75; }
 .article-body h2 { margin: 80px 0 22px; font: 700 44px/1.08 var(--font-display), sans-serif; letter-spacing: -.045em; }
 .article-body h3 { margin: 44px 0 14px; font: 670 25px/1.2 var(--font-display), sans-serif; letter-spacing: -.025em; }
@@ -177,6 +183,10 @@ a:focus-visible { outline: 3px solid var(--orange); outline-offset: 4px; }
   .thesis-section, .capability-section { grid-template-columns: 1fr; gap: 45px; }
   .section-heading { position: static; }
   .zero-grid { grid-template-columns: 1fr; }
+  .positioning-grid { grid-template-columns: 1fr; }
+  .positioning-grid > div, .positioning-grid > div:first-child { min-height: auto; border-left: 0; border-top: 1px solid var(--ink); }
+  .positioning-grid > div:first-child { border-top: 0; }
+  .positioning-grid strong { margin-top: 24px; }
   .zero-grid > div, .zero-grid > div:first-child { min-height: auto; border-left: 0; border-top: 1px solid var(--ink); }
   .zero-grid > div:first-child { border-top: 0; }
   .zero-grid h3 { margin-top: 30px; }

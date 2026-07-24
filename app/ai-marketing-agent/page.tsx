@@ -5,7 +5,7 @@ import { getSiteUrl, languageAlternates } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'AI Marketing Agent for Products at Day Zero',
-  description: 'An AI marketing agent can begin from a product idea or repository, collect demand evidence, execute growth work, connect analytics, and review outcomes.',
+  description: 'A free, open-source AI marketing agent that understands the product and customers, then executes the complete 0→1 growth loop in Codex or Claude Code.',
   alternates: { canonical: '/ai-marketing-agent', languages: languageAlternates('/ai-marketing-agent') },
   openGraph: { title: 'AI Marketing Agent for Products at Day Zero', description: 'Start from code, collect evidence, execute growth actions, and learn from real outcomes.', url: '/ai-marketing-agent' },
 };
@@ -15,8 +15,8 @@ export default function AiMarketingAgentPage() {
   return (
     <>
       <JsonLd data={{ '@context': 'https://schema.org', '@type': 'Article', headline: 'AI Marketing Agent for Products at Day Zero', dateModified: '2026-07-24', author: { '@type': 'Organization', name: 'Growth Lab' }, mainEntityOfPage: url }} />
-      <SeoShell eyebrow="PRODUCT GUIDE / AI MARKETING AGENT" title="An AI marketing agent can start before your first customer." intro="Give it a product idea, repository, prototype, or URL. It can build the missing context, run the first growth action, connect measurement, and learn from the result.">
-        <p>Early products rarely have a complete marketing brief. They may have no customers, campaign history, analytics, positioning, or confirmed ideal customer profile. An effective AI marketing agent treats that absence as the first observation.</p>
+      <SeoShell eyebrow="PRODUCT GUIDE / AI MARKETING AGENT" title="An AI marketing agent can own the zero-to-one growth loop." intro="Give Growth Lab a product idea, repository, prototype, or URL. It understands the product, develops and tests customer hypotheses, executes the first growth actions, and learns from results inside Codex or Claude Code.">
+        <p>Early products rarely have a complete marketing brief. They may have no customers, campaign history, analytics, positioning, or confirmed ideal customer profile. Growth Lab does not require the founder to arrive with those answers. Its Skills guide the agent to inspect the product, form hypotheses, collect evidence, and execute the first measurable action.</p>
 
         <h2>What the agent does from day zero</h2>
         <div className="decision-grid">
@@ -58,7 +58,7 @@ export default function AiMarketingAgentPage() {
           <li><strong>Runtime:</strong> the Codex or Claude Code session controlling the work.</li>
         </ul>
 
-        <p>All five live in or around the product workspace. The team can read the method, inspect outputs, change a Skill, and use the new version immediately.</p>
+        <p>All five live in or around the product workspace. Growth Lab is open source and free to use. The team can read the method, inspect outputs, change a Skill, and use the new version immediately. Starting requires only cloning the repository and opening it with Codex or Claude Code.</p>
       </SeoShell>
     </>
   );

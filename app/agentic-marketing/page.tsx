@@ -5,7 +5,7 @@ import { getSiteUrl, languageAlternates } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'Agentic Marketing: A Practical Operating Model',
-  description: 'Agentic marketing connects observation, tool use, execution, measurement, and memory. Learn the operating model and build a first useful loop.',
+  description: 'A free, open-source agentic marketing system for 0→1 products that understands the product and customer, then researches, executes, measures, and learns.',
   alternates: { canonical: '/agentic-marketing', languages: languageAlternates('/agentic-marketing') },
   openGraph: { title: 'Agentic Marketing: A Practical Operating Model', description: 'A concrete guide to building marketing loops that observe, act, review, and remember.', url: '/agentic-marketing' },
 };
@@ -15,8 +15,8 @@ export default function AgenticMarketingPage() {
   return (
     <>
       <JsonLd data={{ '@context': 'https://schema.org', '@type': 'Article', headline: 'Agentic Marketing: A Practical Operating Model', dateModified: '2026-07-24', author: { '@type': 'Organization', name: 'Growth Lab' }, mainEntityOfPage: url }} />
-      <SeoShell eyebrow="FIELD GUIDE / AGENTIC MARKETING" title="Agentic marketing is a loop that can act on what it learns." intro="A useful marketing agent observes evidence, chooses a bounded action, uses tools to complete it, reviews the outcome, and carries the result into the next decision.">
-        <p>Agentic marketing turns a marketing method into executable instructions for an AI agent. The agent receives a goal and product context, selects relevant tools, completes work, checks the result, and preserves evidence for the next run.</p>
+      <SeoShell eyebrow="FIELD GUIDE / AGENTIC MARKETING" title="Agentic marketing can carry a product from zero to one." intro="Growth Lab gives Codex or Claude Code the methods to understand a product, discover customers, execute growth work, measure the outcome, and continue—free, open source, and controlled through one conversation.">
+        <p>Agentic marketing turns market insight and execution methods into instructions an AI agent can apply itself. Growth Lab begins with the repository, prototype, URL, or idea; builds the missing product and customer context; selects relevant tools; completes the work; checks the result; and preserves evidence for the next run.</p>
         <p>This definition is close to the practical distinction described in <a href="https://ahrefs.com/blog/agentic-marketing/">Ahrefs’ guide to agentic marketing</a>: the agent selects steps and tools and continues until the job is completed. Growth Lab adds a persistent review loop around that execution.</p>
 
         <h2>The five parts of a working marketing agent</h2>
@@ -67,6 +67,7 @@ export default function AgenticMarketingPage() {
         <h2>Control stays in the session</h2>
         <p>The Codex or Claude Code session is the control plane. It reads Skills, uses native browser and coding tools, invokes Clients for external APIs, edits the workspace, and collaborates with the user when access or judgment is required.</p>
         <p>This model keeps the method readable. A team can improve the loop while using it, replace a Client, or inspect the evidence behind a decision.</p>
+        <p>Installation is a clone, and interaction is a conversation in Codex or Claude Code. There is no separate dashboard to learn, SaaS account to register, or campaign setup form to maintain.</p>
       </SeoShell>
     </>
   );
