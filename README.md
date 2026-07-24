@@ -7,10 +7,6 @@ Growth Lab is an open-source, end-to-end growth tool that takes a product from c
 
 Growth Lab 是一个从代码到市场的开源端到端增长工具。它由 Coding Agent 驱动，理解产品、连接所需工具与渠道、研究市场、创作增长内容、执行增长行动，并基于真实数据完成复盘，持续改进下一轮增长。
 
-<p align="center">
-  <img src="assets/growth-loop.svg" alt="Growth Lab 从代码到市场的增长闭环" width="100%" />
-</p>
-
 > This repository is currently at the idea stage. The README describes the direction we intend to build in public.
 >
 > 项目目前处于构思阶段。本 README 描述的是我们准备公开构建的方向。
@@ -41,34 +37,12 @@ Modern coding agents can read repositories, search the web, operate tools, edit 
 
 ## The model / 产品模型
 
-<p align="center">
-  <img src="assets/runtime-model.svg" alt="Growth Lab Runtime、Skill、Client 与文件系统模型" width="100%" />
-</p>
-
 ```text
 Session = Control Plane / 会话 = 控制面
 Codex or Claude Code = Runtime
 Skill = Growth Method / Skill = 增长方法与工作指引
 Client = Action / Client = 外部执行能力
 Filesystem = Memory / 文件系统 = 长期记忆
-```
-
-```text
-                         G R O W T H   L A B
-                    ╭─────────────────────────╮
-   product context ─▶│  Codex / Claude Code   │─▶ growth actions
-   产品上下文         │       AI Session        │   增长行动
-                    ╰──────┬───────────┬──────╯
-                           │           │
-                    ┌──────▼─────┐ ┌───▼──────────┐
-                    │   Skills   │ │   Clients    │
-                    │ 如何工作    │ │ 如何连接世界  │
-                    └──────┬─────┘ └───┬──────────┘
-                           │           │
-                    ╭──────▼───────────▼──────╮
-                    │   Filesystem Memory     │
-                    │ 研究 · 策略 · 内容 · 数据 │
-                    ╰─────────────────────────╯
 ```
 
 The Skill teaches the Runtime how to understand a product, conduct research, choose tools, develop a strategy, create assets, examine feedback, and decide what to do next. Client tools give the Runtime access to capabilities such as browsers, official APIs, analytics exports, content platforms, and media generation. Files preserve product context, research, decisions, and outputs across conversations.
