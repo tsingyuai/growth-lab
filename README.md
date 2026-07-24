@@ -127,47 +127,7 @@ Runtime 将按照 Skill 工作：读取相关文件，在需要时补充产品�
 
 ## Connect your product / 如何接入你的产品
 
-Growth Lab can start with a product at day zero: an idea, an early repository, a working prototype, or a live product. Having no customers, campaigns, analytics, or historical growth data is a valid starting point.
-
-Growth Lab 可以从产品的第零天开始工作：一个想法、一个早期代码仓库、一个可用原型或一个已经上线的产品都可以。尚未拥有客户、Campaign、分析系统或历史增长数据，就是正常的起点。
-
-Give the Agent access to the product in the form that already exists:
-
-把产品以当前已有的形式交给 Agent：
-
-1. **Open the product repository / 打开产品仓库**
-   Run Growth Lab inside the product workspace so the Agent can understand the source code, documentation, routes, product experience, and existing instrumentation.
-   在产品 workspace 中运行 Growth Lab，让 Agent 直接理解源码、文档、路由、产品体验和已有数据埋点。
-
-2. **Point to a local product / 指向本地产品**
-   Open Growth Lab as its own workspace and provide the path to a neighboring product repository.
-   保持 Growth Lab 为独立 workspace，并向 Agent 提供相邻产品仓库的路径。
-
-3. **Start from an idea or URL / 从想法或网址开始**
-   Describe the product idea in the session or provide the current website. The Agent turns the available material into the first product understanding and growth hypotheses.
-   在会话中描述产品想法，或提供当前网址。Agent 根据已有材料形成第一版产品理解和增长假设。
-
-The Agent builds the missing growth context as part of the work:
-
-Agent 会在工作过程中主动建立缺失的增长上下文：
-
-```text
-Read the product / 读取产品
-→ Form user and scenario hypotheses / 形成用户与场景假设
-→ Collect market and demand evidence / 主动采集市场与需求证据
-→ Create or connect analytics pipelines / 建立或接入分析管线
-→ Execute the selected growth action / 执行增长动作
-→ Collect real outcomes / 采集真实结果
-→ Update Memory and choose the next action / 更新 Memory 并选择下一步
-```
-
-For external evidence, the Agent searches public sources and uses available Collectors. For product data, it inspects existing analytics first, then can help add event instrumentation, connect an analytics provider, import exports, or create a lightweight collection path that matches the product's current stage. As users and traffic arrive, the same Model incorporates those signals into later decisions.
-
-对于外部证据，Agent 会搜索公开来源并使用可用的 Collector。对于产品内部数据，Agent 先检查已有分析能力，再根据产品阶段帮助增加事件埋点、接入分析服务、导入数据，或建立轻量的数据采集路径。随着真实用户和流量出现，同一个 Model 会把这些信号纳入后续决策。
-
-The user provides the product and the outcome they care about. The Agent discovers which additional information is useful, collects what it can, and asks for access or clarification only when the next action requires it.
-
-用户只需要提供产品和当前关注的结果。Agent 负责判断还需要什么信息、主动采集可获得的数据，并只在下一步确实需要授权或补充判断时向用户提问。
+Let your AI open this workspace, then ask the AI. / 让你的 AI 打开这个工作区，然后问 AI 就行了。
 
 ## Planned building blocks / 计划中的组成部分
 
