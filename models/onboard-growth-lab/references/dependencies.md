@@ -52,7 +52,6 @@ API key 默认写入根目录 `.env.local`，该文件已被 Git 忽略。只有
 |---|---|---|---|
 | 真实产品截图 | 仓库内 `screenshot-assets/scripts/capture.py` + uv + Chrome CDP + 用户自己的已登录会话 | 检查脚本、`uv`、Chrome、9222 CDP；登录由用户在 Chrome 完成 | 不需要真实产品截图时 |
 | 小红书真实界面截图 | Python、uv、Playwright、支持 CDP 的 Chrome | 检查 CDP 端点并用 `screenshot-assets` 做一张最小截图 | 内容不需要产品界面时 |
-| 图片贴合工具 | Pillow；占位贴图另需 NumPy | 通过 `uv run --with ...` 解析 | 不做对应图像处理时 |
 
 ## 每轮扫描
 

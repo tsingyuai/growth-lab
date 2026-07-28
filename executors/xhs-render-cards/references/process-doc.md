@@ -26,7 +26,7 @@
 | DAI | 草稿 | references/deai.md | 修订稿 |  |
 | 文案检查 | 修订稿 | 仓库内 lint 脚本 | 检查结果 |  |
 | 素材 | 素材清单 | screenshot-assets/用户来源 | 源素材 |  |
-| 生图与合成 | image plan | 参考图生图/真实截图贴图 | 最终卡片 |  |
+| 生图 | image plan | 单参考图/视觉参考图与真实截图共同生图 | 最终卡片 |  |
 | QA | 最终卡片 | references/quality-gates.md | 复核结果 |  |
 
 ## 4. 发布与后续
