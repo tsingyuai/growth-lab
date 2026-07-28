@@ -2,7 +2,7 @@
 
 # 🧪 Growth Lab
 
-<p>Understand your product, find real demand, take action, and learn what to do next.</p>
+<p>Run SEO and Xiaohongshu growth loops through natural language: understand your product, find real demand, take action, and learn what to do next.</p>
 
 [![GitHub stars](https://img.shields.io/github/stars/tsingyuai/growth-lab?style=for-the-badge&logo=github&color=071a2b)](https://github.com/tsingyuai/growth-lab/stargazers)
 [![Open Source](https://img.shields.io/badge/OPEN_SOURCE-YES-2667FF?style=for-the-badge)](https://github.com/tsingyuai/growth-lab)
@@ -51,7 +51,7 @@ Loop methodology lives in the Model and evolves through direct edits to its Skil
 
 ### Every channel, through its full lifecycle
 
-Growth Lab is designed to cover every growth channel from understanding the opportunity and choosing an action to execution, measurement, and the next decision. SEO is Case #1: the first complete loop already implemented, not the boundary of the product.
+Growth Lab is designed to cover every growth channel from understanding the opportunity and choosing an action to execution, measurement, and the next decision. It currently supports SEO page growth plus Xiaohongshu content collection, high-performing-content research, writing, image generation, card rendering, compliance checks, and post-result feedback.
 
 ### Continuous collaboration through natural language
 
@@ -81,6 +81,8 @@ What can you do?
 
 Understand this product and run its first growth loop.
 
+Collect high-performing Xiaohongshu content related to this product, choose a transferable structure, and create a complete post with images.
+
 Review the latest results and execute the next growth action.
 ```
 
@@ -103,7 +105,7 @@ Methods and executable scripts stay with their owning Collector, Executor, or Mo
 
 Let your AI open this workspace, then ask the AI.
 
-## Planned building blocks
+## System components
 
 - Collectors for demand, competitors, content, and product growth data;
 - Model Skills coordinating observation-action-review loops and persistent Memory;

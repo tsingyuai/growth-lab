@@ -2,7 +2,7 @@
 
 # 🧪 Growth Lab
 
-<p>理解你的产品，发现真实需求，采取行动，再从结果中找到下一步。</p>
+<p>用自然语言运行 SEO 与小红书增长闭环：理解产品，发现真实需求，采取行动，再从结果中找到下一步。</p>
 
 [![GitHub stars](https://img.shields.io/github/stars/tsingyuai/growth-lab?style=for-the-badge&logo=github&color=071a2b)](https://github.com/tsingyuai/growth-lab/stargazers)
 [![开源](https://img.shields.io/badge/OPEN_SOURCE-YES-2667FF?style=for-the-badge)](https://github.com/tsingyuai/growth-lab)
@@ -51,7 +51,7 @@ AI 会话负责控制整个工作流程。
 
 ### 覆盖每个增长渠道的完整生命周期
 
-Growth Lab 的设计目标是覆盖全部增长渠道，从理解机会、选择行动，到执行、度量和决定下一步。SEO 是 Case #1，是已经实现的第一个完整闭环，不是产品能力的边界。
+Growth Lab 的设计目标是覆盖全部增长渠道，从理解机会、选择行动，到执行、度量和决定下一步。目前已经支持 SEO 页面增长，以及小红书内容采集、爆款研究、创作、生图、卡片渲染、合规检查和发布结果反哺。
 
 ### 通过自然语言持续协作
 
@@ -81,6 +81,8 @@ cd growth-lab
 
 理解这个产品，并运行它的第一个增长闭环。
 
+采集小红书上与这个产品相关的高表现内容，选择可迁移的结构，完成一篇图文稿和配图。
+
 复盘最近的结果，然后执行下一步增长行动。
 ```
 
@@ -103,7 +105,7 @@ Agent 会检查 API key、第三方 Client、外部仓库、浏览器与登录�
 
 让你的 AI 打开这个工作区，然后问 AI 就行了。
 
-## 计划中的组成部分
+## 系统组成
 
 - 面向需求、竞品、内容与产品增长数据的 Collector；
 - 协调“观察—行动—复盘”闭环与持久化 Memory 的 Model Skill；
