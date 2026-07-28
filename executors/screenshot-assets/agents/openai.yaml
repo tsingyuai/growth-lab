@@ -1,0 +1,4 @@
+interface:
+  display_name: "产品截图素材"
+  short_description: "通过仓库内 CDP 脚本截取并归档真实产品界面证据"
+  default_prompt: "Use $screenshot-assets to capture and archive the authenticated product UI evidence needed here."

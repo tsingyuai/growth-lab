@@ -19,6 +19,12 @@ function parseArgs(argv) {
     references: [],
     output: null,
     prompt: null,
+    batch: null,
+    outputDir: null,
+    concurrency: 1,
+    size: null,
+    quality: null,
+    force: false,
   };
   const promptParts = [];
 
@@ -27,6 +33,13 @@ function parseArgs(argv) {
     if (value === '--out') options.output = argv[++index];
     else if (value === '--model') options.model = argv[++index];
     else if (value === '--ref') options.references.push(argv[++index]);
+    else if (value === '--prompt') options.prompt = argv[++index];
+    else if (value === '--batch') options.batch = argv[++index];
+    else if (value === '--out-dir') options.outputDir = argv[++index];
+    else if (value === '--concurrency') options.concurrency = Number(argv[++index]);
+    else if (value === '--size') options.size = argv[++index];
+    else if (value === '--quality') options.quality = argv[++index];
+    else if (value === '--force') options.force = true;
     else if (value === '--prompt-file') {
       options.prompt = fs.readFileSync(argv[++index], 'utf8');
     } else promptParts.push(value);
@@ -50,6 +63,10 @@ function normalizeBaseUrl(value) {
   return url.toString().replace(/\/$/, '');
 }
 
+function openAIEndpoint(baseUrl, route) {
+  return baseUrl.endsWith('/v1') ? `${baseUrl}${route}` : `${baseUrl}/v1${route}`;
+}
+
 function referenceMimeType(filename) {
   const extension = path.extname(filename).toLowerCase();
   if (extension === '.jpg' || extension === '.jpeg') return 'image/jpeg';
@@ -59,6 +76,7 @@ function referenceMimeType(filename) {
 
 function saveImage(buffer, output) {
   const destination = path.resolve(output);
+  if (fs.existsSync(destination)) throw new Error(`Output exists: ${destination}; pass --force to replace it`);
   fs.mkdirSync(path.dirname(destination), { recursive: true });
   fs.writeFileSync(destination, buffer, { mode: 0o644 });
   console.log(`Saved image: ${destination} (${buffer.length} bytes)`);
@@ -145,6 +163,8 @@ async function generateWithOpenAI(options) {
     const form = new FormData();
     form.set('model', options.model);
     form.set('prompt', options.prompt);
+    if (options.size) form.set('size', options.size);
+    if (options.quality) form.set('quality', options.quality);
     for (const filename of options.references) {
       form.append(
         'image[]',
@@ -152,17 +172,23 @@ async function generateWithOpenAI(options) {
         path.basename(filename)
       );
     }
-    response = await fetch(`${baseUrl}/v1/images/edits`, {
+    response = await fetch(openAIEndpoint(baseUrl, '/images/edits'), {
       method: 'POST',
       headers,
       body: form,
       signal: AbortSignal.timeout(TIMEOUT_MS),
     });
   } else {
-    response = await fetch(`${baseUrl}/v1/images/generations`, {
+    response = await fetch(openAIEndpoint(baseUrl, '/images/generations'), {
       method: 'POST',
       headers: { ...headers, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model: options.model, prompt: options.prompt, n: 1 }),
+      body: JSON.stringify({
+        model: options.model,
+        prompt: options.prompt,
+        n: 1,
+        ...(options.size ? { size: options.size } : {}),
+        ...(options.quality ? { quality: options.quality } : {}),
+      }),
       signal: AbortSignal.timeout(TIMEOUT_MS),
     });
   }
@@ -182,22 +208,63 @@ async function generateWithOpenAI(options) {
   throw new Error('OpenAI response did not contain an image');
 }
 
+async function generate(options) {
+  if (!options.output || !options.prompt) throw new Error('Each job requires prompt and output');
+  if (!MODELS.has(options.model)) throw new Error(`Unsupported model. Choose one of: ${[...MODELS].join(', ')}`);
+  if (options.force && fs.existsSync(path.resolve(options.output))) fs.unlinkSync(path.resolve(options.output));
+  if (options.model === OPENAI_MODEL) await generateWithOpenAI(options);
+  else await generateWithGemini(options);
+}
+
+function readBatch(options) {
+  if (!options.outputDir) throw new Error('--batch requires --out-dir');
+  if (!Number.isInteger(options.concurrency) || options.concurrency < 1 || options.concurrency > 8) {
+    throw new Error('--concurrency must be an integer from 1 to 8');
+  }
+  return fs.readFileSync(options.batch, 'utf8').split(/\r?\n/).filter(Boolean).map((line, index) => {
+    let job;
+    try { job = JSON.parse(line); } catch { throw new Error(`Invalid JSON on batch line ${index + 1}`); }
+    const prompt = job.prompt ?? (job.prompt_file ? fs.readFileSync(job.prompt_file, 'utf8') : null);
+    const filename = job.out ?? job.output;
+    if (!prompt || !filename) throw new Error(`Batch line ${index + 1} requires prompt/prompt_file and out`);
+    return {
+      ...options,
+      batch: null,
+      prompt,
+      output: path.join(options.outputDir, filename),
+      model: job.model ?? options.model,
+      references: job.refs ?? job.references ?? [],
+      size: job.size ?? options.size,
+      quality: job.quality ?? options.quality,
+      force: job.force ?? options.force,
+    };
+  });
+}
+
+async function runBatch(options) {
+  const jobs = readBatch(options);
+  let cursor = 0;
+  const workers = Array.from({ length: Math.min(options.concurrency, jobs.length) }, async () => {
+    while (cursor < jobs.length) {
+      const index = cursor++;
+      await generate(jobs[index]);
+    }
+  });
+  await Promise.all(workers);
+}
+
 const options = parseArgs(process.argv.slice(2));
 
-if (!options.output || !options.prompt) {
+if (!options.batch && (!options.output || !options.prompt)) {
   console.error(
-    'Usage: generate-image.mjs --out <file> [--model <model>] [--ref <image>]... ("prompt" | --prompt-file <file>)'
+    'Usage: generate-image.mjs --out <file> [--model <model>] [--ref <image>]... [--size <size>] [--quality <quality>] [--force] ("prompt" | --prompt-file <file>)\n       generate-image.mjs --batch <jobs.jsonl> --out-dir <dir> [--concurrency 1-8] [--model <model>]'
   );
-  process.exit(1);
-}
-if (!MODELS.has(options.model)) {
-  console.error(`Unsupported model. Choose one of: ${[...MODELS].join(', ')}`);
   process.exit(1);
 }
 
 try {
-  if (options.model === OPENAI_MODEL) await generateWithOpenAI(options);
-  else await generateWithGemini(options);
+  if (options.batch) await runBatch(options);
+  else await generate(options);
 } catch (error) {
   console.error(error instanceof Error ? error.message : 'Image generation failed');
   process.exit(1);

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="base.css">
+</head>
+<body>
+
+{% if layout == 'cover' %}
+<div class="card cover">
+  {% if tag %}<div class="tag">{{ tag }}</div>{% endif %}
+  {% if big_promise %}
+  <div class="big-promise">
+    {{ big_promise.number }}<span class="unit">{{ big_promise.unit }}</span>
+    {% if big_promise.emoji %}<span class="emoji">{{ big_promise.emoji }}</span>{% endif %}
+  </div>
+  {% endif %}
+  <div class="title">{{ title | safe }}</div>
+  {% if subtitle %}<div class="subtitle">{{ subtitle | safe }}</div>{% endif %}
+  {% if trust_anchor %}
+  <div class="trust-anchor">
+    <div class="marker">{{ trust_anchor.marker | default('✓') }}</div>
+    <div>{{ trust_anchor.text | safe }}</div>
+  </div>
+  {% endif %}
+  {% if proof %}<div class="proof{{ ' brand' if proof_style == 'brand' else '' }}">{{ proof | safe }}</div>{% endif %}
+  {% if kicker %}<div class="kicker">{{ kicker }}</div>{% endif %}
+</div>
+
+{% elif layout == 'intro' %}
+<div class="card">
+  <div class="tag">{{ tag }}</div>
+  <div class="title" style="font-size: 72px; margin-top: 36px;">{{ title | safe }}</div>
+  {% if body %}<div class="body" style="margin-top: 40px;">{{ body | safe }}</div>{% endif %}
+  {% if pain_hook %}
+  <div class="pain-hook">
+    {% for p in pain_hook %}
+    <div class="pain-item"><div class="x">×</div><div>{{ p | safe }}</div></div>
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% if questions %}
+  <div class="intro-question-list{{ ' warn' if accent == 'warn' else '' }}">
+    {% for q in questions %}
+    <div class="item">
+      <div class="num">{{ loop.index }}</div>
+      <div>{{ q | safe }}</div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% if note %}<div class="intro-note">{{ note | safe }}</div>{% endif %}
+  <div class="footer">
+    <span>@{{ handle | default('读博工具搭子') }}</span>
+    <span class="page-num">{{ page_num }}</span>
+  </div>
+</div>
+
+{% elif layout == 'question' %}
+<div class="card">
+  <div class="q-num">{{ q_number }}</div>
+  <div class="q-title">{{ q_title | safe }}</div>
+  {% if bad %}
+  <div class="example-block example-bad">
+    <span class="example-label">❌ 错误示范</span>
+    {{ bad | safe }}
+  </div>
+  {% endif %}
+  {% if good %}
+  <div class="example-block example-good">
+    <span class="example-label">✅ 正确示范</span>
+    {{ good | safe }}
+  </div>
+  {% endif %}
+  {% if body %}
+  <div class="body" style="margin-top: 24px;">{{ body | safe }}</div>
+  {% endif %}
+  {% if cta_triple %}
+  <div class="cta-triple">
+    {% for c in cta_triple %}
+    <div class="cta-row{{ ' primary' if c.primary else '' }}">
+      <div class="icon">{{ c.icon }}</div>
+      <div>{{ c.text | safe }}</div>
+      {% if c.arrow %}<div class="arrow">{{ c.arrow }}</div>{% endif %}
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% if selfcheck %}
+  <div class="selfcheck">
+    <div class="label">—— {{ selfcheck_label | default('自检 1 句话') }} ——</div>
+    {{ selfcheck | safe }}
+  </div>
+  {% endif %}
+  <div class="footer">
+    <span>@{{ handle | default('读博工具搭子') }}</span>
+    <span class="page-num">{{ page_num }}</span>
+  </div>
+</div>
+
+{% elif layout == 'shot' %}
+<div class="card">
+  {% if tag %}<div class="tag">{{ tag }}</div>{% endif %}
+  <div class="shot-title">{{ title | safe }}</div>
+  {% if subtitle %}<div class="shot-sub">{{ subtitle | safe }}</div>{% endif %}
+  <div class="shot-frame{{ ' raw' if shot_style == 'raw' else '' }}">
+    <div class="shot-window">
+      {% if shot_style != 'raw' %}
+      <div class="shot-bar">
+        <i></i><i></i><i></i>
+        <span class="shot-bar-title">{{ shot_bar | default('产品工作区') }}</span>
+      </div>
+      {% endif %}
+      <img src="{{ image }}" alt="">
+    </div>
+  </div>
+  {% if caption %}<div class="shot-caption">{{ caption | safe }}</div>{% endif %}
+  <div class="footer">
+    <span>@{{ handle | default('读博工具搭子') }}</span>
+    <span class="page-num">{{ page_num }}</span>
+  </div>
+</div>
+
+{% elif layout == 'tools' %}
+<div class="card">
+  <div class="tag">{{ tag }}</div>
+  <div class="title" style="font-size: 72px; margin-top: 36px;">{{ title | safe }}</div>
+  {% if tool_grid %}
+  <div class="tool-grid">
+    {% for t in tool_grid %}
+    <div class="tool-card {{ t.style | default('brand') }}">
+      <div class="icon">{{ t.icon }}</div>
+      <div class="label">{{ t.label }}</div>
+      <div class="name">{{ t.name | safe }}</div>
+      {% if t.note %}<div class="note">{{ t.note }}</div>{% endif %}
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="tool-list">
+    {% for t in tools %}
+    <div class="tool-item">
+      <div class="tool-purpose">{{ t.purpose }}</div>
+      <div class="tool-name">{{ t.name | safe }}</div>
+      {% if t.note %}<div class="tool-note">{{ t.note }}</div>{% endif %}
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+  <div class="footer">
+    <span>@{{ handle | default('读博工具搭子') }}</span>
+    <span class="page-num">{{ page_num }}</span>
+  </div>
+</div>
+{% endif %}
+
+</body>
+</html>

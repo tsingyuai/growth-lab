@@ -1,0 +1,4 @@
+interface:
+  display_name: "贴吧采集"
+  short_description: "用 MediaCrawler 搜索、补详情并归档贴吧主题、回复与用户证据"
+  default_prompt: "Use $media-crawler-tieba to 采集这个贴吧主题。"

@@ -28,4 +28,7 @@ Model 文件承载闭环方法论，Memory 承载方法运行后产生的历史�
 
 ## Available models / 已有数据模型
 
+- [`onboard-growth-lab`](onboard-growth-lab/SKILL.md)：通过自然语言统一审计 API key、第三方 Client、外部仓库、浏览器和登录态，并让用户逐项配置或本轮绕过。
 - [`run-seo-page-loop`](run-seo-page-loop/SKILL.md)：从热词调研、页面创作和生图，到 IndexNow 与 Bing 数据复盘的 SEO 页面闭环。
+- [`xhs-replicate`](xhs-replicate/SKILL.md)：执行“找 idea → 锚定爆款 → 复刻骨架 → 填入真实内容 → 生图与机械闸”的小红书主流程。
+- `xhs-replicate` 内部包含结果回收与反哺阶段；发布日志不再对应独立 Model。

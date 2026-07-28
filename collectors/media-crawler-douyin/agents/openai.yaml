@@ -1,0 +1,4 @@
+interface:
+  display_name: "抖音采集"
+  short_description: "用 MediaCrawler 搜索、补详情并归档抖音视频与创作者证据"
+  default_prompt: "Use $media-crawler-douyin to 采集这个抖音主题。"

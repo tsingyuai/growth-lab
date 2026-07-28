@@ -28,6 +28,15 @@ memory/run-seo-page-loop/
 └── 2026-08-07-bing-performance-review.html
 ```
 
+需要小红书工作流时，由对应 Model 在运行时创建命名空间：
+
+```text
+memory/xhs-replicate/                 # 运行时生成；不随仓库分发私有基线内容
+memory/xhs-replicate/publish-log/     # 该 loop 运行时产生的 24h / 48h / 7d 数据
+```
+
+仓库不内置任何私有 `knowledge`、`products`、`samples`、`outputs` 或 `assets`。这些内容只能由使用者在自己的运行中产生。密钥、第三方 client 和浏览器登录 profile 也不属于 Memory。
+
 The content should make its collection time, analysis window, source, observed change, conclusion, and recommended next action understandable. These are semantic requirements, not a fixed schema.
 
 文件内容应让采集时间、分析窗口、来源、变化、结论和下一步动作清楚可读。这些是语义要求，不是固定 schema。

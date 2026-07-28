@@ -1,0 +1,4 @@
+interface:
+  display_name: "知乎采集"
+  short_description: "用 MediaCrawler 搜索、补详情并归档知乎回答、文章与视频证据"
+  default_prompt: "Use $media-crawler-zhihu to 采集这个知乎主题。"

@@ -1,0 +1,4 @@
+interface:
+  display_name: "小红书采集"
+  short_description: "用 MediaCrawler 搜索、补详情、评论和图片并归档小红书样本"
+  default_prompt: "Use $media-crawler-xhs to 采集并归档这个小红书主题。"

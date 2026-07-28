@@ -1,0 +1,4 @@
+interface:
+  display_name: "MediaCrawler"
+  short_description: "安装、认证并操作 MediaCrawler 的共享工具层"
+  default_prompt: "Use $media-crawler to 检查并运行 MediaCrawler。"

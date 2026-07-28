@@ -1,0 +1,4 @@
+interface:
+  display_name: "B站采集"
+  short_description: "用 MediaCrawler 搜索、补详情并归档 B 站视频与创作者证据"
+  default_prompt: "Use $media-crawler-bilibili to 采集这个 B 站主题。"

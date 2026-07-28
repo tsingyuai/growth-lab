@@ -1,0 +1,4 @@
+interface:
+  display_name: "微博采集"
+  short_description: "用 MediaCrawler 搜索、补详情并归档微博内容与创作者证据"
+  default_prompt: "Use $media-crawler-weibo to 采集这个微博主题。"

@@ -1,11 +1,12 @@
 ---
 name: generate-image
-description: Generate or edit SEO, marketing, and document images with Gemini or OpenAI through the Growth Lab image Executor, including illustrations, diagrams, covers, social images, and reference-image edits. Use when a page needs a generated image, an existing visual needs editing, or image text, composition, relevance, and output quality must be controlled and verified.
+description: Generate, edit, or batch-create SEO, marketing, social, and document images with Gemini or OpenAI through the repository-owned Growth Lab image client. Use when a page or content loop needs illustrations, diagrams, covers, reference-image edits, multiple candidates, or verified image text and composition. This is the only AI image-generation Executor in Growth Lab.
 ---
 
 # Generate images
 
 Use `executors/generate-image/generate-image.mjs` for text-to-image and reference-image editing.
+It is a repository-owned, zero-dependency Node.js client. Do not call Codex system Skills, private scripts, or files under `~/.codex`.
 
 ## Define the asset
 
@@ -40,7 +41,15 @@ node executors/generate-image/generate-image.mjs \
 
 Add one `--ref <image>` argument for each reference image used in an edit.
 
+For JSONL batch generation, put one job per line with `prompt` or `prompt_file`, `out`, and optional `model`, `refs`, `size`, or `quality`:
+
+```bash
+node executors/generate-image/generate-image.mjs \
+  --batch <jobs.jsonl> --out-dir <directory> --concurrency 3
+```
+
 Read `GEMINI_API_KEY` or `OPENAI_API_KEY` from the process environment. Use `GOOGLE_GEMINI_BASE_URL` or `OPENAI_BASE_URL` only for a compatible HTTPS endpoint. Keep credentials out of prompts, files, logs, and commits.
+Do not read credentials from another application's private authentication files.
 
 ## Control text and structure
 

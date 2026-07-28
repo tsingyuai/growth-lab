@@ -1,0 +1,4 @@
+interface:
+  display_name: "产品能力研究"
+  short_description: "从当前任务证据渐进理解产品，并增量维护可追溯的 SOUL"
+  default_prompt: "使用 $research-product 研究当前任务需要的产品事实，并增量更新 SOUL.md。"

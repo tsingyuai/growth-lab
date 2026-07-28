@@ -30,3 +30,5 @@ Human-assisted publishing follows platform rules and preserves human judgment fo
 - [`generate-image`](generate-image/SKILL.md)：通过 Gemini 或 OpenAI 执行生图与参考图编辑，并完成逐图质检。
 - [`review-seo-performance`](review-seo-performance/SKILL.md)：读取 Bing 与产品数据，诊断页面效果并现场生成 HTML 复盘。
 - [`indexnow/`](indexnow/)：向 IndexNow 提交已经上线、更新或删除的 URL。
+- [`xhs-render-cards`](xhs-render-cards/SKILL.md)：以一条总 SOP 完成强制 DAI、image-plan、真实素材、AI/本地渲染、贴图和质量闸。
+- [`screenshot-assets`](screenshot-assets/SKILL.md)：截取、归档并复用小红书内容所需的真实产品 workspace 截图。
