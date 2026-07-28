@@ -49,7 +49,7 @@ RULES = [
     },
 ]
 
-DEFAULT_PATTERNS = ["draft.md", "cards.json", "*.prompt.txt", "*.prompts.txt"]
+DEFAULT_PATTERNS = ["draft.md", "*.prompt.txt", "*.prompts.txt"]
 SKIP_FILES = {"_review.md", "PROCESS.md", "README.md", "image-plan.md"}
 
 
@@ -69,18 +69,8 @@ def is_meta_line(line: str) -> bool:
     return bool(re.match(r"^\s*>", line) or re.match(r"^\s*[-*]\s*\[[ xX]\]\s+", line))
 
 
-def json_string_values(raw: str) -> str:
-    lines = []
-    for line in raw.splitlines():
-        match = re.search(r':\s*"((?:[^"\\]|\\.)*)"', line)
-        lines.append(match.group(1) if match else line)
-    return "\n".join(lines)
-
-
 def lint_file(path: Path) -> list[Violation]:
     text = path.read_text(encoding="utf-8")
-    if path.suffix == ".json":
-        text = json_string_values(text)
     violations = []
     for line_no, line in enumerate(text.splitlines(), 1):
         if is_meta_line(line):

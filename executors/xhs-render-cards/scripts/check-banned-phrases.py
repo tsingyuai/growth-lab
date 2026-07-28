@@ -3,7 +3,7 @@
 
 Usage:
     python3 executors/xhs-render-cards/scripts/check-banned-phrases.py memory/<loop>/outputs/<post>
-    python3 executors/xhs-render-cards/scripts/check-banned-phrases.py file1.json file2.md ...
+    python3 executors/xhs-render-cards/scripts/check-banned-phrases.py file1.md prompt.txt ...
 
 Exit code:
     0 = 全部通过
@@ -11,14 +11,13 @@ Exit code:
 
 设计原则:
 - 字面规则机械拦截(LLM 自律已被证伪,多轮对话 context drift 会忘)
-- 只查发布物字面(cards.json / image-plan.md §2 表 / *.prompts.txt / draft.md 主体)
+- 只查实际喂给生图模型的 prompt 文本；方法论与策划文件允许引用违规词作为分析对象
 - 不查方法论 / skill / template 这些"描述规则的文档"自身(它们会引用违规词作为反面例子)
 """
 
 from __future__ import annotations
 
 import argparse
-import json
 import re
 import sys
 from dataclasses import dataclass, field
@@ -107,10 +106,9 @@ RULES: list[dict] = [
 ]
 
 # 待检查文件类型 = 真正进发布物的文件
-# cards.json 直接驱动最终图 / prompts/*.txt 喂给 GPT Image 2 直接写图上
-# image-plan.md / draft.md / _review.md / PROCESS.md 是元信息/策划/复盘,允许引用违规词作为分析对象
+# prompts/*.txt 喂给生图模型直接写图上。
+# image-plan.md / draft.md / _review.md / PROCESS.md 是元信息/策划/复盘,允许引用违规词作为分析对象。
 DEFAULT_TARGET_PATTERNS = [
-    "cards.json",
     "*.prompt.txt",
     "*.prompts.txt",
 ]
@@ -154,10 +152,6 @@ def lint_file(path: Path) -> list[Violation]:
         print(f"  ERROR reading {path}: {e}", file=sys.stderr)
         return violations
 
-    # cards.json: 只检查 string 字段值,不检查 key 和 schema
-    if path.suffix == ".json":
-        text = _extract_json_string_values(text, path)
-
     lines = text.split("\n")
     for i, line in enumerate(lines, 1):
         # 跳过 markdown task list 行(- [ ] / - [x]):这种格式 ≈ "checklist 引用规则",
@@ -183,22 +177,6 @@ def lint_file(path: Path) -> list[Violation]:
                     )
                 )
     return violations
-
-
-def _extract_json_string_values(raw: str, path: Path) -> str:
-    """从 cards.json 抽出 string 字段值,以原始行号格式返回,
-    避免在 key 名(如 "title")误报。"""
-    # 不解析 JSON,直接逐行扫,只看引号包围的中文/英文文本内容
-    # 用 regex 抓 ": "<content>" 模式
-    lines_out = []
-    for line in raw.split("\n"):
-        # 匹配 "key": "value" 提取 value
-        m = re.search(r":\s*\"((?:[^\"\\]|\\.)*)\"", line)
-        if m:
-            lines_out.append(m.group(1))
-        else:
-            lines_out.append(line)
-    return "\n".join(lines_out)
 
 
 def collect_target_files(targets: list[str]) -> list[Path]:

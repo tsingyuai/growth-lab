@@ -17,7 +17,7 @@
 | 选题/钩子 |  |  | draft.md |
 | 参考版式 | 规范笔记 URL/ID |  | image-plan.md |
 | 产品宣称 | 当前 workspace/用户资料 |  | draft.md |
-| 视觉路线 | image-plan 对应卡片 |  | prompts/cards.json |
+| 视觉路线 | image-plan 对应卡片 |  | prompts/参考图/截图 |
 
 ## 3. 执行记录
 
@@ -26,7 +26,7 @@
 | DAI | 草稿 | references/deai.md | 修订稿 |  |
 | 文案检查 | 修订稿 | 仓库内 lint 脚本 | 检查结果 |  |
 | 素材 | 素材清单 | screenshot-assets/用户来源 | 源素材 |  |
-| 渲染 | image plan | AI/本地/贴图 | 最终卡片 |  |
+| 生图与合成 | image plan | 参考图生图/真实截图贴图 | 最终卡片 |  |
 | QA | 最终卡片 | references/quality-gates.md | 复核结果 |  |
 
 ## 4. 发布与后续

@@ -12,7 +12,7 @@
 | Python 3 | 媒体采集、归一化、lint、渲染 | `command -v python3` | Python 官方发行版或系统包管理器 | 只使用纯 Node 能力时 |
 | Node.js | Bing、IndexNow、通用生图 Executor | `command -v node` | Node.js 官方发行版或版本管理器 | 不使用这些能力时 |
 | uv | 第三方 Python Client 与临时依赖 | `command -v uv` | <https://docs.astral.sh/uv/> | 不使用媒体 Client、Playwright 渲染时 |
-| Make | 小红书 lint 与本地渲染快捷入口 | `command -v make` | Xcode Command Line Tools 或系统包管理器 | 直接调用仓库内脚本时 |
+| Make | 小红书文案与合规检查快捷入口 | `command -v make` | Xcode Command Line Tools 或系统包管理器 | 也可直接调用仓库内检查脚本 |
 | Chrome 144+ | MediaCrawler CDP 登录、默认 Playwright 渲染 | 检查 Chrome 版本及 `chrome://inspect/#remote-debugging` | <https://www.google.com/chrome/> | 不用 MediaCrawler 时 |
 
 ## API 凭据
@@ -51,7 +51,7 @@ API key 默认写入根目录 `.env.local`，该文件已被 Git 忽略。只有
 | 能力 | 依赖 | 检查 | 可绕过条件 |
 |---|---|---|---|
 | 真实产品截图 | 仓库内 `screenshot-assets/scripts/capture.py` + uv + Chrome CDP + 用户自己的已登录会话 | 检查脚本、`uv`、Chrome、9222 CDP；登录由用户在 Chrome 完成 | 不需要真实产品截图时 |
-| 小红书本地卡片渲染 | Python、uv、Playwright、Jinja2、Chrome 或 bundled Chromium | 用现有脚本 `--help` 解析依赖并检查浏览器 | 个人号纯文案或完全使用外部生图时 |
+| 小红书真实界面截图 | Python、uv、Playwright、支持 CDP 的 Chrome | 检查 CDP 端点并用 `screenshot-assets` 做一张最小截图 | 内容不需要产品界面时 |
 | 图片贴合工具 | Pillow；占位贴图另需 NumPy | 通过 `uv run --with ...` 解析 | 不做对应图像处理时 |
 
 ## 每轮扫描
