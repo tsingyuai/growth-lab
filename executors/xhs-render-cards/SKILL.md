@@ -1,6 +1,6 @@
 ---
 name: xhs-render-cards
-description: "把小红书草稿变成可发布文案和图文卡片的完整执行 SOP：锁定证据与账号角色、强制执行 DAI 改写、审定 image plan、获取真实素材、AI 或本地渲染，并通过机械与视觉质量闸。准备、渲染、修改或核验小红书图文时使用。DAI 是本 Skill 内部的必要步骤，不得委托给独立 Skill。"
+description: "把小红书草稿变成可发布文案和图文卡片的完整执行 SOP：锁定证据与账号角色、强制执行 DAI 改写、审定 image plan、获取真实素材、AI 或本地渲染，并通过自动与视觉质量检查。准备、渲染、修改或核验小红书图文时使用。DAI 是本 Skill 内部的必要步骤，不得委托给独立 Skill。"
 ---
 
 # 小红书卡片总 SOP
@@ -53,7 +53,7 @@ python3 executors/xhs-render-cards/scripts/check-compliance.py <post-dir>
 
 ## 5. 核验与交付
 
-按 [quality-gates.md](references/quality-gates.md) 检查。逐张以全尺寸查看成图，重跑文案与合规闸，并与 `draft.md`、`image-plan.md` 对照。
+按 [quality-gates.md](references/quality-gates.md) 检查。逐张以全尺寸查看成图，重跑文案与合规检查，并与 `draft.md`、`image-plan.md` 对照。
 
 只有全部满足以下条件才能交付：文字准确且无多余文字；产品证据真实且未被重画；顺序、裁切、尺寸和移动端可读性正确；无缺失素材、残留占位、水印、假 UI 或无依据宣称；`PROCESS.md` 和来源路径完整。
 

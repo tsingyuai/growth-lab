@@ -35,7 +35,7 @@ python3 collectors/media-crawler-xhs/scripts/normalize.py \
   --all memory/xhs-replicate/samples/xhs
 ```
 
-## 质量闸
+## 质量检查
 
 - 按 note ID/规范 URL 去重，并保留查询到笔记的来源关系。
 - 有什么就记录什么：作者、时间、标题/正文、互动、类型、规范 URL、媒体列表和评论状态。

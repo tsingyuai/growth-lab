@@ -1,4 +1,4 @@
 interface:
   display_name: "小红书爆款复刻"
-  short_description: "执行从爆款调研到内容填充、出图和合规机械闸的完整创作流程"
+  short_description: "执行从爆款调研到内容填充、出图和合规检查的完整创作流程"
   default_prompt: "Use $xhs-replicate to 基于一条已验证爆款完成这篇小红书内容。"

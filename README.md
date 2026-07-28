@@ -88,6 +88,10 @@ Review the latest results and execute the next growth action.
 
 The Runtime reads the available Models, builds the missing product and market context, invokes the relevant Collectors and Executors, and writes its evidence, results, deliverables, and next actions back into the workspace.
 
+### Connect your product
+
+Tell the AI, in natural language, where your product repository or existing materials are located. The AI first reads the product facts it can verify. Users, problems, and value propositions that lack evidence remain open questions and are developed progressively through later growth loops.
+
 ### Configure through natural language
 
 One unified [onboarding Skill](models/onboard-growth-lab/SKILL.md) audits dependencies across every Growth Lab capability. Users do not need to learn a separate command or open a setup page. Ask the Agent directly:
@@ -100,10 +104,6 @@ Set up Xiaohongshu collection and image generation; skip SEO for now.
 The Agent checks API keys, third-party clients, external repositories, browsers, and authentication, explains where missing configuration comes from, and lets the user configure or bypass each capability for the current session. Third-party clients and authentication remain outside the repository; secrets, cookies, and browser profiles do not enter Memory.
 
 Methods and executable scripts stay with their owning Collector, Executor, or Model Skill. Private product materials, collected samples, generated outputs, and historical operating Memory are not distributed with the repository. A Model creates its own Memory namespace when the user runs it.
-
-## Connect your product
-
-Let your AI open this workspace, then ask the AI.
 
 ## System components
 
@@ -119,13 +119,13 @@ One capability is one complete observation-action-review loop, represented by on
 | Name | Introduction | Observed result |
 |---|---|---|
 | [SEO Page Growth Loop](models/run-seo-page-loop/SKILL.md) | Identify the situations in which users may need your product, research what they actually search for in those situations, and create informative SEO pages that solve their problems and lead them to the product. | In our own run, new pages were indexed within 1–2 days. On a 7-day average basis, overall CTR decreased by 50%, while impressions and clicks each increased by 1000%. |
-| [Xiaohongshu Replication and Feedback Loop](models/xhs-replicate/SKILL.md) | Coordinates collection, drafting, editing, screenshots, image generation, card rendering, compliance gates, and post-result feedback. | Skills and executable tools are included; private product knowledge, samples, outputs, and operating Memory are not bundled. Publishing remains manual. |
+| [Xiaohongshu Replication and Review Loop](models/xhs-replicate/SKILL.md) | Coordinates collection, drafting, editing, screenshots, image generation, card rendering, compliance checks, and post-result review. | Commercial content created with this workflow has reached [4,000+ likes/saves and 700+ comments on a single post](http://xhslink.cn/o/37uik9K9WHr). Publishing remains manual. |
 
 These figures describe one observed run and provide evidence for continued iteration. Results depend on the product, domain, search demand, page quality, site authority, and observation window.
 
 ## Status
 
-Growth Lab includes a working SEO Page Growth Loop and a Xiaohongshu replication and feedback workflow. Reusable Skills, scripts, CLIs, and mechanical gates remain in their owning capability directories. Private product data, samples, screenshots, generated posts, and historical Memory are intentionally excluded. Xiaohongshu publishing remains manual.
+Growth Lab includes a working SEO Page Growth Loop and a Xiaohongshu replication and review workflow. Reusable Skills, scripts, CLIs, and automated checks remain in their owning capability directories. Private product data, samples, screenshots, generated posts, and historical Memory are intentionally excluded. Xiaohongshu publishing remains manual.
 
 If this direction resonates with you, open an issue and tell us what product you are growing, where the current workflow breaks, and which tools the Runtime should be able to use.
 

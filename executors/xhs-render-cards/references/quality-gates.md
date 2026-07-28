@@ -1,4 +1,4 @@
-# 质量闸
+# 质量检查
 
 ## 渲染前
 
@@ -22,7 +22,7 @@
 - 产品身份与商业角色诚实清楚。
 - 平台要求的 AI 披露留到发布时正确处理。
 
-## 最终机械闸
+## 最终自动检查
 
 ```bash
 python3 executors/xhs-render-cards/scripts/check-banned-phrases.py <post-dir>

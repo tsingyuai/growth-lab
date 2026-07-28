@@ -1,4 +1,4 @@
 interface:
   display_name: "小红书卡片出图"
-  short_description: "按总 SOP 完成强制 DAI、卡片规划、渲染、贴图与质量闸"
+  short_description: "按总 SOP 完成强制 DAI、卡片规划、渲染、贴图与质量检查"
   default_prompt: "使用 $xhs-render-cards 把这篇草稿制作成经过核验、可发布的小红书图文卡片。"
