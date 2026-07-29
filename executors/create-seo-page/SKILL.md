@@ -1,91 +1,114 @@
 ---
 name: create-seo-page
-description: Design, write, and implement a high-value SEO page from demand research and live SERP evidence. Use when creating or redesigning an SEO landing page, matching page shape to search intent, writing metadata and page copy, improving information gain and content effort, adding structured data and internal links, or implementing the page in an existing product repository.
+description: 根据完整的 SEO 需求与头部竞品页面证据，设计、撰写并在产品现有仓库中实现高质量 SEO 页面。需要匹配搜索意图决定工具页、资源页、教程页、比较页或解决方案页，创建页面设计文档、提高信息增益、编写 metadata、加入图片、结构化数据、内链并完成工程验证时使用。
 ---
 
-# Create an SEO page
+# 创建 SEO 页面
 
-Turn validated demand and SERP evidence into a complete page in the product's existing framework and design system.
+把已验证的搜索需求和 SERP 证据转化成产品现有技术栈与设计系统中的完整页面。
 
-Read [content-quality.md](references/content-quality.md) before drafting.
+开始前完整读取 [内容质量与投入度](references/content-quality.md)。
 
-## Require useful inputs
+## 输入门槛
 
-Recover or obtain:
+必须取得：
 
-- target user and search situation;
-- primary query family and intent;
-- leading pages and their top-to-bottom block descriptions;
-- information-gain gaps;
-- product capability and desired user action;
-- brand, legal, technical, and source constraints.
+- 目标用户、搜索情境和任务；
+- 主关键词家族、意图、季节性和需求证据；
+- 每个候选词前三到五个相关头部页面；
+- 每个头部页面自上而下的区块描述；
+- 搜索引擎层、用户层和质量层拆解；
+- 跨页面的信息增益缺口；
+- 产品能力、期望用户动作和转化路径；
+- 品牌、法律、技术和来源约束。
 
-If research is missing, report the missing evidence to the calling Model before designing the page.
+缺少这些证据时，向调用 Model 报告并返回 `$research-seo-demand`，不得从关键词量、摘要或 URL 列表直接设计页面。
 
-## Match the page shape to intent
+## 用 SERP 决定页面形态
 
-Infer the expected shape from current winning results:
+- 工具意图：提供可运行工具或直接产品动作。
+- 模板/资源意图：提供可以浏览、筛选和有效预览的集合。
+- 怎么做意图：提供完整教程、具体步骤、示例和判断标准。
+- 比较意图：给出明确标准、证据、差异和选择结论。
+- 解决方案意图：围绕一个具体问题组织页面，并提供可信证据和真实行动路径。
+- 社区内容占据头部：考虑在对应平台提供原生内容，或让页面吸收该形态的真实问题与经验密度。
 
-- tool intent → a working tool or direct product action;
-- template/resource intent → a browsable collection with meaningful previews;
-- how-to intent → a complete guide with concrete steps and examples;
-- comparison intent → explicit criteria, evidence, and tradeoffs;
-- solution intent → a problem-specific landing page with proof and a real path to action.
+产品能直接完成任务时使用混合形态：先完整满足信息意图，再在最有用的节点提供产品动作。
 
-Use a hybrid when the product can fulfill the task directly: satisfy the informational expectation, then expose the product action at the moment it becomes useful.
+## 先写页面设计文档
 
-## Design before implementation
+代码之前先写叙述性设计文档：
 
-Write a concise page design document containing final metadata, the page blocks in display order, and the facts and sources the page will use.
+```markdown
+# <URL 路径> 页面设计文档
 
-For the page structure, write one sentence per block describing exactly what appears. Derive the sequence from the observed winner pages and the product's useful difference. Keep research rationale outside the block list.
+title: <最终 title>
+description: <最终 description>
+keywords: <必要时填写>
+canonical: <最终 canonical>
 
-Use final title, description, and canonical copy in the design document. Associate every non-obvious number or factual claim with its source before writing the page.
+## 页面结构（自上而下）
 
-## Create information gain
+1. 首屏：<一句话描述这一块展示什么>
+2. <区块名>：<一句话描述这一块展示什么>
 
-Give the visitor material that supports action or judgment:
+## 数据与引用清单
 
-- concrete procedures and examples;
-- quality criteria, rubrics, and thresholds;
-- real product behavior or firsthand evidence;
-- original analysis of relevant data;
-- copyable tables, checklists, or artifacts;
-- authoritative primary sources;
-- constraints, edge cases, and failure modes.
+- <正文中的数字或事实主张>：<内部数据口径或外部一手来源 URL>
+```
 
-Aggregate resource links with classification and commentary when resource discovery is the task. Preserve original attribution and source links.
+页面结构必须来自 winner 页的逐块描述和产品真正有用的差异。每个区块恰好一句话，只写内容与形式：
 
-## Write the page
+- 不解释这一块吃什么词；
+- 不写排期和上线计划；
+- 不论证为什么需要这一块；
+- metadata 写最终上线文案，不写备选方案；
+- 数据与引用清单必填；无法给出来源的数字和主张从正文删除。
 
-- Lead with the answer, product action, or useful choice implied by the intent.
-- Use short direct sentences and one stable term for each concept.
-- Make each section independently understandable and extractable.
-- Put useful detail on the page before asking for conversion.
-- Use evidence where it adds information. Keep common knowledge concise.
-- Give the page a visible owner or author and update date when the product supports them.
-- Connect conversion to the task the visitor came to complete.
+## 创造信息增益
 
-Write a meta description around one information-rich point, method, limitation, or result. Use a natural complete sentence.
+至少加入能支持用户行动或判断的材料：
 
-## Add page images
+- 具体流程、示例和反例；
+- 质量标准、rubric 和阈值；
+- 真实产品行为或一手证据；
+- 对相关数据的原创分析；
+- 可复制表格、清单或交付物；
+- 权威一手来源；
+- 适用条件、边界和失败模式。
 
-Define what each image must explain or demonstrate. Invoke `$generate-image` for generated assets. Prefer real screenshots for product behavior. Add descriptive alt text, explicit dimensions, stable filenames, and appropriate compression.
+资源发现是任务时，提供分类、点评和原始链接，不重新托管无权分发的文件。
 
-## Implement in the product
+## 撰写页面
 
-Follow the repository's framework, components, visual system, route conventions, and development workflow. Add the elements appropriate to the page:
+- 用答案、工具动作或用户需要做出的选择开头。
+- 使用短句和稳定术语。
+- 每一节能够独立理解和抽取。
+- 在要求转化前先交付有用内容。
+- 常识保持简短，把篇幅留给独有方法、标准和证据。
+- 显示真实作者、团队或内容责任主体及更新时间。
+- 转化动作必须延续用户进入页面时要完成的任务。
 
-- title and meta description;
-- canonical URL;
-- Open Graph and social metadata;
-- relevant schema.org structured data;
-- one descriptive heading hierarchy;
-- contextual internal links;
-- sitemap participation;
-- source links and update signals;
-- responsive and accessible content.
+Meta description 只选择一个信息量高的判断、方法、限制或结果，用自然完整的句子讲清楚；不要写成页面目录，也不要为了接近固定字数堆砌区块和功能。
 
-Run the product's own formatting, type, build, route, SEO, and accessibility checks. Use Runtime-native browser testing for the rendered page.
+## 添加图片
 
-Return the implemented and locally verified page to the calling Model for adversarial review and release coordination.
+先写清每张图片必须解释的任务、对象或结果。产品行为优先使用真实浏览器截图；需要生成或编辑的概念图、封面和辅助素材调用 `$generate-image`。生成时把参考图和真实截图直接作为 reference image 传入模型，不使用 SVG/HTML 模板或“占位符后填充”流程。
+
+逐张检查文字、对象、顺序、场景、裁剪和移动端可读性。使用稳定文件名、明确尺寸、适当压缩和描述性 alt。
+
+## 实现与验证
+
+遵循产品仓库现有框架、组件、视觉系统、路由和发布流程。按页面需要加入：
+
+- title 与 meta description；
+- canonical；
+- Open Graph 和社交 metadata；
+- 对应 schema.org 结构化数据；
+- 单一、清楚的标题层级；
+- 上下文内链；
+- sitemap；
+- 来源链接、作者和更新时间；
+- 响应式和无障碍内容。
+
+运行产品已有的格式化、类型、构建、路由、SEO 和无障碍检查，并用 Runtime 的真实浏览器检查最终渲染页面。把实现后的页面交给 `$review-seo-page` 对抗审阅。

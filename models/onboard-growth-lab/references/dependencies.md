@@ -10,7 +10,8 @@
 |---|---|---|---|---|
 | Git | 拉取外部 Client、读取版本 | `command -v git` | 系统包管理器或 Git 官方安装包 | 不安装任何第三方 Client 时 |
 | Python 3 | 媒体采集、归一化、lint、渲染 | `command -v python3` | Python 官方发行版或系统包管理器 | 只使用纯 Node 能力时 |
-| Node.js | Bing、IndexNow、通用生图 Executor | `command -v node` | Node.js 官方发行版或版本管理器 | 不使用这些能力时 |
+| Node.js | Bing、IndexNow、SEO 调研脚本、通用生图 Executor | `command -v node` | Node.js 官方发行版或版本管理器 | 不使用这些能力时 |
+| Playwright + Chromium | 批量抓取 Bing SERP、渲染竞品页并截图 | `npm --prefix collectors/research-seo-demand/scripts exec playwright -- --version`，再执行一次最小 Chromium 启动检查 | `npm install --prefix collectors/research-seo-demand/scripts`，然后 `npm --prefix collectors/research-seo-demand/scripts exec playwright install chromium`；也可使用已连接的 Runtime 真实浏览器代替批量脚本 | 不做批量 SERP/竞品页面调研，或当前 Runtime 浏览器已能完成同等检查时 |
 | uv | 第三方 Python Client 与临时依赖 | `command -v uv` | <https://docs.astral.sh/uv/> | 不使用媒体 Client、Playwright 渲染时 |
 | Make | 小红书文案与合规检查快捷入口 | `command -v make` | Xcode Command Line Tools 或系统包管理器 | 也可直接调用仓库内检查脚本 |
 | Chrome 144+ | MediaCrawler CDP 登录、默认 Playwright 渲染 | 检查 Chrome 版本及 `chrome://inspect/#remote-debugging` | <https://www.google.com/chrome/> | 不用 MediaCrawler 时 |
@@ -26,6 +27,17 @@
 | AI 生图 | `GEMINI_API_KEY` 或 `OPENAI_API_KEY` 任一条有效 | Google AI Studio / Google Cloud；OpenAI Platform | 不生图可绕过；兼容代理才配置对应 base URL |
 
 API key 默认写入根目录 `.env.local`，该文件已被 Git 忽略。只有用户明确同意后 Agent 才能写；用户也可以自行通过 shell 或密钥管理器注入。
+
+## SEO 调研脚本
+
+所有 SEO 调研脚本都随仓库分发，位于 `collectors/research-seo-demand/scripts/`：
+
+- `fetch-keyword-stats.mjs`：聚合 Bing 周展现量并导出 CSV；只依赖 Node.js 和 `BING_WEBMASTER_API_KEY`。
+- `analyze-page.mjs`：提取公开页面的 metadata、标题层级、正文和链接/图片体量；只依赖 Node.js。
+- `scrape-bing-serp.mjs`：使用 Playwright 真浏览器批量抓取 SERP，并检查查询降级。
+- `render-pages.mjs`：使用 Playwright 渲染竞品页，保存首屏、第二屏和可见正文。
+
+Onboarding SEO 时分别检查“API 数据读取”和“浏览器批量调研”。缺少 Playwright 时先向用户说明它来自 npm 官方 registry、依赖安装在 `collectors/research-seo-demand/scripts/node_modules/`、Chromium 安装在 Playwright 的用户级浏览器缓存，并说明磁盘占用，再在用户确认后安装；不要把其他仓库中的 Playwright 或脚本路径当作已配置。用户选择使用 Runtime 自带的真实浏览器完成同等调研时，可以绕过批量脚本依赖，但不得绕过 SERP 相关性、登录态复核和页面真实渲染检查。
 
 ## 媒体平台第三方 Client
 
@@ -57,7 +69,7 @@ API key 默认写入根目录 `.env.local`，该文件已被 Git 忽略。只有
 
 ```bash
 rg -n 'API_KEY|TOKEN|COOKIE|process\.env|os\.environ|getenv\(' collectors executors models .env.example
-rg -n '\buv run\b|\bnpx\b|\bplaywright\b|\bchrome\b|subprocess' collectors executors models
+rg -n '\buv run\b|\bnpm exec\b|\bnpx\b|\bplaywright\b|\bchrome\b|subprocess' collectors executors models
 rg -n '\.codex/skills|\.claude/skills|\.claude/|/Users/|MCP|mcp__' collectors executors models
 ```
 

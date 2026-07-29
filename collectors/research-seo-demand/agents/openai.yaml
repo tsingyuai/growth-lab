@@ -1,4 +1,4 @@
 interface:
-  display_name: "Research SEO Demand"
-  short_description: "Find and validate SEO keyword opportunities"
-  default_prompt: "Use $research-seo-demand to research and prioritize SEO demand for this product."
+  display_name: "调研 SEO 需求"
+  short_description: "完整验证关键词需求并拆解实时 SERP 头部竞品页面与机会"
+  default_prompt: "使用 $research-seo-demand 完整调研这个产品的 SEO 需求与竞品页面。"

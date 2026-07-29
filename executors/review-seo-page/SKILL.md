@@ -1,70 +1,78 @@
 ---
 name: review-seo-page
-description: Adversarially review an SEO page from the target user's real search situation, identify intent mismatch, low-information sections, template-like content, repeated conversion, AI-sounding language, terminology drift, weak metadata, unsupported claims, and irrelevant images, then fix the page. Use when reviewing SEO content quality, reducing generic or AI-like copy, checking image relevance, or deciding whether to keep, merge, rewrite, or remove a page.
+description: 从目标用户的真实搜索场景出发，对抗式审查并修改 SEO 页面，找出搜索意图偏离、低信息量、批量同构、重复转化、AI 腔、术语漂移、无依据主张、metadata 问题和配图场景错位。需要审查 SEO 内容价值、降低 AI 味、检查图片相关性或决定页面保留、合并、重写、删除时使用。
 ---
 
-# Review an SEO page adversarially
+# SEO 页面对抗式审阅
 
-Assume each page block must earn its place. Keep content that directly helps the target user understand, decide, or act.
+先假定每个区块都需要删除。只有直接帮助目标用户理解、判断或行动的内容才保留。使用 Runtime 的真实浏览器检查实际渲染结果，不能只读源代码。
 
-Use Runtime-native browser inspection on the rendered page. Review the implementation and the actual user-visible result.
+## 建立用户任务
 
-## Establish the user task
+先写清：
 
-Write down:
+- 目标用户；
+- 搜索词和搜索意图；
+- 用户进入页面时的问题；
+- 用户离开前应获得的结果；
+- 与该结果直接相关的产品动作。
 
-- target user;
-- search query and intent;
-- problem at page entry;
-- useful result expected before leaving;
-- product action relevant to that result.
+搜索意图错配是最高严重程度的问题。
 
-Treat intent mismatch as the highest-severity problem.
+## 自上而下审阅
 
-## Review from top to bottom
+对每个可见区块：
 
-For every visible block:
+1. 写出它对用户任务的具体贡献。
+2. 删除用户大概率不需要的内容。
+3. 检查是否增加方法、标准、示例、事实、工具或决策。
+4. 检查换成相邻页面标题后是否仍能原样成立。
+5. 检查事实来源、术语、图片相关性和转化压力。
+6. 检查布局、链接、移动端、无障碍、控制台和失败请求。
 
-1. State what it contributes to the user's task.
-2. Remove material the user is unlikely to need.
-3. Check whether it adds a method, criterion, example, fact, tool, or decision.
-4. Check whether the same block could survive unchanged under a neighboring page title.
-5. Check factual support, terminology, image relevance, and conversion pressure.
-6. Check the rendered layout, links, mobile behavior, accessibility, console, and failed requests with Runtime-native tools.
+## 对抗测试
 
-## Apply adversarial tests
+- 删除测试：删除后用户没有损失，直接删除。
+- 反转测试：一句话的反面显然没人支持，原句没有信息量。
+- 换标题测试：内容能原样放进多个相邻页面，说明缺少页面独有信息。
+- 去品牌测试：去掉品牌名后只剩宣传态度，删除或改成具体信息。
+- 证据测试：非显而易见的事实和数字没有来源，删除或补充一手来源。
+- 图文测试：图片不能直接说明相邻文案中的任务或结果，替换或删除。
+- 转化测试：合并重复 CTA，保留与搜索任务一致的行动。
 
-- Deletion test: remove the block when the user loses nothing.
-- Reversal test: replace advice whose opposite is obviously absurd with a specific statement.
-- Title-swap test: rewrite content that fits several neighboring pages unchanged.
-- Brand-removal test: remove or specify copy that becomes empty promotion after the brand name disappears.
-- Evidence test: remove or source non-obvious facts and numbers.
-- Image-text test: replace an image that does not show the task or result claimed beside it.
-- Conversion test: consolidate repeated calls to action and keep the action aligned with the search task.
+现实中的商业产品、课程、社区内容、开源项目和经验做法都可以保留。是否有源码不是参考标准；判断标准是目标用户是否关心，以及它与当前产品的差异会怎样改变内容调性和转化方式。
 
-## Review metadata
+## Metadata
 
-Make the title accurately identify the page and its intent. Write the meta description around one information-rich point, method, limitation, or result. Use a natural complete sentence. Check canonical URL, social metadata, structured data, and sitemap participation against the rendered page.
+- Title 准确说明页面主题与意图。
+- Description 不写成全页目录，删除“本文介绍、页面涵盖、包含、并给出”等概括式开头。
+- 不为了接近固定字符数罗列页面区块、关键词或功能。
+- 选择一个信息量高的重点，用自然完整的句子讲清。
+- 核对 canonical、社交 metadata、结构化数据和 sitemap 与渲染页面一致。
 
-## Rewrite plainly
+## 语言与风格
 
-- Use short sentences with one idea each.
-- Define concepts directly.
-- Use common domain terminology consistently.
-- Remove slogans, suspense openings, invented jargon, empty transitions, parallel filler, and duplicated claims.
-- Write affirmative definitions directly.
-- Give every effect claim an object, condition, and concrete meaning.
-- Keep internal implementation names out of user-facing copy.
-- Apply corrected terminology directly throughout the page.
+- 使用短句，一句话只表达一个意思。
+- 直接写定义和动作，不用例子代替定义。
+- 使用领域常用术语，同一概念只保留一个名称。
+- 删除比喻、拟人、设问式引入、悬念式开头、生造术语、空泛过渡、排比填充和同义重复。
+- 直接写肯定定义，避免“不是……而是……”句式。
+- 效果主张必须有对象、条件和具体含义。
+- 用户正文中不出现内部实现名、内部编号和工作流黑话。
+- 收到术语纠正时，全文直接采用新术语，不保留旧方案和修改过程。
 
-## Report and fix
+## 防御性表达
 
-Classify findings:
+正文不要加入“做不到什么、目前只实现什么、只是 demo、结果不意味着什么”等防御性表达。一个主张没有足够证据时，删除整个主张，不保留一部分再补充局限说明。不要为了披露而引入用户没有搜索的问题。
 
-- `P0`: search-intent or user-task mismatch;
-- `P1`: low value, repetition, template-like content, unsupported claims, excessive conversion, or image mismatch;
-- `P2`: awkward language, AI-like tone, terminology drift, metadata weakness, or minor presentation issue.
+## 输出与修复
 
-For each finding, include location, shortest identifying excerpt, user impact, action, and replacement copy when applicable. End with a page decision: keep, merge, rewrite, or remove.
+按严重程度分类：
 
-When authorized to edit, implement the fixes, rerun relevant product checks, and inspect the rendered page again.
+- `P0`：搜索意图或用户任务错配。
+- `P1`：低价值、重复、同构、无依据、过度转化或图片错位。
+- `P2`：拗口、AI 腔、术语漂移、metadata 或呈现问题。
+
+每项写明页面位置、最短识别原文、用户为什么不关心、处理动作和可直接替换的文本。最后给出页面结论：保留、合并、重写或删除。
+
+获得编辑授权后直接实施修改，重新运行产品检查，并再次检查渲染页面。

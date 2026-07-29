@@ -1,4 +1,4 @@
 interface:
-  display_name: "Review SEO Performance"
-  short_description: "Evaluate SEO outcomes and choose the next action"
-  default_prompt: "Use $review-seo-performance to evaluate this page and recommend the next SEO action."
+  display_name: "复盘 SEO 表现"
+  short_description: "复盘搜索表现、产品结果、AI 引用可见性并选择下一步行动"
+  default_prompt: "使用 $review-seo-performance 复盘这个页面并选择下一步 SEO 行动。"

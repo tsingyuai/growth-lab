@@ -1,0 +1,8 @@
+{
+  "name": "growth-lab-seo-research-scripts",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "playwright": "^1.54.0"
+  }
+}

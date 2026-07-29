@@ -57,6 +57,7 @@ MediaCrawler 的安装、登录和实际抓取必须在本统一 onboarding 中�
 | 能力 | 状态 | 缺少什么 / 下一步 |
 |---|---|---|
 | SEO 数据读取 | 缺失 | `BING_WEBMASTER_API_KEY`；从 Bing Webmaster Tools 获取 |
+| SEO 批量 SERP 与页面渲染 | 缺失 | Node.js 已安装；需从 npm 安装 Playwright 与 Chromium，或确认使用当前 Runtime 真实浏览器完成同等检查 |
 | IndexNow 提交 | 本轮绕过 | 用户不需要主动提交 URL |
 | AI 生图 | 已就绪 | OpenAI 凭据存在；尚未做付费调用验证 |
 | 媒体平台采集 | CDP 未就绪 | Chrome GUI auto-connect 已开启，但 `/json/version` 为 404；需启动带持久化 profile 和显式 debug port 的专用 Chrome |

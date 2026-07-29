@@ -1,4 +1,4 @@
 interface:
-  display_name: "Review SEO Page"
-  short_description: "Adversarially review and improve an SEO page"
-  default_prompt: "Use $review-seo-page to adversarially review this SEO page and fix its weaknesses."
+  display_name: "审阅 SEO 页面"
+  short_description: "从真实搜索任务出发对抗式审阅并修复 SEO 页面的内容与实现"
+  default_prompt: "使用 $review-seo-page 对抗式审阅并修复这个 SEO 页面。"

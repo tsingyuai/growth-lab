@@ -1,4 +1,4 @@
 interface:
-  display_name: "Create SEO Page"
-  short_description: "Design and implement a high-value SEO page"
-  default_prompt: "Use $create-seo-page to design and implement this SEO page from the research evidence."
+  display_name: "创建 SEO 页面"
+  short_description: "根据完整搜索需求与竞品证据设计、撰写并实现高质量页面"
+  default_prompt: "使用 $create-seo-page 根据现有调研证据设计并实现这个 SEO 页面。"

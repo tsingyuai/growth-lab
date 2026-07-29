@@ -12,3 +12,4 @@ memory/**
 !memory/**/
 !memory/**/.gitkeep
 .vercel
+node_modules/

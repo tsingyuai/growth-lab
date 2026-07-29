@@ -1,40 +1,90 @@
-# Content quality and effort
+# 内容质量与投入度
 
-## Analyze three layers
+## 目录
 
-Evaluate the page as three connected layers:
+- 三层质量模型
+- 信息增益选题
+- 信源选择
+- 表达纪律
+- 页面质量底线
+- AI 可提取性
 
-1. Search layer: title, description, headings, canonical, structured data, internal links, freshness, and snippet clarity.
-2. User layer: visible sequence, reading hooks, decision units, task completion, trust, images, and conversion path.
-3. Quality layer: unique information, concrete data, sources, authorship, originality, and signs of genuine effort.
+## 三层质量模型
 
-## Target useful information gain
+把页面当成相互连接的三层：
 
-Prioritize material that answers one of three user needs:
+1. 搜索引擎层：title、description、标题层级、canonical、结构化数据、内链、更新时间和摘要清晰度。
+2. 用户层：可见顺序、阅读钩子、决策单元、任务完成、信任、图片和转化路径。
+3. 质量层：独有信息、具体数据、来源、作者、原创分析和真实投入信号。
 
-- How to do it: procedures, examples, counterexamples, and usable artifacts.
-- How to judge quality: criteria, rubrics, thresholds, and differences between weak and strong work.
-- What good execution looks like: concrete parameters, styles, choices, and avoid lists.
+页面形态匹配意图只是入场条件。新页面可在当期控制的是信息质量、原创性、实际帮助和可验证证据。传统搜索与 AI answer engine 都会细读页面；两者共同需要数据具体、有出处、没有硬伤且不是复述头部结果的内容。
 
-Use the reversal test on advice. When the opposite is obviously absurd and nobody would recommend it, the sentence carries little information. Replace it with a specific action, condition, example, or threshold.
+## 信息增益选题
 
-## Select sources for information value
+信息增益必须回答至少一种用户问题：
 
-Choose sources according to the claim:
+| 用户问题 | 有效增益 | 零增益 |
+|---|---|---|
+| 怎么做 | 具体步骤、可复制示例、反例和失败处理 | “先规划再执行”式流程常识 |
+| 如何判断质量 | 评分表、rubric、阈值、及格与优秀的差异 | “要认真、准确、深入”式空话 |
+| 好的执行是什么样 | 具体参数、风格选择、适用条件和忌讳 | “简洁大方、体验良好”式形容词 |
 
-- firsthand experience for procedures and failure modes;
-- books and specialist guides for dense methods;
-- rubrics, standards, and specifications for quality criteria;
-- original product or market data for measured conclusions;
-- official primary sources for rules and factual verification.
+写之前问：
 
-Trace every non-obvious factual claim. Remove claims that cannot be supported. Summarize and transform source material; preserve attribution and copyright boundaries.
+1. 目标用户第一次做这件事时，是否本来就知道这句话？
+2. 当前 SERP 前五名是否已经完整回答？
 
-## Protect page quality
+两个答案都是“是”时，删除该内容。
 
-- Let the visitor obtain a useful answer without crossing a conversion wall.
-- Keep advertising and conversion pressure proportional to the task.
-- Give related pages substantive differences in purpose, evidence, and utility.
-- Maintain visible ownership and update signals.
-- Use conclusion-first, self-contained sections, tables, and FAQs when they improve extraction by search and AI answer engines.
-- Remove generic filler, weak causal stories, keyword stuffing, and repeated claims.
+使用反转测试：把一句建议反过来说。如果反面显然错误且没人会主张，原句通常没有信息量。用具体动作、条件、例子或阈值替换。
+
+## 信源选择
+
+按信息价值和主张类型选择来源：
+
+| 来源 | 用途 |
+|---|---|
+| 一手经验、专业社区、实践教程 | 具体做法、失败模式和真实限制 |
+| 书籍、专著、专家指南 | 高密度方法和质量标准 |
+| Rubric、标准、规范、评分文件 | 可操作的判断标准和阈值 |
+| 自己采集的数据、产品测试与分析 | 原创测量结论 |
+| 官方一手来源 | 规则、定义和事实核验 |
+| 公开网络内容 | 汇总、分类、比较和二次分析，不能直接复述 |
+
+资源类内容采用“收集、分类、点评、链接原始出处”的方式，不直接复制或重新托管无权分发的资源。
+
+每个非显而易见的事实和数字都要能追溯到来源。无法支持的主张直接删除。常识不需要为了显得权威而硬凑引用。
+
+## 表达纪律
+
+- 结论前置，一句话只表达一个意思。
+- 因果证据不足时，不展示脆弱推理链；只保留能够支持的结论。
+- 代理指标只能支持对应范围的判断，不能伪装成直接证明。
+- 页面作者使用真实的人或团队身份。不要在用户正文中描述 Agent、爬虫、API 或自动监测过程，除非它本身就是用户任务的一部分。
+- 事实核验是后台纪律，不是正文装饰。
+- 删除关键词堆叠、同义重复、空泛过渡、口号和无对象的效果承诺。
+- 同一概念只使用一个稳定的领域术语。
+
+## 页面质量底线
+
+| 指标 | 底线 | 反模式 |
+|---|---|---|
+| 真实帮助 | 用户不点击转化按钮也能获得完整答案、方法、清单、表格或工具 | 故意留一半，把答案藏在注册墙后 |
+| 信息差异 | 相邻页面在任务、证据、结构和工具上有实质差异 | 一个词族批量生成同构薄页 |
+| 实体信号 | 有可核验作者、团队或机构，并显示更新时间 | 无主内容 |
+| 转化压力 | 转化动作与用户当前任务一致，广告和 CTA 比例克制 | 首屏被广告和重复 CTA 占满 |
+| 证据 | 非显而易见的数字和主张均有来源 | 先上线，再补来源 |
+| 图片 | 图片直接说明相邻文案中的任务、对象或结果 | 装饰图、错误产品截图、无关场景 |
+
+## AI 可提取性
+
+在不牺牲用户阅读的前提下：
+
+- 把核心概念和结论放进对应 H2 与前一到两段；
+- 使用清楚的标题层级；
+- 让段落能够脱离上下文独立理解；
+- 用表格、FAQ、步骤和定义组织适合抽取的信息；
+- 提供例子、数据与原始来源；
+- 保持更新时间和相邻主题覆盖；
+- 添加与页面类型相符的 schema.org 数据；
+- 内容更新后通过 IndexNow 通知支持的搜索引擎。

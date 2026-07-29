@@ -1,83 +1,238 @@
 ---
 name: research-seo-demand
-description: Research and prioritize SEO demand using product context, keyword-family expansion, live SERPs, autocomplete, competitor discovery, and optional Bing Webmaster keyword statistics. Use when finding hot keywords, validating search demand, identifying user search intent, comparing keyword families, studying leading SERP pages, or selecting an SEO page opportunity.
+description: 完整调研并确定 SEO 机会：从产品理解、领域词表拆解、关键词矩阵扩展、Bing 真实热度验证、竞品发现、实时 SERP 抓取，到头部页面的搜索引擎层、用户层和质量层拆解。需要查热词、验证搜索量、判断搜索意图、研究竞品页面、寻找信息增益缺口或决定应该做什么 SEO 页面时使用。
 ---
 
-# Research SEO demand
+# SEO 需求调研
 
-Discover what users search for, verify the demand, and return evidence that another Skill can use to create a page.
+先确认用户真的在搜索什么，再从热词下真实获得排名的页面学习页面形态与内容方法。不要从预想的竞品清单反推关键词；关键词由产品、用户任务、场景和真实搜索数据共同产生，竞品用于学习页面怎么做。
 
-Use the Runtime's native browser, search, page inspection, and extraction capabilities. Create no browser wrapper or scraping script.
+本 Collector 只产出需求、SERP 和竞品页面证据。页面设计与实现交给 `$create-seo-page`，上线后的效果观测交给 `$review-seo-performance`。
 
-## Start from the product
+## 1. 从产品与用户任务开始
 
-Read the product code, documentation, public pages, current conversion paths, customer language, internal search terms, support conversations, and available growth evidence. State:
+读取产品代码、文档、公开页面、当前转化路径、客户语言、站内搜索、支持记录和已有增长证据。先写清：
 
-- the user and situation;
-- the job they want to complete;
-- the product action that resolves it;
-- the market and language being researched.
+- 用户是谁，处在什么情境；
+- 用户要完成什么任务；
+- 产品通过什么真实动作解决任务；
+- 调研的市场、语言和搜索引擎；
+- 已有页面、已有关键词和不能重复建设的内容。
 
-## Expand keyword families
+对无法从产品材料确认的用户问题和值得验证的价值保持开放，不要把产品功能列表直接改写成关键词列表。
 
-Explore each relevant family separately so their demand can be compared:
+## 2. 拆解领域词表并扩展关键词
 
-| Family | Expansion method |
+七个方向逐一展开，每个方向单独成词表，保持不同具体度的词可以横向比较：
+
+| 方向 | 组词方法 |
 |---|---|
-| Core concepts | domain nouns, task names, category names |
-| Scenarios | scenario × object or document type |
-| Actions and outcomes | generate, create, convert, fix, improve, learn |
-| Tools | feature, format, integration, and conversion phrases |
-| Resources | templates, examples, checklists, downloads, standards |
-| Competitors | category leaders and niche products discovered in SERPs |
-| Questions | how, which, why, cost, quality, risk, comparison, failure |
+| 头部概念 | 领域核心名词、任务名、品类名 |
+| 场景复合 | 场景 × 对象、文档、媒介或交付物 |
+| 动作与结果 | 场景 × 生成、制作、转换、修复、改进、学习等动作 |
+| 竞品词 | 通用品类产品与从 SERP 发现的垂类产品品牌词 |
+| 工具词 | 功能点、格式、集成、转换和使用教程 |
+| 资源词 | 模板、示例、清单、下载、规范和素材 |
+| 问句词 | 怎么做、哪个好、为什么、价格、质量、风险、比较和失败问题 |
 
-Use live autocomplete, related searches, SERP titles, communities, product reviews, and support language to find the expressions users already use. Discover niche competitors from repeated SERP domains, then test their brand terms.
+### 大面积展开
 
-Check ambiguous words by reading their live SERP. Separate mixed intents before interpreting demand.
+1. 先测头部概念词，判断哪些方向确实存在需求。
+2. 对有效方向建立修饰词、场景、对象、动作和结果矩阵，用笛卡尔积扩展到 100 个以上候选词。
+3. 与已有词表和历史 Memory 去重。
+4. 用 Bing 或目标搜索引擎的搜索框联想、相关搜索、SERP 标题、社区讨论、产品评论和支持语言补充自然表达。
+5. 大批量 N/A 不是无用结果；它能说明某一组精确表达在当前引擎和市场中缺乏可观测需求，但不能证明其他渠道没有需求。
 
-## Validate demand
+### 竞品发现
 
-When `BING_WEBMASTER_API_KEY` is available, call:
+竞品词不是只靠事先知道的品牌列表：
+
+1. 先抓一轮场景词和邻接场景词的 SERP。
+2. 聚合重复出现的域名和产品名。
+3. 区分通用品类产品、垂类产品、内容平台和社区页面。
+4. 把新发现的品牌名回填词表，再验证品牌词热度和搜索意图。
+
+品牌词和术语存在多义时必须阅读实时 SERP。把混合意图拆开，不能直接引用混合流量作为产品需求。
+
+## 3. 用 Bing Webmaster 验证真实热度
+
+需要完整聚合结果时运行随仓库分发的脚本：
+
+```bash
+node collectors/research-seo-demand/scripts/fetch-keyword-stats.mjs \
+  cn zh-CN <keywords-file>
+
+printf '关键词一\n关键词二\n' | \
+  node collectors/research-seo-demand/scripts/fetch-keyword-stats.mjs cn zh-CN -
+```
+
+脚本从 `BING_WEBMASTER_API_KEY` 读取凭据，输出按 `avgStrict` 降序的表格和 CSV。用 `BING_KEYWORD_OUT` 更改 CSV 文件名。
+
+需要保存 Bing 原始周数据时运行通用 Client：
 
 ```bash
 node collectors/bing-webmaster/bing-webmaster.mjs keyword-stats \
   --country <country> --language <language> \
-  --input <keywords-file> --out <output-file>
+  --input <keywords-file> --out <raw-output-file>
 ```
 
-Query at most 20 terms per batch and cool down between batches. For a large study, include one known-volume control term in each batch.
+### 接口与字段
 
-Interpret the response with these rules:
+- `country` 使用 ISO 3166 两位小写，如 `cn`、`us`。
+- `language` 大小写敏感，使用 `zh-CN`、`en-US`，不要写成 `zh-cn`。
+- Bing 通常返回约 26 周的周数据。
+- `Impressions` 是精确整串匹配的周展现量，是主要比较指标。中文复合词会被严重低估，因此它是需求地板，不是真实总需求。
+- `BroadImpressions` 是广泛匹配。英文可辅助判断长尾规模；中文几乎不做可靠的包含聚合，不要用它估算中文长尾家族。
+- `Date` 是每周数据的时间。
+- 聚合脚本输出 `avgStrict`、`peakStrict`、`latestStrict`、`avgBroad` 和 `weeks`。
 
-- Compare head terms with head terms and compound terms with compound terms.
-- Treat exact impressions as a comparable demand floor.
-- Treat an empty response as unavailable evidence. Triangulate with live SERPs and other sources.
-- Use peak-to-average differences to identify seasonality and publish before the peak.
-- Judge intent fit before volume. A high-volume phrase matters when the product satisfies its task.
-- Use low-volume questions as supporting sections or AI-answer material when they reveal a real user concern.
+### 空响应与限流
 
-## Read the live SERP
+- `{"d":[]}` 记为 `N/A`，绝不能写成 0。
+- N/A 可能表示低于 Bing 报告阈值，也可能是静默限流；它不等于没人搜索。
+- 单词空响应先短暂等待并重试一次。
+- 每批最多查询 20 个词，批次之间至少冷却 30 秒。
+- 超过 50 个词必须拆批；每批加入一个近期已知有量的控制词。
+- 控制词也返回 N/A 时，整批结果作废，延长冷却后重跑。
 
-Use the Runtime browser with the target market and language. Verify that the rendered results remain relevant to the full query. Re-run suspicious results in a normal signed-in browser session when the engine appears to degrade or rewrite the query.
+### 读数原则
 
-For each promising query:
+1. 只比较同源、同市场、同语言和相近具体度的数据；头部词和头部词比较，复合词和复合词比较。
+2. Strict 是需求地板，不是真值；中文 Broad 不可信。
+3. 用 `peakStrict / avgStrict` 判断季节性。比值明显升高时，从高峰倒排收录时间，提前发布。
+4. 先判断意图，再看量。大数字与产品任务错配时，不应选择该词。
+5. N/A 或低量问题词可以成为 FAQ、正文自然措辞、社区内容或 AI answer material，但不应只凭该数据做独立落地页。
 
-1. Inspect the first three to five relevant pages.
-2. Note repeated domains and pages across related terms.
-3. Classify the winning shape: tool, catalog, guide, comparison, solution page, community answer, or hybrid.
-4. Describe each page from top to bottom in one sentence per visible block.
-5. Compare search presentation, user value, conversion path, information density, proof, and unique information.
-6. List questions, evidence, tools, examples, or quality criteria the leading pages leave unresolved.
+## 4. 抓取实时 SERP
 
-## Select the opportunity
+默认优先使用 Runtime 已连接的真实浏览器和当前市场、语言及登录态。需要批量、可重复的 JSON 证据时，运行仓库脚本：
 
-Recommend a page when the evidence supports:
+```bash
+BING_MARKET=zh-CN \
+node collectors/research-seo-demand/scripts/scrape-bing-serp.mjs \
+  "关键词一" "关键词二"
 
-1. observable demand;
-2. a clear and stable intent;
-3. product ability to fulfill the task;
-4. an information, utility, or experience gap;
-5. a credible path from search visit to product outcome.
+SERP_OUT=serp-round-2.json BING_MARKET=en-US \
+node collectors/research-seo-demand/scripts/scrape-bing-serp.mjs \
+  "keyword one" "keyword two"
+```
 
-Return the selected query family, intent, seasonality, winning page shape, leading references, information-gain gaps, product fit, risks, and the evidence behind the recommendation. Use a task-appropriate Markdown, CSV, JSON, or HTML file.
+脚本使用 Playwright 真浏览器内核，解码 Bing `/ck/a` 跳转链接，请求间隔 1.5 秒，并输出关键词 × 排名 × URL 的 JSON。
+
+### 查询降级检查
+
+Bing 可能对低信任会话静默改写查询，返回与完整查询不相关的结果。坏数据可能正常返回 HTTP 200，因此必须检查：
+
+- 页面展示的查询是否仍是完整关键词；
+- 标题和 URL 是否与完整查询相关；
+- 脚本的二字词素相关性是否达到 30%；
+- JSON 的 `__meta__.degraded` 是否包含该词。
+
+标为 `DEGRADED` 的查询不得用于竞争结论。改用正常登录态浏览器重新检查；仍然降级时，记录 SERP 证据不可用，而不是猜测排名结构。
+
+给证据分级：Bing Webmaster 的关键词展现量来自服务端报告；SERP 抓取只是当前会话和当前爬虫视角。两者冲突时不能用抓取失败推翻官方需求数据，必须转入正常登录态复核。
+
+### 选择拆解对象
+
+- 每个热词取前三到五个相关页面。
+- 跨热词重复出现的页面优先。
+- 商业产品页面、开源项目、课程、内容平台和社区回答都可以参考；是否有源码不影响参考价值。
+- 不要求参考内容与我们的用户、产品类型、宣传目的和作者角色完全相同。先识别它为什么有效，再写清差异会怎样改变内容调性、证据和转化方式。
+- 覆盖不同页面形态：工具、货架/目录、教程、对比、解决方案、社区回答和混合页。
+- 被反爬拦截时使用已登录浏览器或让用户提供存档，不把验证页当成页面内容。知乎错误页、雷池 WAF、Cloudflare challenge 等都属于拦截；`render-pages.mjs` 在可见正文不足 500 字符时会标记“疑似被反爬拦截”，Agent 仍需查看截图确认。
+
+## 5. 三层拆解头部页面
+
+页面必须分成搜索引擎层、用户层和质量层分析，不能只看标题、摘要或排名 URL。
+
+### 5a. 搜索引擎层
+
+对普通公开页面可运行：
+
+```bash
+node collectors/research-seo-demand/scripts/analyze-page.mjs \
+  <url1> <url2> ...
+```
+
+脚本自动探测常见页面编码，并提取 title、description、keywords、H1/H2/H3、正文体量、链接数、图片数和常见钩子词。结合浏览器继续检查：
+
+| 维度 | 检查内容 |
+|---|---|
+| Title | 主词、同义变体、意图词、品牌和年份如何组织；记录实际组织公式 |
+| Metadata | 是否自然覆盖词族，是否用数量、范围、更新日期或具体结果提高点击意愿，是否只是页面目录 |
+| H 标签 | H1 是否聚焦；H2/H3 是否形成真实问题和长尾矩阵 |
+| 内链 | 面包屑、栏目、相关页面和上下游任务如何连接 |
+| 正文体量 | 文本、链接、图片与页面形态是否一致 |
+| 技术信号 | canonical、结构化数据、更新时间和可抓取性 |
+
+Meta description 不要追求固定字符数，也不要写“本文介绍、包含、并给出”的目录式句子。找出头部页面如何用一个信息量高的重点提高点击意愿。
+
+### 5b. 用户层
+
+需要可重复截图和正文时运行：
+
+```bash
+node collectors/research-seo-demand/scripts/render-pages.mjs \
+  <output-directory> <url1> <url2> ...
+```
+
+脚本保存首屏、第二屏和可见正文。逐张查看，不只读取文本。
+
+第一步，从页顶到页尾逐块描述，每个可见区块恰好写一句“这一块展示什么”。
+
+第二步，从五个角度拆解：
+
+| 角度 | 检查问题 |
+|---|---|
+| 阅读钩子 | 用户为什么停留；数字、免费、预览、社会证明或直接答案怎样出现 |
+| 转化钩子 | 页面导向下载、试用、注册、购买、仓库、咨询或其他动作；路径有几条 |
+| 信息密度 | 首屏有几个决策单元；页面是即看即选还是需要连续阅读 |
+| 用户价值 | 用户不转化也能带走什么文件、方法、结论、比较或工具 |
+| 调性 | 目录站、SaaS、开发者工具、社区、课程或媒体内容如何建立信任 |
+
+### 5c. 质量层
+
+复用同一批 HTML、截图和正文，不要重新抓取。检查：
+
+| 维度 | 检查内容 |
+|---|---|
+| 信息增益 | 相比同一 SERP 的其他页面，它有什么独有内容 |
+| 数据密度 | 有多少具体数字、原始数据、示例、测试和可验证结果 |
+| 引用行为 | 是否连接权威来源、一手材料和原始出处 |
+| 实体信号 | 作者、团队、机构、更新时间和可核验身份是否存在 |
+| 负面信号 | 首屏广告、堆词、批量同构薄页、无依据主张和重复转化 |
+
+输出“信息增益缺口清单”，至少按以下三类整理：
+
+- 怎么做：缺少的具体步骤、示例、反例和可复制材料；
+- 质量标准：缺少的评判标准、rubric、阈值和强弱对比；
+- 好的执行是什么样：缺少的参数、风格选择、限制和避坑清单。
+
+## 6. 选择 SEO 机会
+
+只有同时满足以下证据才推荐页面：
+
+1. 存在可观察的需求；
+2. 搜索意图清楚且相对稳定；
+3. 产品能够真实满足用户任务；
+4. 头部结果仍存在信息、工具或体验缺口；
+5. 页面形态有明确的 SERP 依据；
+6. 从搜索访问到产品结果存在可信路径。
+
+不得只根据搜索量、摘要或排名 URL 调用 `$create-seo-page`。每个候选词都必须完成前三到五个相关页面的三层拆解。
+
+## 7. 调研产出
+
+按任务选择 Markdown、CSV、JSON 或 HTML，至少包含：
+
+- 产品、用户、任务、市场和语言；
+- 完整候选词表及生成方法；
+- Bing 原始数据和聚合数据；
+- N/A、控制词、批次与降级标记；
+- 候选词族、意图、季节性和产品匹配；
+- 每个候选词前三到五个相关页面；
+- 每个页面的搜索引擎层、逐块描述、五类用户层分析和质量层分析；
+- 跨页面的信息增益缺口；
+- 推荐机会、推荐页面形态、风险与证据。
+
+把调研结果写入调用 Model 的 Memory。原始导出、截图、正文和研究报告都是运行产物，不进入 Skill，也不提交到仓库。
