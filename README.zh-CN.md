@@ -7,7 +7,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/tsingyuai/growth-lab?style=for-the-badge&logo=github&color=071a2b)](https://github.com/tsingyuai/growth-lab/stargazers)
 [![开源](https://img.shields.io/badge/OPEN_SOURCE-YES-2667FF?style=for-the-badge)](https://github.com/tsingyuai/growth-lab)
 
-[English](https://github.com/tsingyuai/growth-lab#english)
+[简体中文](./README.md) · [English](./README.en.md)
 
 </div>
 
