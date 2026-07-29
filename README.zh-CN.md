@@ -2,12 +2,12 @@
 
 # 🧪 Growth Lab
 
-<p>用自然语言运行 SEO 与小红书增长闭环：理解产品，发现真实需求，采取行动，再从结果中找到下一步。</p>
+<p>用自然语言运行产品运营和用户增长闭环：理解产品，发现真实需求，采取行动，再从结果中找到下一步。</p>
 
 [![GitHub stars](https://img.shields.io/github/stars/tsingyuai/growth-lab?style=for-the-badge&logo=github&color=071a2b)](https://github.com/tsingyuai/growth-lab/stargazers)
 [![开源](https://img.shields.io/badge/OPEN_SOURCE-YES-2667FF?style=for-the-badge)](https://github.com/tsingyuai/growth-lab)
 
-[English](README.md)
+[English](https://github.com/tsingyuai/growth-lab#english)
 
 </div>
 
