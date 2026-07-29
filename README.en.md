@@ -8,7 +8,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/tsingyuai/growth-lab?style=for-the-badge&logo=github&color=071a2b)](https://github.com/tsingyuai/growth-lab/stargazers)
 [![Open Source](https://img.shields.io/badge/OPEN_SOURCE-YES-2667FF?style=for-the-badge)](https://github.com/tsingyuai/growth-lab)
 
-[English](./README.en.md) · [简体中文](./README.md)
+[Website](https://growthlab.tsingyuai.com) · [English](./README.en.md) · [简体中文](./README.md)
 
 </div>
 
@@ -132,5 +132,4 @@ If this direction resonates with you, open an issue and tell us what product you
 
 ## License
 
-To be decided before the first implementation release.
-
+Growth Lab is open source under the [Apache License 2.0](./LICENSE).

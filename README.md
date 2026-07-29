@@ -7,7 +7,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/tsingyuai/growth-lab?style=for-the-badge&logo=github&color=071a2b)](https://github.com/tsingyuai/growth-lab/stargazers)
 [![开源](https://img.shields.io/badge/OPEN_SOURCE-YES-2667FF?style=for-the-badge)](https://github.com/tsingyuai/growth-lab)
 
-[简体中文](./README.md) · [English](./README.en.md)
+[官网](https://growthlab.tsingyuai.com) · [简体中文](./README.md) · [English](./README.en.md)
 
 </div>
 
@@ -131,4 +131,4 @@ Growth Lab 已实现 SEO 页面增长闭环，并提供小红书复刻与结果�
 
 ## License
 
-将在首个实现版本发布前确定。
+Growth Lab 使用 [Apache License 2.0](./LICENSE) 开源。
