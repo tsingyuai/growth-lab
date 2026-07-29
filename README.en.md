@@ -8,7 +8,9 @@
 [![GitHub stars](https://img.shields.io/github/stars/tsingyuai/growth-lab?style=for-the-badge&logo=github&color=071a2b)](https://github.com/tsingyuai/growth-lab/stargazers)
 [![Open Source](https://img.shields.io/badge/OPEN_SOURCE-YES-2667FF?style=for-the-badge)](https://github.com/tsingyuai/growth-lab)
 
-[Website](https://growthlab.tsingyuai.com) · [English](./README.en.md) · [简体中文](./README.md)
+[Website](https://growthlab.tsingyuai.com)
+
+[简体中文](./README.md) · [English](./README.en.md) · [繁體中文](./docs/readmes/README.zh-Hant.md) · [Français](./docs/readmes/README.fr.md) · [Español](./docs/readmes/README.es.md) · [Русский](./docs/readmes/README.ru.md) · [Português](./docs/readmes/README.pt.md) · [Deutsch](./docs/readmes/README.de.md) · [日本語](./docs/readmes/README.ja.md) · [한국어](./docs/readmes/README.ko.md) · [Türkçe](./docs/readmes/README.tr.md) · [Tiếng Việt](./docs/readmes/README.vi.md) · [Polski](./docs/readmes/README.pl.md)
 
 </div>
 
