@@ -1,50 +1,49 @@
-# Image plan 模板
+# Image plan template
 
-完成 DAI 后、写 prompt、抓取截图或生图前填写。
+Complete this after DAI and before screenshots, image generation, or deterministic rendering.
 
-## A. 生产决策
+## A. Production decision
 
-- 主题：
-- 账号角色：官号 / 个人号
-- 目标读者：
-- 一句话用户价值：“我能 ___”
-- 钩子与证据：
-- 参考笔记/版式：
-- 产品事实来源：
-- 人工确认点：
-- 输出目录：
+- Topic:
+- Account role: official / personal
+- Reader:
+- One-sentence user value: `I can ___`
+- Hook and Product evidence:
+- Validated primary visual reference:
+- Transferable visual rules:
+- Prohibited copying boundary:
+- Product fact sources:
+- Production mode: `deterministic` / `separable-layer` / `complete-effect`
+- Is paid image generation configured and approved: yes / no / not needed
+- Output directory:
 
-## B. 逐卡映射
+## B. Card mapping
 
-| # | 卡片职责 | 准确上图文案 | 参考/版式 | 真实素材 | 制作路线 | 验收标准 |
+| # | Card role | Exact visible copy | Product evidence | Visual rule from primary | Production mode | Acceptance |
 |---|---|---|---|---|---|---|
-| 01 | 封面钩子 |  | 指定参考图 | 无/来源 | 参考图生图 | 信息流缩略图可读 |
-| 02 | 场景/价值 |  | 指定参考图 |  | 参考图生图 | 只讲一个清晰结论 |
-| 03 | 产品证据 |  | 指定参考图 | 真实截图 | 多参考图生图 | 关键事实与源截图一致 |
+| 01 | Cover hook |  | none/source | hierarchy only |  | readable in feed thumbnail |
+| 02 | Method/value |  | source | reading rhythm only |  | one useful conclusion |
+| 03 | Product proof |  | real screenshot | proof-zone proportion only |  | source facts remain accurate |
 
-允许的路线只有两种：`参考图生图`，必须把对应来源图片传给仓库内生图 Client；`多参考图生图`，用于包含当前产品真实 UI、官网、代码、数据或引用的卡片，把视觉参考图与真实浏览器截图同时传给模型。禁止因为文字多、中英文混排、精确排版或网页重绘而改用 HTML、SVG、CSS、Canvas、PPT、模板引擎或代码绘制卡片，也禁止占位符、色键和代码贴图。
+Do not map cards one-to-one merely because the reference has that count. The external sample supplies abstract visual guidance, not reusable text, brand, UI, or exact composition.
 
-## C. 素材清单
+## C. Asset inventory
 
-| 素材 | 来源 URL/路径 | 获取时间 | 使用卡片 | 隐私检查 | 状态 |
+| Asset | Source URL/path | Collected | Cards | Rights/privacy check | Status |
 |---|---|---|---|---|---|
-|  |  |  |  |  | 缺失/就绪 |
+|  |  |  |  |  | missing/ready |
 
-不得写入凭据或复制的平台正文。优先记录规范来源链接，而不是来源不明的下载文件。
+## D. Prompt requirements
 
-## D. Prompt 要求
+For `separable-layer`, prompts must prohibit all text, logos, UI, documents, citations, statistics, and watermarks. For `complete-effect`, state the role of every reference and forbid copying the source identity or presenting generated Product UI as real. Deterministic cards must lock fonts, dimensions, copy source, screenshot crop, and output path.
 
-每张卡单独一个 prompt 文件，写明用途与构图、逐字准确的可见文字、配色、全部 reference images 的路径和角色。截图卡还要写明裁剪范围、缩放、标注、界面放置方式与必须保留的事实，并禁止水印、假 UI、虚构数据、多余文字、假 logo、纯色占位区和后期贴图。执行命令必须实际包含所有规划中的 `--ref`。
+## E. Pre-render checks
 
-## E. 渲染前检查
-
-- [ ] 草稿和全部上图文字已通过 DAI。
-- [ ] 宣称有当前产品事实支持。
-- [ ] 每张卡提供不同的用户价值或证据。
-- [ ] 参考映射明确，没有为了凑卡数硬对齐。
-- [ ] 所有素材存在且来源可追溯。
-- [ ] 每张卡的生图命令都包含确认过的参考图。
-- [ ] 截图卡把视觉参考图与真实浏览器截图同时作为 reference images。
-- [ ] 当前产品 UI、官网、代码界面和仓库页面来自真实浏览器截图。
-- [ ] 没有 HTML、SVG 或其他代码模板渲染路线。
-- [ ] 用户要求的确认点已通过。
+- [ ] Draft and every visible string passed DAI.
+- [ ] Claims have Product evidence.
+- [ ] Exactly one primary external visual reference is validated.
+- [ ] Rejected candidates contribute no visual rules or model inputs.
+- [ ] Product UI, logo, data, and citations use real owned evidence.
+- [ ] Card count follows content value, not the source sequence.
+- [ ] Missing API configuration has been explained with `CONFIGURATION.md` and a deterministic alternative.
+- [ ] Paid generation has separate approval when used.

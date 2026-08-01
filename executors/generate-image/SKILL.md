@@ -48,8 +48,10 @@ node executors/generate-image/generate-image.mjs \
   --batch <jobs.jsonl> --out-dir <directory> --concurrency 3
 ```
 
-Read `GEMINI_API_KEY` or `OPENAI_API_KEY` from the process environment. Use `GOOGLE_GEMINI_BASE_URL` or `OPENAI_BASE_URL` only for a compatible HTTPS endpoint. Keep credentials out of prompts, files, logs, and commits.
+Read `GEMINI_API_KEY` or `OPENAI_API_KEY` from the process environment, root `.env.local`, or root `.env`, in that precedence order. Use `GOOGLE_GEMINI_BASE_URL` or `OPENAI_BASE_URL` only for a compatible HTTPS endpoint. Keep credentials out of prompts, files, logs, and commits.
 Do not read credentials from another application's private authentication files.
+
+Before the first provider call, run `python models/onboard-growth-lab/scripts/check_configuration.py`. If image generation is `optional-missing`, tell the user that collection, copywriting, review, and deterministic rendering can continue without an image API. When generated assets are requested, point to [`CONFIGURATION.md`](../../CONFIGURATION.md), name the OpenAI and Gemini field options, and wait for the user to configure or skip. Never ask them to paste a key into the conversation. A paid verification call requires separate approval.
 
 ## Control text and structure
 

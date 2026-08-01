@@ -1,9 +1,13 @@
 .env
 .env.*
 !.env.example
+__pycache__/
+*.py[cod]
+.pytest_cache/
 
 # Agent 现场分析产物
 seo-work/
+social-work/
 
 # 真实运营 Memory 默认保留在本地；目录说明和占位文件进入版本控制
 memory/**
