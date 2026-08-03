@@ -1,0 +1,4 @@
+interface:
+  display_name: "小红书 browser-first 采集"
+  short_description: "用本机 xiaohongshu-mcp 搜索、下载候选图片并脱敏归档"
+  default_prompt: "Use $xiaohongshu-mcp to 只读采集并展示这个主题的小红书视觉候选。"

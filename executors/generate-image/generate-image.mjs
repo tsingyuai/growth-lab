@@ -5,6 +5,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const GEMINI_MODEL = 'gemini-3.1-flash-image-2k';
 const OPENAI_MODEL = 'gpt-image-2';
@@ -13,9 +14,46 @@ const GEMINI_BASE_URL = 'https://generativelanguage.googleapis.com';
 const OPENAI_BASE_URL = 'https://api.openai.com';
 const TIMEOUT_MS = 300_000;
 
+function loadRepoEnv() {
+  const currentDir = path.dirname(fileURLToPath(import.meta.url));
+  const root = path.resolve(currentDir, '..', '..');
+  const allowed = new Set([
+    'OPENAI_API_KEY',
+    'OPENAI_BASE_URL',
+    'OPENAI_IMAGE_MODEL',
+    'GEMINI_API_KEY',
+    'GOOGLE_GEMINI_BASE_URL',
+  ]);
+  for (const filename of ['.env.local', '.env']) {
+    const envPath = path.join(root, filename);
+    if (!fs.existsSync(envPath)) continue;
+    for (const rawLine of fs.readFileSync(envPath, 'utf8').split(/\r?\n/)) {
+      const line = rawLine.trim();
+      if (!line || line.startsWith('#') || !line.includes('=')) continue;
+      const splitAt = line.indexOf('=');
+      const key = line.slice(0, splitAt).trim();
+      if (!allowed.has(key) || process.env[key]) continue;
+      let value = line.slice(splitAt + 1).trim();
+      if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
+        value = value.slice(1, -1);
+      }
+      process.env[key] = value;
+    }
+  }
+}
+
+loadRepoEnv();
+
 function parseArgs(argv) {
+  const configuredModel = process.env.OPENAI_IMAGE_MODEL;
+  const defaultModel =
+    configuredModel && MODELS.has(configuredModel)
+      ? configuredModel
+      : process.env.OPENAI_API_KEY && !process.env.GEMINI_API_KEY
+        ? OPENAI_MODEL
+        : GEMINI_MODEL;
   const options = {
-    model: GEMINI_MODEL,
+    model: defaultModel,
     references: [],
     output: null,
     prompt: null,

@@ -14,7 +14,7 @@
 | Playwright + Chromium | 批量抓取 Bing SERP、渲染竞品页并截图 | `npm --prefix collectors/research-seo-demand/scripts exec playwright -- --version`，再执行一次最小 Chromium 启动检查 | `npm install --prefix collectors/research-seo-demand/scripts`，然后 `npm --prefix collectors/research-seo-demand/scripts exec playwright install chromium`；也可使用已连接的 Runtime 真实浏览器代替批量脚本 | 不做批量 SERP/竞品页面调研，或当前 Runtime 浏览器已能完成同等检查时 |
 | uv | 第三方 Python Client 与临时依赖 | `command -v uv` | <https://docs.astral.sh/uv/> | 不使用媒体 Client、Playwright 渲染时 |
 | Make | 小红书文案与合规检查快捷入口 | `command -v make` | Xcode Command Line Tools 或系统包管理器 | 也可直接调用仓库内检查脚本 |
-| Chrome 144+ | MediaCrawler CDP 登录、默认 Playwright 渲染 | 检查 Chrome 版本及 `chrome://inspect/#remote-debugging` | <https://www.google.com/chrome/> | 不用 MediaCrawler 时 |
+| Chrome 144+ | 其他媒体平台的 MediaCrawler CDP 登录、默认 Playwright 渲染 | 检查 Chrome 版本及 `chrome://inspect/#remote-debugging` | <https://www.google.com/chrome/> | 不用 MediaCrawler 时；小红书使用独立 browser-first Client |
 
 ## API 凭据
 
@@ -26,7 +26,7 @@
 | IndexNow | `INDEXNOW_KEY` + 正确的 `SITE_URL`;站点可访问 key 文件 | key 由站点所有者自行生成，不需向第三方申请 | 不主动提交 URL 可绕过；`INDEXNOW_KEY_LOCATION` 可选 |
 | AI 生图 | `GEMINI_API_KEY` 或 `OPENAI_API_KEY` 任一条有效 | Google AI Studio / Google Cloud；OpenAI Platform | 不生图可绕过；兼容代理才配置对应 base URL |
 
-API key 默认写入根目录 `.env.local`，该文件已被 Git 忽略。只有用户明确同意后 Agent 才能写；用户也可以自行通过 shell 或密钥管理器注入。
+API key 默认由用户自行写入根目录 `.env.local` 或通过系统密钥管理器注入，该文件已被 Git 忽略。Agent 必须先给出 [`CONFIGURATION.md`](../../../CONFIGURATION.md) 的字段和步骤；只有用户明确同意后 Agent 才能写，且不得回显值。
 
 ## SEO 调研脚本
 
@@ -43,9 +43,21 @@ Onboarding SEO 时分别检查“API 数据读取”和“浏览器批量调研�
 
 默认根目录：`${GROWTHLAB_CLIENT_ROOT:-$HOME/.growth-lab/clients}`。可用 `MEDIACRAWLER_DIR` 指向已有安装。第三方源码不放入 Growth Lab 仓库。
 
+### xiaohongshu-mcp
+
+- 用途：小红书关键词搜索、用户指定笔记详情和候选图片的 browser-first 只读采集。
+- 来源：<https://github.com/xpzouying/xiaohongshu-mcp>。二进制、源码 checkout 和登录态均放在仓库外。
+- 配置：`XHS_MCP_ENDPOINT`、`XHS_MCP_BINARY`、`XHS_MCP_LOGIN_BINARY`、`XHS_MCP_COOKIES_PATH`；详细字段见 [`CONFIGURATION.md`](../../../CONFIGURATION.md)。
+- 状态检查：本机 endpoint health check、可见登录状态和一次低频最小读取；三者缺一不可。
+- 默认批次：25 条，可调整但建议 25；单批必须保持 20–30 条并立即落盘。
+- 认证：用户本人在可见窗口扫码。Cookie、token、签名媒体 URL 和登录 profile 不进入仓库或 Memory。
+- 绕过：不做小红书研究时可绕过；缺少配置时不得自动降级到 MediaCrawler。
+
+具体运行和停止规则见 [`collectors/xiaohongshu-mcp`](../../../collectors/xiaohongshu-mcp/SKILL.md)。
+
 ### MediaCrawler
 
-- 用途：小红书、抖音、快手、B站、微博、贴吧、知乎的搜索、详情、评论、媒体和创作者采集。
+- 用途：抖音、快手、B站、微博、贴吧、知乎的搜索、详情、评论、媒体和创作者采集。
 - 状态检查：目标目录存在，含 `main.py` 和 `.git`；依赖环境可解析。
 - 来源：<https://github.com/NanmiCoder/MediaCrawler>。
 - 安装：用户确认许可证和目录后执行 `git clone`，进入目录运行 `uv sync`；记录 `git rev-parse HEAD`。
@@ -56,7 +68,7 @@ Onboarding SEO 时分别检查“API 数据读取”和“浏览器批量调研�
 - 绕过：可逐平台选择“不配置”，也可绕过整个 MediaCrawler；一旦启用任一平台，CDP 不可绕过。Twitter/X、Reddit 不在该 Client 支持范围。
 - 安装前提示用户核对上游 LICENSE；不自动升级或覆盖已有目录。
 
-具体操作与平台检查入口见 [`collectors/media-crawler`](../../collectors/media-crawler/SKILL.md)。小红书已有链接的详情、评论和图片也由 MediaCrawler 完成，不再依赖 XHS-Downloader。
+具体操作与平台检查入口见 [`collectors/media-crawler`](../../../collectors/media-crawler/SKILL.md)。小红书已有链接的详情和图片由独立 `xiaohongshu-mcp` Collector 完成。
 
 ## 本地工具与用户会话
 

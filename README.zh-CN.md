@@ -103,7 +103,7 @@ Growth Lab 使用一个统一的 [onboarding Skill](models/onboard-growth-lab/SK
 帮我配置小红书采集和生图；SEO 相关能力暂时跳过。
 ```
 
-Agent 会检查 API key、第三方 Client、外部仓库、浏览器与登录态，解释缺少的配置从哪里取得，再让你决定配置或本轮绕过。第三方 Client 与登录态仍保存在仓库外；密钥、cookie 和认证 profile 不进入 Memory。
+Agent 会检查 API key、第三方 Client、外部仓库、浏览器与登录态，解释缺少的配置从哪里取得，再让你决定配置或本轮绕过。小红书使用本机 browser-first `xiaohongshu-mcp`，首次默认推荐 25 条；AI 生图需要 OpenAI 或 Gemini 其中一组本地凭据。详细字段、配置位置和删除方法见 [CONFIGURATION.md](CONFIGURATION.md)。第三方 Client 与登录态仍保存在仓库外；密钥、cookie 和认证 profile 不进入 Memory。
 
 方法与可执行脚本保存在对应 Collector / Executor / Model Skill 中。仓库不分发私有产品资料、历史采样、生成产物和运营 Memory；用户实际运行某个 Model 时，再由它创建自己的 Memory 命名空间。
 
