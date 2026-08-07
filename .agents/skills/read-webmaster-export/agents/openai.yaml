@@ -1,0 +1,4 @@
+interface:
+  display_name: "Read Webmaster Export"
+  short_description: "Normalize and interpret user-provided webmaster exports"
+  default_prompt: "Use $read-webmaster-export to inspect a webmaster CSV or JSON export for the current SEO question."

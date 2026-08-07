@@ -1,0 +1,4 @@
+interface:
+  display_name: "Read Social Export"
+  short_description: "Read social platform exports safely"
+  default_prompt: "Use $read-social-platform-export to normalize this social platform export and summarize campaign metrics."

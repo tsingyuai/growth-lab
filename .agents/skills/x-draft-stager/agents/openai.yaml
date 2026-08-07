@@ -1,0 +1,4 @@
+interface:
+  display_name: "Manage X Drafts"
+  short_description: "Save or separately delete exact approved X drafts"
+  default_prompt: "Use $x-draft-stager for the explicitly approved X draft action."

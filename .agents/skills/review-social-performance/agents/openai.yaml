@@ -1,0 +1,4 @@
+interface:
+  display_name: "Review Social Results"
+  short_description: "Review social campaign performance"
+  default_prompt: "Use $review-social-performance to review the published social content results and recommend the next action."

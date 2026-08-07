@@ -1,0 +1,4 @@
+interface:
+  display_name: "Implement Activation Improvement"
+  short_description: "Build a measurable activation improvement"
+  default_prompt: "Use $implement-activation-improvement to build the approved activation change with measurement and rollback."

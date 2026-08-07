@@ -12,12 +12,44 @@ description: 通过自然语言完成 Growth Lab 的统一依赖审计与配置�
 1. 完整读取 [依赖清单](references/dependencies.md)。
 2. 先运行 `python models/onboard-growth-lab/scripts/check_configuration.py`，再只读检查当前机器、已声明的第三方 Client 和认证 profile。脚本与回复都不得输出 secret、cookie、token 或认证文件内容。
 3. 向用户给出一张统一状态表：`已就绪`、`缺失`、`可选`、`本轮绕过`。
-4. 用自然语言询问用户要启用哪些缺失能力、哪些本轮绕过。不要替用户安装所有可选项。
-5. 对用户选择启用的项目逐项处理：
+4. 首次配置且 `image_generation=optional-missing` 时，必须单独说明：配置 Gemini 或 OpenAI 图片 API 后，宣传封面和视觉内容会优先进行 API 效果探索，通常能获得更好的视觉效果；同时说明成功调用可能计费，并明确询问用户是否现在配置。不得只在状态表中标记“可选”后略过。用户拒绝后标记本轮绕过，不重复询问。
+5. 用自然语言询问用户要启用哪些其他缺失能力、哪些本轮绕过。不要替用户安装所有可选项。
+6. 对用户选择启用的项目逐项处理：
    - API key：解释用途、官方获取入口、变量名和 [`CONFIGURATION.md`](../../CONFIGURATION.md) 中的本地配置步骤。默认请用户在 `.env.local` 或系统密钥管理器中自行配置；只有用户明确授权写入时才可修改 `.env.local`，且永不回显完整值。
    - 第三方 CLI/Client：必须有用户可直接访问的官方来源和安装方式；说明来源、许可证、安装位置与命令，用户确认后安装并检查版本。
    - 登录认证：启动上游或业务 Skill 已定义的原生交互流程，让用户本人扫码、OAuth 或输入验证码；认证材料不得进入仓库或 Memory。
-6. 每完成一项就重新执行对应的只读检查。结束时再次输出统一状态表和本轮绕过项。
+7. 每完成一项就重新执行对应的只读检查。结束时再次输出统一状态表和本轮绕过项。
+
+## 网络与代理前置门禁
+
+在任何社交平台的 API 验证、浏览器启动、扫码或账号登录之前，先读取审计结果中的 `network_access`，并向用户说明当前选择为直连、系统代理还是显式代理：
+
+1. 默认使用 `auto`：先做低成本直连测试，失败后只尝试用户已经配置的显式或系统代理；不替用户搜索、购买或选择代理。
+2. `explicit` 必须在根目录 `.env.local` 中配置 `SOCIAL_PROXY_URL`；代理 URL 和凭据属于 secret，不得要求用户粘贴到对话中。
+3. 远程官方 API 与浏览器平台流量使用所选网络路径；本机 MCP、adapter 和浏览器调试端口必须绕过代理。`SOCIAL_PROXY_BYPASS` 必须包含 `127.0.0.1,localhost,::1`。`system` 模式保留 Windows/PAC/代理客户端的按域名规则，且不绑定 Chrome 或 Edge。
+4. 外部 Client 必须明确支持并映射该网络契约；不支持时报告不兼容，不静默改走其他出口。
+5. 经用户允许后再做目标平台可达性验证。代理不可用于轮换出口、规避地域规则、限流、验证码、账号控制或平台执法；遇到这些信号仍按平台门禁停止。
+
+状态使用 `auto-configured-not-verified`、`direct-selected`、`system-configured-not-verified`、`explicit-configured-not-verified`、`missing-configuration` 或 `invalid-configuration`。未完成真实平台预检，不进入账号配置。
+
+## X browser-first 就绪门禁
+
+X 不经过 MediaCrawler。需要 X 调研时，按 [`x-browser`](../../collectors/x-browser/SKILL.md) 检查：
+
+1. `network_access` 配置有效后运行 `collect_x.py --preflight`，验证共享 `SOCIAL_PROXY_MODE` 路径；`auto` 只回退到用户已经配置的路径。不得定义或读取平台专属代理。
+2. 所选路径不可达时报告真实失败，停止且不修改系统网络或切换代理。
+3. 启动登录前，警告自动化可能导致限流、验证、登录失效或封号，并取得用户“使用非正式、可损失测试账号”的明确确认。
+4. 用户确认后用 `--login-only` 打开普通 Chrome/Edge 独立窗口，由用户本人登录；脚本不控制表单且退出后窗口仍保留，profile 保存在仓库外。CDP 只能绑定 `127.0.0.1`。
+5. profile 存在不等于登录有效。用 `--cdp-status` 检查当前专用窗口，再用 `--attach` 完成一次低频非空读取；预检、连接、登录和真实读取都通过后才报告“已就绪，可立即抓取”。
+6. 搜索前让用户选择是否保存证据、是否下载媒体；省略 `--out` 时不得持久化帖子正文。
+
+X 登录只授权读取公开研究证据，不授权点赞、转发、回复、关注、私信、上传或发布。当前发布只能生成草稿和人类协作发布包。
+
+## 内容生成与代理发布知情门禁
+
+在任何发布内容的生成、推荐、改写、翻译、渲染或其他转换开始前，先取得全生命周期确认：任何输出在研究选择、草稿、预览、保存、排期、发布和复用的任何阶段、任何情况下都不代表 Skill 的倾向、观点或背书；只有实际使用者/发布者接受对内容及使用后果负责，并确认有权操作目标账号时，才可使用该辅助工具。该限制即使内容未发布也持续有效；中立性不豁免安全、事实、权利、隐私、法律或平台规则。
+
+任何平台的草稿写入、预排期或发布还必须在账号风险确认之外，另行取得针对最终完整内容的逐次确认。用户必须明确确认：拥有文案与素材所需权利或授权；已完整审阅并知情内容生成过程；授权 Agent 仅按当前展示版本代理操作；接受内容、账号和发布后果。确认必须绑定最终文案哈希和时间；内容变化后重新确认。登录、主题批准、历史授权或笼统同意均不能代替该门禁。
 
 ## 小红书 browser-first 就绪门禁
 
@@ -47,6 +79,11 @@ MediaCrawler 的安装、登录和实际抓取必须在本统一 onboarding 中�
 
 ## 依赖边界
 
+TikTok 与 Instagram 官方 API 仅在用户明确启用对应渠道时检查。分别要求
+`TIKTOK_ACCESS_TOKEN` 与 `INSTAGRAM_ACCESS_TOKEN`，先报告 `configured-not-verified`，再经用户允许联网后运行对应 Collector 的最小只读身份请求；不得把“token 非空”报告为已跑通。
+
+TikTok/Instagram 爆款研究使用 `tiktok-mcp` / `instagram-mcp` 的本地统一 adapter 契约。OAuth/Graph token、端口配置和模拟测试都不能代替真实就绪门禁。没有已审核外部 Client 时报告 `missing-runtime`；安装、登录或真实读取前，说明自动化可能导致限流、验证、会话失效或封号，并要求用户明确确认使用非正式、可损失的专用账号。
+
 - Growth Lab 调用的脚本必须位于本仓库。不得调用 `~/.codex/skills`、`~/.claude/skills`、其他项目脚本或某个 Agent 产品的私有认证文件。
 - 仓库外只允许用户可从官方渠道直接安装的 CLI/Client，以及用户自己的浏览器登录会话。
 - 发现隐含外部 Skill/脚本时，不要尝试安装或读取；报告为仓库缺陷，改用仓库内脚本或声明为可安装的第三方 Client。
@@ -57,7 +94,7 @@ MediaCrawler 的安装、登录和实际抓取必须在本统一 onboarding 中�
 - “配置存在”与“配置有效”分开报告。环境变量非空只能证明存在；只有安全的 health check 或一次真实调用成功才能证明有效。MediaCrawler 的安装、CDP 和登录页各自通过仍不足以证明可用，必须完成最小真实读取。
 - 用户可随时说“我不需要 SEO / 不需要生图 / 不需要小红书详情提取”。将相关依赖标成`本轮绕过`，不要继续追问。
 - MediaCrawler 的 Chrome CDP 是不可分割的强制依赖，不是可选项。用户可以绕过 MediaCrawler 或某个平台，不得在保留抓取能力的同时绕过 CDP。
-- 替代关系必须显式呈现。例如生图只需 Gemini 或 OpenAI 其中一条；小红书使用 `xiaohongshu-mcp`，其余六个已声明媒体平台共用 MediaCrawler。
+- 替代关系必须显式呈现。例如生图只需 Gemini 或 OpenAI 其中一条；小红书使用 `xiaohongshu-mcp`，X 使用独立 `x-browser`，Instagram/TikTok 只有各自 adapter 通过真实门禁后才启用，其余已声明媒体平台可按许可证边界使用外部 MediaCrawler。
 - 不把“本轮绕过”持久化成全局状态。下一次 onboarding 重新检查并结合当次目标询问。
 - 不修改业务 Memory 来保存环境状态。Memory 只保存增长过程与结果。
 - 安装、登录或联网验证属于有副作用操作；先说明动作并获得用户确认。只读检查可直接执行。
@@ -72,6 +109,8 @@ MediaCrawler 的安装、登录和实际抓取必须在本统一 onboarding 中�
 | SEO 批量 SERP 与页面渲染 | 缺失 | Node.js 已安装；需从 npm 安装 Playwright 与 Chromium，或确认使用当前 Runtime 真实浏览器完成同等检查 |
 | IndexNow 提交 | 本轮绕过 | 用户不需要主动提交 URL |
 | AI 生图 | 已就绪 | OpenAI 凭据存在；尚未做付费调用验证 |
+| 海外平台网络 | auto-configured-not-verified | 将先测试直连，再测试用户已配置的回退路径；登录前仍需做目标平台可达性验证 |
+| X 只读采集 | 缺失 | 先完成共享网络预检，再用仓库外独立 profile 完成人工登录 |
 | 小红书只读采集 | 缺失 | 按 `CONFIGURATION.md` 配置本机 xiaohongshu-mcp 二进制并完成可见扫码登录 |
 | 媒体平台采集 | CDP 未就绪 | Chrome GUI auto-connect 已开启，但 `/json/version` 为 404；需启动带持久化 profile 和显式 debug port 的专用 Chrome |
 

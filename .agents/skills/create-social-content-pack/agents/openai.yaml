@@ -1,0 +1,4 @@
+interface:
+  display_name: "Create Social Pack"
+  short_description: "Create platform-ready social content packages"
+  default_prompt: "Use $create-social-content-pack to create a Xiaohongshu/WeChat content package from the current evidence."

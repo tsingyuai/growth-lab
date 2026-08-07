@@ -1,0 +1,4 @@
+interface:
+  display_name: "Instagram 内容采集"
+  short_description: "采集、筛选并脱敏归档 Instagram 高表现内容"
+  default_prompt: "Use $instagram-mcp to collect and screen Instagram references for this topic."

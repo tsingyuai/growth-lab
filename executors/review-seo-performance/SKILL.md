@@ -9,7 +9,14 @@ description: 使用 Bing Webmaster 页面与查询数据、索引状态、产品
 
 ## 收集传统搜索证据
 
+Check for `BING_WEBMASTER_API_KEY` without printing it. When it is absent, use an authorized browser session or invoke `$read-webmaster-export` for a user-provided CSV or JSON export, then state which site-owned metrics remain unavailable.
+
+When the key is present, use the Bing collector. Validate access with `query-stats` before collecting page-specific evidence:
+
 ```bash
+node collectors/bing-webmaster/bing-webmaster.mjs query-stats \
+  --site "$SITE_URL" --out <query-stats-file>
+
 node collectors/bing-webmaster/bing-webmaster.mjs page-stats \
   --site "$SITE_URL" --out <page-stats-file>
 
@@ -19,6 +26,10 @@ node collectors/bing-webmaster/bing-webmaster.mjs page-query-stats \
 node collectors/bing-webmaster/bing-webmaster.mjs url-info \
   --site "$SITE_URL" --url "$PAGE_URL"
 ```
+
+Treat authentication failure, site-permission failure, successful empty data, and valid data as different states. Do not retry authentication or authorization failures repeatedly. Empty data is unavailable evidence, not proof of an invalid key.
+
+Keep raw account-derived output in private Memory. Never print or persist the Key.
 
 读取：
 
@@ -83,7 +94,7 @@ AI Performance 的产品状态和字段可能变化，grounding queries 没有�
 
 ## 输出复盘
 
-需要视觉比较时，在当前 Model 的 Memory 生成独立 HTML，包含适合当前证据的周期比较、查询表、位置分布、产品结果、AI 引用、grounding query 分类和标注结论。原始导出放在同一 Memory 下。
+需要视觉比较时，在当前 Product workspace 的 `memory/run-seo-page-loop/` 或其他当前 Model Memory 生成独立 HTML，包含适合当前证据的周期比较、查询表、位置分布、产品结果、AI 引用、grounding query 分类和标注结论。原始导出放在同一 Memory 下，并在 Runtime 浏览器中检查。
 
 推荐一个首要下一步，并说明验证它的证据：
 

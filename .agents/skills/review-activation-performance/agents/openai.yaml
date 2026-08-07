@@ -1,0 +1,4 @@
+interface:
+  display_name: "Review Activation Performance"
+  short_description: "Review an activation change with evidence"
+  default_prompt: "Use $review-activation-performance to evaluate this activation change and recommend one next action."

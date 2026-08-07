@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "growth-lab/seedance-manifest.schema.json",
+  "title": "Growth Lab downloaded Seedance B-roll manifest",
+  "type": "object",
+  "required": ["schema_version", "status", "provider", "model_endpoint", "task_id", "request_sha256", "provider_result", "output", "remote_urls_persisted", "publication_authorized"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "status": {"const": "succeeded-downloaded-validated"},
+    "provider": {"const": "seedance-ark"},
+    "model_endpoint": {"type": "string", "minLength": 1},
+    "task_id": {"type": "string", "minLength": 1},
+    "request_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "request": {"type": "object"},
+    "provider_result": {"type": "object"},
+    "output": {
+      "type": "object",
+      "required": ["file", "sha256", "duration_seconds", "width", "height", "has_audio"],
+      "properties": {
+        "file": {"type": "string", "pattern": "^raw/[A-Za-z0-9._-]+\\.mp4$"},
+        "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "duration_seconds": {"type": "number", "minimum": 1, "maximum": 30},
+        "width": {"type": "integer", "minimum": 256},
+        "height": {"type": "integer", "minimum": 256},
+        "fps": {"type": ["number", "null"]},
+        "has_audio": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "remote_urls_persisted": {"const": false},
+    "publication_authorized": {"const": false},
+    "finished_at": {"type": "string"}
+  },
+  "additionalProperties": false
+}

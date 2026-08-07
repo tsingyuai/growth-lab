@@ -1,0 +1,4 @@
+interface:
+  display_name: "Social Content Growth Loop"
+  short_description: "Create, review, publish, and measure social content loops"
+  default_prompt: "Use $run-social-content-loop to create or continue a Xiaohongshu/WeChat social content growth loop from current product context and Memory."

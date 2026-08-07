@@ -1,10 +1,10 @@
 # Rendering modes
 
-Choose the smallest mode that preserves truthful Product evidence and exact approved copy.
+Check image-provider configuration first. When a provider is configured and the user approves the paid call, prefer the mode that can produce the strongest visual result while preserving truthful Product evidence and exact approved copy.
 
 | Need | Mode | Implementation |
 |---|---|---|
-| Exact Chinese, dense information, repeated series, real UI | `deterministic` | HTML/CSS, Canvas, SVG, or Pillow |
+| Purely structural output, declined/unavailable API, or deterministic correction zones | `deterministic` | HTML/CSS, Canvas, SVG, or Pillow |
 | Visual depth without generated text or UI | `separable-layer` | `generate-image` background/effect + deterministic composition |
 | Model-led full composition exploration | `complete-effect` | `generate-image --ref` followed by zone review and correction |
 
@@ -43,7 +43,7 @@ Classify each zone:
 
 ## API configuration boundary
 
-Do not call a provider when configuration is missing. Tell the user that AI generation is optional, point to `CONFIGURATION.md`, name the required variables, and offer deterministic rendering. Before the first paid verification call, ask for approval and state the timeout and output count.
+Run the configuration check before selecting a mode. When configuration exists, recommend API-led effect exploration, disclose provider/model, scope, timeout, output count, and paid boundary, and wait for approval. When configuration is missing, proactively ask on the first image-production decision whether the user wants to configure an API for a better visual result; point to `CONFIGURATION.md` and name the required variables. Do not call a provider until configured and approved. If the user declines, offer deterministic rendering and do not ask again in the same run.
 
 ## Output
 

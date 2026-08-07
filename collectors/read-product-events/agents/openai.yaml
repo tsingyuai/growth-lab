@@ -1,0 +1,4 @@
+interface:
+  display_name: "Read Product Events"
+  short_description: "Normalize event exports and measure funnels"
+  default_prompt: "Use $read-product-events to inspect this product event export and measure the stated funnel."

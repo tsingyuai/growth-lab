@@ -7,8 +7,8 @@
 每次从文件系统重新检查，不维护额外状态：
 
 ```bash
-ls memory/xhs-replicate/publish-log/$(date +%Y-%m).md
-ls -t memory/xhs-replicate/publish-log/*.md | head -3
+ls workspaces/<product-slug>/memory/xhs-replicate/publish-log/$(date +%Y-%m).md
+ls -t workspaces/<product-slug>/memory/xhs-replicate/publish-log/*.md | head -3
 ```
 
 - 当月日志不存在：询问用户是否已回收 24h/48h/7d 数据以及从哪里读取。
@@ -17,7 +17,7 @@ ls -t memory/xhs-replicate/publish-log/*.md | head -3
 
 ## 发布日志模板
 
-日志按月写入 `memory/xhs-replicate/publish-log/YYYY-MM.md`，每条发布追加一个 entry：
+日志按月写入当前产品工作区的 `memory/xhs-replicate/publish-log/YYYY-MM.md`，每条发布追加一个 entry：
 
 ```markdown
 ---

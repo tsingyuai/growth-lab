@@ -1,0 +1,4 @@
+interface:
+  display_name: "Research Social Content"
+  short_description: "Research public social content patterns"
+  default_prompt: "Use $research-social-content to research public Xiaohongshu and WeChat content patterns for this product topic."

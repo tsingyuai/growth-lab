@@ -9,6 +9,8 @@ description: 从目标用户的真实搜索场景出发，对抗式审查并修�
 
 ## 建立用户任务
 
+Before reviewing, read the persisted competitor research and evidence-and-design rationale referenced by the page design document. If the design does not identify the matching research report, or the report lacks the required three-to-five-page analysis, block release and return to research rather than inferring the missing rationale from the finished page.
+
 先写清：
 
 - 目标用户；
@@ -41,6 +43,10 @@ description: 从目标用户的真实搜索场景出发，对抗式审查并修�
 - 转化测试：合并重复 CTA，保留与搜索任务一致的行动。
 
 现实中的商业产品、课程、社区内容、开源项目和经验做法都可以保留。是否有源码不是参考标准；判断标准是目标用户是否关心，以及它与当前产品的差异会怎样改变内容调性和转化方式。
+
+- Evidence-handoff test: verify that every major block can be traced to a repeated search expectation, a Product-specific information gain, or necessary claim evidence.
+- Competitor-synthesis test: remove or redesign material that copies one competitor's distinctive wording, visual identity, proprietary asset, unique example, or exact page sequence instead of synthesizing patterns across sources.
+- Design-proof test: verify that the user-facing rationale accurately explains which observed patterns informed the page and which choices deliberately differentiate it.
 
 ## Metadata
 

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Inspect SEO Content Inventory"
+  short_description: "Inventory existing SEO pages before choosing an action"
+  default_prompt: "Use $inspect-seo-content-inventory to inspect existing public content before recommending an SEO action."

@@ -31,7 +31,10 @@ Use official APIs, authorized access, public sources, and user-provided data. Fo
 
 - [`bing-webmaster/`](bing-webmaster/)：读取关键词热度、页面搜索表现、查询表现与 URL 索引信息。
 - [`research-seo-demand`](research-seo-demand/SKILL.md)：扩展关键词族、验证热度、研究实时 SERP 并选择 SEO 页面机会。
-- [`research-product`](research-product/SKILL.md)：在真实 loop 中渐进研究产品，并把稳定认知增量写入 `SOUL.md`。
+- [`research-product`](research-product/SKILL.md)：在真实 loop 中渐进研究产品，并把稳定认知增量写入当前产品工作区的 `SOUL.md`。
 - [`xiaohongshu-mcp`](xiaohongshu-mcp/SKILL.md)：通过本机 browser-first 服务只读搜索小红书、下载视觉候选并脱敏归档，首次默认推荐 25 条。
+- [`tiktok-mcp`](tiktok-mcp/SKILL.md)：以与小红书一致的 browser-first 契约采集 TikTok 搜索批次、封面和用户选择的视觉候选；官方 OAuth 只作为内部就绪检查。统一脚本与契约已实现，真实 adapter 仍为 `missing-runtime`。
+- [`instagram-mcp`](instagram-mcp/SKILL.md)：以与小红书一致的 browser-first 契约采集 Instagram 搜索批次、帖子/Reel 封面和用户选择的视觉候选；Graph API 只作为内部就绪检查。统一脚本与契约已实现，真实 adapter 仍为 `missing-runtime`。
+- [`x-browser`](x-browser/SKILL.md)：使用全平台共享网络配置预检 X，再通过仓库外独立 profile 只读搜索、严格过滤并按用户选择保存正文和图片。
 - [`media-crawler`](media-crawler/SKILL.md)：统一安装、认证、配置、运行和诊断其他平台使用的外部 MediaCrawler。
 - 其他平台方法论：[`抖音`](media-crawler-douyin/SKILL.md) · [`快手`](media-crawler-kuaishou/SKILL.md) · [`B站`](media-crawler-bilibili/SKILL.md) · [`微博`](media-crawler-weibo/SKILL.md) · [`贴吧`](media-crawler-tieba/SKILL.md) · [`知乎`](media-crawler-zhihu/SKILL.md)。

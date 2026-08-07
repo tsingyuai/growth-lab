@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "growth-lab/research-plan.schema.json",
+  "title": "Growth Lab social research plan",
+  "type": "object",
+  "required": ["schema_version", "run_id", "objective", "research", "distribution", "content_governance"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "run_id": {"type": "string", "minLength": 1},
+    "objective": {"type": "string", "minLength": 1},
+    "research": {
+      "type": "object",
+      "required": ["mode", "sources", "learning_scope"],
+      "properties": {
+        "mode": {"enum": ["independent", "synthesize"]},
+        "sources": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["id", "platform", "role", "evidence_files"],
+            "properties": {
+              "id": {"type": "string", "minLength": 1},
+              "platform": {"enum": ["x", "xiaohongshu", "instagram", "tiktok", "email", "user-provided"]},
+              "role": {"enum": ["primary", "supporting"]},
+              "evidence_files": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
+            },
+            "additionalProperties": false
+          }
+        },
+        "learning_scope": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"enum": ["topic", "structure", "tone", "visual", "format"]}
+        },
+        "forbidden_learning": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "distribution": {
+      "type": "object",
+      "required": ["mode", "targets"],
+      "properties": {
+        "mode": {"enum": ["single-target", "multi-target"]},
+        "targets": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["platform", "account_role", "objective", "adapter_mode"],
+            "properties": {
+              "platform": {"enum": ["x", "xiaohongshu", "wechat", "instagram", "tiktok", "email"]},
+              "account_role": {"enum": ["official", "brand", "personal"]},
+              "objective": {"type": "string", "minLength": 1},
+              "adapter_mode": {"enum": ["platform-native", "close-adaptation", "close-replication"]},
+              "formats": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {"enum": ["text", "image", "video"]}
+              },
+              "replication_policy": {"$ref": "#/$defs/replicationPolicy"}
+            },
+            "allOf": [
+              {
+                "if": {"properties": {"adapter_mode": {"const": "close-replication"}}, "required": ["adapter_mode"]},
+                "then": {"required": ["replication_policy"]}
+              }
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "content_governance": {"$ref": "#/$defs/contentGovernance"}
+  },
+  "$defs": {
+    "replicationPolicy": {
+      "type": "object",
+      "required": ["risk_accepted", "single_reference_only", "replace_source_assets", "rights_basis", "confirmed_at"],
+      "properties": {
+        "risk_accepted": {"const": true},
+        "single_reference_only": {"const": true},
+        "replace_source_assets": {"const": true},
+        "rights_basis": {"type": "string", "minLength": 1},
+        "confirmed_at": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "contentGovernance": {
+      "type": "object",
+      "required": ["all_stages_scope_acknowledged", "skill_neutrality_persistent_acknowledged", "publisher_responsibility_accepted", "account_authority_confirmed", "safety_rules_remain_applicable_acknowledged", "confirmed_at"],
+      "properties": {
+        "all_stages_scope_acknowledged": {"type": "boolean"},
+        "skill_neutrality_persistent_acknowledged": {"type": "boolean"},
+        "publisher_responsibility_accepted": {"type": "boolean"},
+        "account_authority_confirmed": {"type": "boolean"},
+        "safety_rules_remain_applicable_acknowledged": {"type": "boolean"},
+        "confirmed_at": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

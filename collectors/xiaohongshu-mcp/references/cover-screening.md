@@ -36,10 +36,10 @@ Score only covers that pass the hard gate:
 
 Require at least 75/100. Record the dimension scores and one rejection reason for every reviewed cover. It is valid for all 25 covers to fail.
 
-## Detail and user choice
+## Detail, autonomous selection, and user recovery
 
-Fetch detail images only for 3-8 covers that passed the gate. Inspect every image in each selected note. Then show the user the qualifying candidates with actual inline images, titles, visible engagement, score, and concise fit/risk notes. A filesystem path or hyperlink alone is not a usable choice interface. Display at least the representative first image for every option directly in the conversation; provide paths only as supplemental access.
+Fetch detail images only for 3-8 covers that passed the gate. Inspect every image in each selected note. Under an explicitly approved autonomous policy, select exactly one qualifying reference internally and do not display its image by default. The internal file remains available to the renderer but must not be copied into the final package, normal response, or publishing handoff.
 
-Before sending the choice response, verify that the response channel can render each image. If inline rendering is unavailable or cannot be confirmed, include the clean public Xiaohongshu note URL for every candidate in the same response. Never expose signed URLs, `xsecToken`, cookies, or a local filesystem path as the only way to make the choice. A loopback preview may be used as a convenience, but it never replaces the public-source fallback and must never serve the repository root, `.env`, login state, or unrelated Memory.
+When the user must choose or explicitly asks to inspect the evidence, present titles, scores, fit/risk notes, and clean public Xiaohongshu URLs. Inline candidate images may be shown only for that source-review decision; never expose signed URLs, `xsecToken`, cookies, or a local filesystem path. A loopback preview may be used as a convenience, but it must never serve the repository root, `.env`, login state, or unrelated Memory.
 
-The user chooses the primary reference when they are present. An autonomous run may recommend one only when the approved run policy allows it. Never force a primary from an inadequate set; use a new product-oriented query instead.
+If every candidate fails, do not silently continue or force a primary. Give the user the Agent's own judgment: state that the batch is unsuitable and summarize concrete rejection reasons such as missing proof zones, weak mobile hierarchy, raw screenshots, dense text, rights risk, or product mismatch. Then ask whether the user wants to provide a Xiaohongshu note they consider suitable. A new product-oriented query is the alternative only after this decision is visible.

@@ -1,0 +1,7 @@
+interface:
+  display_name: "Capture Screen Video"
+  short_description: "Record validated product-motion evidence"
+  default_prompt: "Use $capture-screen-video to capture the approved window or region for a product-demo video."
+
+policy:
+  allow_implicit_invocation: false

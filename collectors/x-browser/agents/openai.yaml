@@ -1,0 +1,4 @@
+interface:
+  display_name: "X Browser Collector"
+  short_description: "直连/代理预检后，只读搜索并可选保存 X 公开帖子"
+  default_prompt: "Use $x-browser to 预检网络并只读调研这个 X 话题。"

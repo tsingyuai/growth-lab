@@ -1,0 +1,4 @@
+interface:
+  display_name: "Social Content Package"
+  short_description: "整理单个平台原生文案、素材、边界与授权清单"
+  default_prompt: "Use $social-content-package to finalize one reviewed platform-native publication package."

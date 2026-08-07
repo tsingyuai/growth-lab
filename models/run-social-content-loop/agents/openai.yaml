@@ -1,0 +1,4 @@
+interface:
+  display_name: "Social Content Growth Loop"
+  short_description: "编排单/多平台调研、原生内容版本与结果复盘"
+  default_prompt: "Use $run-social-content-loop to 编排社交平台调研，并为一个或多个目标平台生成独立原生版本。"

@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "growth-lab/video-script.schema.json",
+  "title": "Growth Lab production-first video script",
+  "type": "object",
+  "required": ["schema_version", "title", "workflow_mode", "status", "total_duration_seconds", "shots"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "title": {"type": "string", "minLength": 1, "maxLength": 120},
+    "workflow_mode": {"enum": ["fully-automated", "human-reviewed"]},
+    "status": {"enum": ["draft", "presented", "approved", "locked"]},
+    "total_duration_seconds": {"type": "number", "exclusiveMinimum": 0, "maximum": 300},
+    "shots": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "start_seconds", "end_seconds", "purpose", "source_type", "picture", "narration", "subtitle", "requirements"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,31}$"},
+          "start_seconds": {"type": "number", "minimum": 0},
+          "end_seconds": {"type": "number", "exclusiveMinimum": 0},
+          "purpose": {"type": "string", "minLength": 1, "maxLength": 240},
+          "source_type": {"enum": ["screen-recording", "product-screenshot", "rendered-card", "deterministic-animation", "generated-broll", "text"]},
+          "picture": {"type": "string", "minLength": 1, "maxLength": 600},
+          "narration": {"type": "string", "maxLength": 300},
+          "subtitle": {"type": "string", "maxLength": 300},
+          "requirements": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": ["id", "kind", "instruction", "expected_visible_state", "minimum_hold_seconds"],
+              "properties": {
+                "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"},
+                "kind": {"enum": ["product-action", "visual-state", "static-evidence", "animation-state", "narration", "subtitle"]},
+                "instruction": {"type": "string", "minLength": 1, "maxLength": 500},
+                "expected_visible_state": {"type": "string", "minLength": 1, "maxLength": 500},
+                "minimum_hold_seconds": {"type": "number", "minimum": 0, "maximum": 30}
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Publish X Officially"
+  short_description: "Publish exact approved X posts through the official API"
+  default_prompt: "Use $publish-x-official for the separately approved official X API action."

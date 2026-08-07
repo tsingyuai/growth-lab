@@ -1,0 +1,7 @@
+interface:
+  display_name: "Render Card Animation"
+  short_description: "Create validated motion scenes from approved cards"
+  default_prompt: "Use $render-card-animation to render the approved card sequence as an isolated HTML animation."
+
+policy:
+  allow_implicit_invocation: false

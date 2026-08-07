@@ -1,0 +1,4 @@
+interface:
+  display_name: "Render Social Card Pack"
+  short_description: "Create effect-first cards with real Product proof"
+  default_prompt: "Use $render-social-card-pack to create an effect-first card pack with real Product screenshots, accurate annotations, varied layouts, and final-pixel review."

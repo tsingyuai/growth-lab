@@ -21,6 +21,8 @@ description: 完整调研并确定 SEO 机会：从产品理解、领域词表�
 
 对无法从产品材料确认的用户问题和值得验证的价值保持开放，不要把产品功能列表直接改写成关键词列表。
 
+When the Product already has public pages, invoke `$inspect-seo-content-inventory` before recommending a new content action, unless a recent inventory in the current Product Memory already covers the relevant site state and topic. Use it to identify existing pages, path-scale patterns, indexability signals, and possible intent overlap. Do not treat an inventory signal as an automatic merge, deletion, redirect, canonical, or `noindex` decision.
+
 ## 2. 拆解领域词表并扩展关键词
 
 七个方向逐一展开，每个方向单独成词表，保持不同具体度的词可以横向比较：
@@ -67,6 +69,33 @@ printf '关键词一\n关键词二\n' | \
 ```
 
 脚本从 `BING_WEBMASTER_API_KEY` 读取凭据，输出按 `avgStrict` 降序的表格和 CSV。用 `BING_KEYWORD_OUT` 更改 CSV 文件名。
+
+Check whether `BING_WEBMASTER_API_KEY` exists without printing its value.
+
+### Without a Bing key
+
+- Do not call the Bing Client.
+- When the user provides a webmaster CSV or JSON export, invoke `$read-webmaster-export` and use its validated evidence for the current question.
+- Continue product understanding and candidate expansion with product evidence, customer language, stable public autocomplete, related searches, communities, reviews, and live SERPs.
+- State that Bing keyword statistics and site-owned impressions, clicks, CTR, and positions are unavailable.
+- A public-evidence opportunity still requires stable intent, a three-to-five-page leading-result analysis, product fit, information gain, and a measurable product path.
+- When public SERPs are rewritten, unstable, blocked, or incomplete, stop the affected selection and record the missing evidence. Do not rank candidates from navigation labels, isolated titles, intuition, or guessed volume.
+- Offer a webmaster export, a normal browser session, or manually captured leading URLs as recovery paths.
+
+### With a Bing key
+
+Keep the key in the current process environment. Never print it, pass it as a command argument, or write it into source, Memory, SOUL, Markdown, JSON, or logs.
+
+For site-owned evidence, first run a low-impact read such as:
+
+```bash
+node collectors/bing-webmaster/bing-webmaster.mjs query-stats \
+  --site <canonical-site-url> --out <private-memory-path>/query-stats.json
+```
+
+Interpret authentication or authorization failure as unavailable access and avoid repeated retries. Treat a successful empty response as unavailable evidence, not proof that the key is invalid.
+
+For candidate demand, call:
 
 需要保存 Bing 原始周数据时运行通用 Client：
 
@@ -208,6 +237,10 @@ node collectors/research-seo-demand/scripts/render-pages.mjs \
 - 质量标准：缺少的评判标准、rubric、阈值和强弱对比；
 - 好的执行是什么样：缺少的参数、风格选择、限制和避坑清单。
 
+Store raw account-derived output under the team's private Memory or data-retention path. Put only redacted aggregates, interpretations, limitations, and source references in material intended for sharing.
+
+Bing statistics complement rather than replace live SERP inspection.
+
 ## 6. 选择 SEO 机会
 
 只有同时满足以下证据才推荐页面：
@@ -236,3 +269,39 @@ node collectors/research-seo-demand/scripts/render-pages.mjs \
 - 推荐机会、推荐页面形态、风险与证据。
 
 把调研结果写入调用 Model 的 Memory。原始导出、截图、正文和研究报告都是运行产物，不进入 Skill，也不提交到仓库。
+
+Compare the demand opportunity with the existing content inventory. Prefer improving, clarifying, consolidating, keeping, or investigating an existing page when that better serves the user and Product than creating another URL. Recommend a new page only when existing pages do not adequately fulfill the distinct intent and the new page has a substantive purpose.
+
+Shortlist a small set of distinct page directions, then compare each one on value and difficulty.
+
+Assess value from:
+
+- observable demand and intent stability;
+- Product fit and information gain;
+- credible movement toward the Product outcome;
+- strategic reuse as a supporting page, topic cluster, or learning asset.
+
+Assess difficulty from:
+
+- strength and authority of leading results;
+- evidence, testing, writing, design, and maintenance burden;
+- implementation, localization, instrumentation, or external-access dependencies;
+- legal, compliance, trust, or brand risk.
+
+Use qualitative `high`, `medium`, or `low` judgments unless comparable data supports a more precise score. Do not invent numeric scores or search volume. Prefer high-value, low-difficulty directions; break close ties with evidence confidence and speed to learning.
+
+Return one primary recommendation and two or three meaningful alternatives when available. For each, state value, difficulty, the plain-language reason, and why it ranks above or below the others. Alternatives may remain preliminary, but label their evidence confidence. If an alternative becomes the selected action later, complete its live-SERP and leading-page analysis before creation.
+
+For the primary recommendation, return the selected query family, intent, seasonality, winning page shape, leading references, information-gain gaps, product fit, risks, and the evidence behind the recommendation. Use a task-appropriate Markdown, CSV, JSON, or HTML file.
+
+Before handing the action to page creation, persist the completed report in the current Product workspace's `memory/run-seo-page-loop/`. Include a clearly labeled evidence handoff that makes these items recoverable without relying on conversation memory:
+
+- report path, observation time, market, language, and selected query family;
+- the three to five leading page URLs and their top-to-bottom block descriptions;
+- repeated page-shape and search-presentation patterns;
+- conversion, evidence, utility, tone, and negative-quality observations;
+- synthesized information-gain gaps and Product-specific opportunity;
+- relevant content-inventory result and create, improve, merge, keep, investigate, or wait decision;
+- material limitations, stale evidence risks, and sources that should be reopened before implementation.
+
+This is a semantic handoff requirement, not a universal file schema. Do not reduce it to a recommendation summary; the downstream creator and reviewer must be able to recover the underlying page evidence.

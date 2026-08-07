@@ -10,11 +10,13 @@
 |---|---|---|---|---|
 | Git | 拉取外部 Client、读取版本 | `command -v git` | 系统包管理器或 Git 官方安装包 | 不安装任何第三方 Client 时 |
 | Python 3 | 媒体采集、归一化、lint、渲染 | `command -v python3` | Python 官方发行版或系统包管理器 | 只使用纯 Node 能力时 |
+| jsonschema 4.26.0 | 跨平台编排公开 Schema 的 Draft 2020-12 meta-schema 与 fixture 测试 | 仓库外开发 venv 中运行 `python -c "import jsonschema"` | `pip install -r models/run-social-content-loop/requirements-dev.txt` | 只运行现有编排、不修改公开 Schema 时可绕过；运行时仍有标准库业务验证器 |
 | Node.js | Bing、IndexNow、SEO 调研脚本、通用生图 Executor | `command -v node` | Node.js 官方发行版或版本管理器 | 不使用这些能力时 |
 | Playwright + Chromium | 批量抓取 Bing SERP、渲染竞品页并截图 | `npm --prefix collectors/research-seo-demand/scripts exec playwright -- --version`，再执行一次最小 Chromium 启动检查 | `npm install --prefix collectors/research-seo-demand/scripts`，然后 `npm --prefix collectors/research-seo-demand/scripts exec playwright install chromium`；也可使用已连接的 Runtime 真实浏览器代替批量脚本 | 不做批量 SERP/竞品页面调研，或当前 Runtime 浏览器已能完成同等检查时 |
 | uv | 第三方 Python Client 与临时依赖 | `command -v uv` | <https://docs.astral.sh/uv/> | 不使用媒体 Client、Playwright 渲染时 |
 | Make | 小红书文案与合规检查快捷入口 | `command -v make` | Xcode Command Line Tools 或系统包管理器 | 也可直接调用仓库内检查脚本 |
 | Chrome 144+ | 其他媒体平台的 MediaCrawler CDP 登录、默认 Playwright 渲染 | 检查 Chrome 版本及 `chrome://inspect/#remote-debugging` | <https://www.google.com/chrome/> | 不用 MediaCrawler 时；小红书使用独立 browser-first Client |
+| 海外平台网络路径 | `SOCIAL_PROXY_MODE`;显式代理时另需 `SOCIAL_PROXY_URL`;本机绕过需 `SOCIAL_PROXY_BYPASS` | 只报告模式、URL 是否存在和 loopback 绕过，不输出代理地址或凭据 | 默认 `auto` 先测直连；按域名且跨浏览器路由使用用户已有的 Windows/PAC/代理客户端规则并选 `system` | 不使用任何海外平台时可绕过；不得自动选择、购买或轮换代理 |
 
 ## API 凭据
 
@@ -25,8 +27,14 @@
 | Bing Webmaster 数据 | `BING_WEBMASTER_API_KEY` | Bing Webmaster Tools 账号的 API access | 不做 SEO 需求/表现研究可绕过 |
 | IndexNow | `INDEXNOW_KEY` + 正确的 `SITE_URL`;站点可访问 key 文件 | key 由站点所有者自行生成，不需向第三方申请 | 不主动提交 URL 可绕过；`INDEXNOW_KEY_LOCATION` 可选 |
 | AI 生图 | `GEMINI_API_KEY` 或 `OPENAI_API_KEY` 任一条有效 | Google AI Studio / Google Cloud；OpenAI Platform | 不生图可绕过；兼容代理才配置对应 base URL |
+| TikTok 已授权账号读取 | `TIKTOK_ACCESS_TOKEN` 有效且最小身份读取成功 | TikTok for Developers 中用户自有 App 的 OAuth 授权 | 仅验证授权账号；不代表搜索或下载任意公开视频 |
+| Instagram 已授权账号读取 | `INSTAGRAM_ACCESS_TOKEN` 有效且最小身份读取成功 | Meta for Developers 中用户自有 App 的 Instagram 授权 | 仅验证授权账号；账号类型、字段和权限取决于 App 配置 |
+
+TikTok 与 Instagram 的公开内容研究不由上述 token 探针提供。仓库内 `tiktok-mcp` 与 `instagram-mcp` 已定义统一的 loopback adapter 契约、采集脚本和脱敏输出，但当前没有经过许可证与真实读取验证的 adapter Client。状态必须报告为 `missing-runtime`，不得仅凭默认端口或 OAuth token 标记就绪。选定第三方 Client 后，必须把公开来源、许可证、安装位置、账号风险门禁和最小真实读取步骤补入本清单。
 
 API key 默认由用户自行写入根目录 `.env.local` 或通过系统密钥管理器注入，该文件已被 Git 忽略。Agent 必须先给出 [`CONFIGURATION.md`](../../../CONFIGURATION.md) 的字段和步骤；只有用户明确同意后 Agent 才能写，且不得回显值。
+
+首次 Growth Lab 配置时，如图片 API 缺失，主动说明配置 Gemini 或 OpenAI 后宣传视觉将优先进行 API 效果探索，通常能获得更好的效果，并明确询问是否现在配置。说明后续成功调用可能计费。用户选择需要后，运行 `scripts/open_local_configuration.py` 弹出本机配置文件；保存后重新执行脱敏检查。每轮首次实际付费调用前仍需展示提供商、模型、任务范围和候选数量并再次确认。用户拒绝时使用确定性渲染或无图交付，不在同一轮重复询问。
 
 ## SEO 调研脚本
 
@@ -54,6 +62,19 @@ Onboarding SEO 时分别检查“API 数据读取”和“浏览器批量调研�
 - 绕过：不做小红书研究时可绕过；缺少配置时不得自动降级到 MediaCrawler。
 
 具体运行和停止规则见 [`collectors/xiaohongshu-mcp`](../../../collectors/xiaohongshu-mcp/SKILL.md)。
+
+### X browser-first
+
+- 用途：X 连接预检、人工登录、关键词搜索、正文/互动/公开 URL 归一化和可选图片下载。
+- Client：仓库内 [`collect_x.py`](../../../collectors/x-browser/scripts/collect_x.py)，不使用 MediaCrawler 或其他项目脚本。
+- Runtime：仓库外 Python venv，默认由 `X_BROWSER_PYTHON` 指向；依赖见 `collectors/x-browser/requirements.txt`，并使用本机 Chrome 或 Edge（`auto` 自动回退）。
+- 网络：统一使用 `SOCIAL_PROXY_MODE`、`SOCIAL_PROXY_URL` 和 `SOCIAL_PROXY_BYPASS`，不得创建 X 专属代理配置。
+- 认证：用户在普通 Chrome/Edge 独立窗口中登录，脚本不控制表单、不自动关闭窗口；仅通过 `127.0.0.1:X_BROWSER_CDP_PORT` 连接，profile 留在仓库外，必须用连接状态、Cookie 检查和最小真实读取验证。
+- 保存：用户选择；不传 `--out` 不落盘，媒体下载默认关闭。
+- 权限：只读公开研究，不包含互动、私信、上传或发布。当前 X 发布只支持人类协作发布包。
+- 绕过：不做 X 调研时可绕过；网络路径失败或没有测试账号时报告不可用并停止。
+
+具体运行和停止规则见 [`collectors/x-browser`](../../../collectors/x-browser/SKILL.md)。
 
 ### MediaCrawler
 

@@ -1,0 +1,4 @@
+interface:
+  display_name: "TikTok 内容采集"
+  short_description: "采集、筛选并脱敏归档 TikTok 平台高表现内容"
+  default_prompt: "Use $tiktok-mcp to collect and screen TikTok references for this topic."

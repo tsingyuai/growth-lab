@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "growth-lab/platform-package.schema.json",
+  "title": "Growth Lab platform-native publication package",
+  "type": "object",
+  "required": ["schema_version", "package_id", "platform", "canonical_brief_sha256", "account_role", "adapter_mode", "copy_file", "source_boundary_file", "asset_files", "native_constraints", "content_governance", "content_authorization", "publish"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "package_id": {"type": "string", "minLength": 1},
+    "platform": {"enum": ["x", "xiaohongshu", "wechat", "instagram", "tiktok", "email"]},
+    "canonical_brief_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "account_role": {"enum": ["official", "brand", "personal"]},
+    "adapter_mode": {"enum": ["platform-native", "close-adaptation", "close-replication"]},
+    "replication_policy": {
+      "type": "object",
+      "required": ["risk_accepted", "single_reference_only", "replace_source_assets", "rights_basis", "confirmed_at"],
+      "properties": {
+        "risk_accepted": {"const": true},
+        "single_reference_only": {"const": true},
+        "replace_source_assets": {"const": true},
+        "rights_basis": {"type": "string", "minLength": 1},
+        "confirmed_at": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "copy_file": {"type": "string", "minLength": 1},
+    "source_boundary_file": {"type": "string", "minLength": 1},
+    "asset_files": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "video_manifest_file": {"type": "string", "minLength": 1},
+    "native_constraints": {"type": "object", "minProperties": 1},
+    "content_governance": {"type": "object"},
+    "content_authorization": {"type": "object"},
+    "draft_staging": {
+      "type": "object",
+      "required": ["approved"],
+      "properties": {"approved": {"type": "boolean"}},
+      "additionalProperties": false
+    },
+    "publish": {
+      "type": "object",
+      "required": ["approved", "auto_publish", "confirmed_at"],
+      "properties": {
+        "approved": {"type": "boolean"},
+        "auto_publish": {"type": "boolean"},
+        "confirmed_at": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"adapter_mode": {"const": "close-replication"}}, "required": ["adapter_mode"]},
+      "then": {"required": ["replication_policy"]}
+    }
+  ],
+  "additionalProperties": false
+}

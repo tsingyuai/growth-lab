@@ -1,12 +1,12 @@
 # Memory / 持久化记忆
 
-Every Model owns one Memory namespace:
+This root directory is retained only as a migration notice. New runs must use the current Product workspace. Every Model owns one Memory namespace inside that workspace:
 
 每个 Model 拥有一个对应的 Memory 命名空间：
 
 ```text
-models/<model-name>/       # 方法论：如何观察、行动和复盘
-memory/<model-name>/       # 记忆：历次真实运营观察、结论和下一步动作
+models/<model-name>/                              # 方法论：如何观察、行动和复盘
+workspaces/<product-slug>/memory/<model-name>/    # 记忆：历次真实运营观察、结论和下一步动作
 ```
 
 ## What Memory contains / Memory 保存什么
@@ -22,7 +22,7 @@ Memory uses ordinary files and follows the needs of each observation. The Agent 
 Memory 使用普通文件，并根据每次观察的实际需要选择形式。Agent 可以使用 Markdown、JSON、CSV、截图、导出的原始数据或独立 HTML 复盘。文件名使用可排序的日期或时间戳和清晰主题，例如：
 
 ```text
-memory/run-seo-page-loop/
+workspaces/<product-slug>/memory/run-seo-page-loop/
 ├── 2026-07-24-keyword-baseline.json
 ├── 2026-07-24-page-launch.md
 └── 2026-08-07-bing-performance-review.html
@@ -31,8 +31,9 @@ memory/run-seo-page-loop/
 需要小红书工作流时，由对应 Model 在运行时创建命名空间：
 
 ```text
-memory/xhs-replicate/                 # 运行时生成；不随仓库分发私有基线内容
-memory/xhs-replicate/publish-log/     # 该 loop 运行时产生的 24h / 48h / 7d 数据
+workspaces/<product-slug>/memory/xhs-replicate/            # 运行时生成；不随仓库分发私有基线内容
+workspaces/<product-slug>/memory/xhs-replicate/publish-log/ # 该 loop 运行时产生的 24h / 48h / 7d 数据
+workspaces/<product-slug>/memory/run-social-content-loop/  # 单/多平台调研、canonical brief、平台原生版本与复盘
 ```
 
 仓库不内置任何私有 `knowledge`、`products`、`samples`、`outputs` 或 `assets`。这些内容只能由使用者在自己的运行中产生。密钥、第三方 client 和浏览器登录 profile 也不属于 Memory。

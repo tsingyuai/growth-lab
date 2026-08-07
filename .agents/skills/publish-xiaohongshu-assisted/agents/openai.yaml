@@ -1,0 +1,4 @@
+interface:
+  display_name: "Publish Xiaohongshu"
+  short_description: "Prepare assisted Xiaohongshu publishing"
+  default_prompt: "Use $publish-xiaohongshu-assisted to prepare the Xiaohongshu human-assisted publishing package."

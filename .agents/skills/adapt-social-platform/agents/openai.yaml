@@ -1,0 +1,4 @@
+interface:
+  display_name: "Adapt Social Platform"
+  short_description: "Adapt content for Xiaohongshu and WeChat"
+  default_prompt: "Use $adapt-social-platform to adapt this verified concept for the target social platforms."

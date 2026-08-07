@@ -1,0 +1,4 @@
+interface:
+  display_name: "X Draft Stager"
+  short_description: "Safely stage approved copy in X drafts"
+  default_prompt: "Use $x-draft-stager to save approved copy as an unpublished X draft."

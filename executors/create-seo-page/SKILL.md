@@ -9,6 +9,14 @@ description: 根据完整的 SEO 需求与头部竞品页面证据，设计、�
 
 开始前完整读取 [内容质量与投入度](references/content-quality.md)。
 
+## Read the persisted evidence
+
+Before drafting, determine the current Product workspace and selected page action. Locate and completely read the matching research report under that workspace's `memory/run-seo-page-loop/`, including its competitor-page evidence handoff and any separately referenced source files.
+
+Verify that the evidence matches the target Product, query family, intent, market, language, and current page action. Check its observation time and reopen material leading pages when freshness, changed SERPs, a changed Product site, or an ambiguous summary could alter the design decision.
+
+Do not treat conversation memory, a recommendation sentence, keyword volume, snippets, or a URL list as sufficient evidence. If no matching report contains three to five analyzed leading pages and synthesized information-gain gaps, stop and return the missing evidence to the calling Model or invoke `$research-seo-demand` when that scope is authorized.
+
 ## 输入门槛
 
 必须取得：
@@ -58,6 +66,18 @@ canonical: <最终 canonical>
 ```
 
 页面结构必须来自 winner 页的逐块描述和产品真正有用的差异。每个区块恰好一句话，只写内容与形式：
+
+Add an evidence-and-design rationale beside the block plan. For every major block, distinguish:
+
+- the search expectation supported by repeated patterns across leading pages;
+- the Product-specific difference or information-gain gap the block addresses;
+- the source, product evidence, or user task supporting its claims and utility.
+
+Link the persisted research report and relevant leading URLs. Before implementation approval, give the user a concise explanation of why the proposed shape follows observed search expectations and where it deliberately differs to provide more value. Expand the source-by-source proof when the user asks or challenges the design.
+
+Use competitors as evidence of user expectation, not as templates to copy. Do not reproduce distinctive wording, visual identity, proprietary assets, unique examples, or a single competitor's exact block sequence. Synthesize patterns across several pages and preserve attribution and copyright boundaries.
+
+Use final title, description, and canonical copy in the design document. Associate every non-obvious number or factual claim with its source before writing the page.
 
 - 不解释这一块吃什么词；
 - 不写排期和上线计划；

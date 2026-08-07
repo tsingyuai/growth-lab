@@ -1,6 +1,6 @@
 # SEO loop Memory
 
-Use `memory/run-seo-page-loop/` as the persistent memory for this Model.
+Use `<current-product-workspace>/memory/run-seo-page-loop/` as the persistent memory for this Model. Every Product workspace is under `workspaces/<product-slug>/`, including single-Product installations. Never read or write another Product's Memory unless the user explicitly requests a comparison and the output owner is clear.
 
 ## Before observation
 

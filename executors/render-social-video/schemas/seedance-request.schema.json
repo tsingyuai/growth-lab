@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "growth-lab/seedance-request.schema.json",
+  "title": "Growth Lab Seedance B-roll request",
+  "type": "object",
+  "required": ["schema_version", "provider", "purpose", "scene_id", "content", "input_rights_confirmed"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "provider": {"const": "seedance-ark"},
+    "purpose": {"const": "b-roll"},
+    "scene_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,31}$"},
+    "input_rights_confirmed": {"const": true},
+    "remote_asset_upload_authorized": {"type": "boolean"},
+    "content": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 12,
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "required": ["type", "text"],
+            "properties": {"type": {"const": "text"}, "text": {"type": "string", "minLength": 1, "maxLength": 2000}},
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "required": ["type"],
+            "properties": {
+              "type": {"enum": ["image_url", "audio_url", "video_url"]},
+              "url": {"type": "string", "minLength": 1},
+              "url_env": {"type": "string", "pattern": "^SEEDANCE_INPUT_[A-Z0-9_]{1,64}$"},
+              "role": {"type": "string", "maxLength": 40}
+            },
+            "oneOf": [{"required": ["url"]}, {"required": ["url_env"]}],
+            "additionalProperties": false
+          }
+        ]
+      }
+    },
+    "options": {
+      "type": "object",
+      "properties": {
+        "return_last_frame": {"type": "boolean"},
+        "service_tier": {"type": "string"},
+        "execution_expires_after": {"type": "integer", "minimum": 300, "maximum": 86400},
+        "priority": {"type": "integer", "minimum": -10, "maximum": 10},
+        "generate_audio": {"const": false},
+        "draft": {"type": "boolean"},
+        "camera_fixed": {"type": "boolean"},
+        "watermark": {"type": "boolean"},
+        "seed": {"type": "integer"},
+        "resolution": {"type": "string"},
+        "ratio": {"enum": ["9:16", "16:9", "1:1", "3:4", "4:3", "21:9"]},
+        "duration": {"type": "integer", "minimum": 2, "maximum": 15},
+        "frames": {"type": "integer", "minimum": 1}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

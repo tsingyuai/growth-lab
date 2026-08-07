@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "growth-lab/video-plan.schema.json",
+  "title": "Growth Lab deterministic social video plan",
+  "type": "object",
+  "required": ["schema_version", "title", "canvas", "voice", "scenes"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "title": {"type": "string", "minLength": 1, "maxLength": 120},
+    "canvas": {
+      "type": "object",
+      "required": ["width", "height", "fps"],
+      "properties": {
+        "width": {"enum": [1080, 1440]},
+        "height": {"const": 1920},
+        "fps": {"enum": [24, 25, 30]}
+      },
+      "oneOf": [
+        {
+          "properties": {
+            "width": {"const": 1080},
+            "height": {"const": 1920}
+          }
+        },
+        {
+          "properties": {
+            "width": {"const": 1440},
+            "height": {"const": 1920}
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "voice": {
+      "type": "object",
+      "required": ["provider"],
+      "properties": {
+        "provider": {"enum": ["none", "windows-sapi", "user-audio", "local-tts"]},
+        "engine": {"enum": ["kokoro"]},
+        "model_id": {"type": "string", "minLength": 1},
+        "model_revision": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+        "license": {"type": "string", "minLength": 1},
+        "language": {"enum": ["zh"]},
+        "voice_name": {"type": "string"},
+        "rate": {"type": "integer", "minimum": -5, "maximum": 5},
+        "speed": {"type": "number", "minimum": 0.8, "maximum": 1.2}
+      },
+      "additionalProperties": false
+    },
+    "visual_source": {
+      "type": "object",
+      "required": ["mode"],
+      "properties": {
+        "mode": {"enum": ["generated-for-video", "reused-card-pack", "mixed-product-evidence"]},
+        "manifest_file": {"type": "string", "minLength": 1},
+        "manifest_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+      },
+      "additionalProperties": false
+    },
+    "style": {
+      "type": "object",
+      "properties": {
+        "background": {"type": "string", "pattern": "^#[0-9a-fA-F]{6}$"},
+        "foreground": {"type": "string", "pattern": "^#[0-9a-fA-F]{6}$"},
+        "accent": {"type": "string", "pattern": "^#[0-9a-fA-F]{6}$"},
+        "muted": {"type": "string", "pattern": "^#[0-9a-fA-F]{6}$"},
+        "font_file": {"type": "string", "minLength": 1},
+        "layout": {"enum": ["classic", "product-demo", "card-sequence"]},
+        "brand_mark": {"type": "string", "minLength": 1, "maxLength": 3},
+        "subtitle_size": {"type": "integer", "minimum": 56, "maximum": 72}
+      },
+      "additionalProperties": false
+    },
+    "scenes": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 12,
+      "items": {
+        "type": "object",
+        "required": ["id", "type", "heading", "duration", "motion"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,31}$"},
+          "type": {"enum": ["title", "screenshot", "video", "text", "cta"]},
+          "heading": {"type": "string", "minLength": 1, "maxLength": 80},
+          "body": {"type": "string", "maxLength": 240},
+          "hook": {"type": "string", "maxLength": 60},
+          "narration": {"type": "string", "maxLength": 300},
+          "subtitle_cues": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 8,
+            "items": {
+              "type": "object",
+              "required": ["text", "start", "end"],
+              "properties": {
+                "text": {"type": "string", "minLength": 1, "maxLength": 80},
+                "start": {"type": "number", "minimum": 0},
+                "end": {"type": "number", "exclusiveMinimum": 0}
+              },
+              "additionalProperties": false
+            }
+          },
+          "asset": {"type": "string", "minLength": 1},
+          "asset_role": {"enum": ["product-screenshot", "rendered-card", "generated-broll", "screen-recording", "deterministic-animation"]},
+          "asset_source_id": {"type": "string", "minLength": 1, "maxLength": 80},
+          "provider_manifest": {"type": "string", "minLength": 1},
+          "provider_manifest_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+          "capture_manifest": {"type": "string", "minLength": 1},
+          "capture_manifest_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+          "animation_manifest": {"type": "string", "minLength": 1},
+          "animation_manifest_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+          "overlay_mode": {"enum": ["full", "subtitles-only", "none"]},
+          "audio_file": {"type": "string", "minLength": 1},
+          "duration": {"type": "number", "minimum": 1.5, "maximum": 12},
+          "motion": {"enum": ["none", "slow-zoom", "pan-up"]},
+          "highlight": {
+            "type": "object",
+            "required": ["x", "y", "width", "height"],
+            "properties": {
+              "x": {"type": "number", "minimum": 0, "maximum": 1},
+              "y": {"type": "number", "minimum": 0, "maximum": 1},
+              "width": {"type": "number", "exclusiveMinimum": 0, "maximum": 1},
+              "height": {"type": "number", "exclusiveMinimum": 0, "maximum": 1}
+            },
+            "additionalProperties": false
+          },
+          "cursor": {
+            "type": "object",
+            "required": ["x", "y"],
+            "properties": {
+              "x": {"type": "number", "minimum": 0, "maximum": 1},
+              "y": {"type": "number", "minimum": 0, "maximum": 1},
+              "size": {"type": "number", "minimum": 0.04, "maximum": 0.2}
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

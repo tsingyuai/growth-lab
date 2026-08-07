@@ -1,0 +1,4 @@
+interface:
+  display_name: "Extract Product Facts"
+  short_description: "Build a traceable product claim ledger"
+  default_prompt: "Use $extract-product-facts to extract verified product facts and claim boundaries for this social content task."

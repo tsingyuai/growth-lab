@@ -1,0 +1,4 @@
+interface:
+  display_name: "SEO Page Growth Loop"
+  short_description: "Run and review an evidence-led SEO page loop"
+  default_prompt: "Use $run-seo-page-loop to continue the SEO page growth loop from current product context and Memory."

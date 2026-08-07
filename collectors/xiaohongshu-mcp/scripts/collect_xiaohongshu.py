@@ -441,6 +441,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--selection-wait-seconds", type=float, default=600)
     parser.add_argument("--images-per-candidate", type=int, default=6)
     parser.add_argument("--detail-interval", type=float, default=2)
+    parser.add_argument("--runtime-authenticated", action="store_true", help=argparse.SUPPRESS)
     return parser
 
 
@@ -476,7 +477,10 @@ def main() -> int:
     )
     try:
         client = XiaohongshuClient(endpoint, timeout)
-        client.check_ready()
+        if args.runtime_authenticated:
+            client.request("GET", "/health")
+        else:
+            client.check_ready()
         feeds = client.search(args.keyword, args.limit)
         evidence = build_evidence(args.keyword, feeds, args.limit)
         if evidence["collected"] == 0:

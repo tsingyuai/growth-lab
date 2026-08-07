@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "growth-lab/capture-manifest.schema.json",
+  "title": "Growth Lab validated screen recording manifest",
+  "type": "object",
+  "required": ["schema_version", "status", "source", "capture", "renderer", "output", "publication_authorized"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "status": {"const": "recorded-validated"},
+    "source": {
+      "type": "object",
+      "required": ["kind"],
+      "properties": {
+        "kind": {"enum": ["window", "region", "desktop"]},
+        "window_title": {"type": "string", "minLength": 1},
+        "x": {"type": "integer", "minimum": 0},
+        "y": {"type": "integer", "minimum": 0},
+        "width": {"type": "integer", "minimum": 64},
+        "height": {"type": "integer", "minimum": 64}
+      },
+      "additionalProperties": false
+    },
+    "capture": {
+      "type": "object",
+      "required": ["started_at", "requested_duration_seconds", "draw_mouse", "scope_confirmed", "human_privacy_review_required"],
+      "properties": {
+        "started_at": {"type": "string", "format": "date-time"},
+        "requested_duration_seconds": {"type": "number", "minimum": 1, "maximum": 300},
+        "draw_mouse": {"type": "boolean"},
+        "scope_confirmed": {"const": true},
+        "human_privacy_review_required": {"const": true}
+      },
+      "additionalProperties": false
+    },
+    "renderer": {
+      "type": "object",
+      "required": ["name", "ffmpeg_version", "external_binary"],
+      "properties": {
+        "name": {"const": "ffmpeg-gdigrab"},
+        "ffmpeg_version": {"type": "string", "minLength": 1},
+        "external_binary": {"const": true}
+      },
+      "additionalProperties": false
+    },
+    "output": {
+      "type": "object",
+      "required": ["file", "sha256", "duration_seconds", "width", "height", "fps", "has_audio"],
+      "properties": {
+        "file": {"type": "string", "minLength": 1},
+        "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "duration_seconds": {"type": "number", "minimum": 0.5, "maximum": 301},
+        "width": {"type": "integer", "minimum": 64},
+        "height": {"type": "integer", "minimum": 64},
+        "fps": {"type": "number", "minimum": 0},
+        "has_audio": {"const": false}
+      },
+      "additionalProperties": false
+    },
+    "publication_authorized": {"const": false}
+  },
+  "additionalProperties": false
+}

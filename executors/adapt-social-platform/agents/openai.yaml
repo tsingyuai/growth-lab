@@ -1,0 +1,4 @@
+interface:
+  display_name: "Social Platform Content Adapter"
+  short_description: "Generate native variants for multiple social platforms"
+  default_prompt: "Use $adapt-social-platform to turn an approved canonical brief into native platform variants."

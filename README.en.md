@@ -123,6 +123,7 @@ One capability is one complete observation-action-review loop, represented by on
 |---|---|---|
 | [SEO Page Growth Loop](models/run-seo-page-loop/SKILL.md) | Identify the situations in which users may need your product, research what they actually search for in those situations, and create informative SEO pages that solve their problems and lead them to the product. | In our own run, new pages were indexed within 1–2 days. On a 7-day average basis, overall CTR decreased by 50%, while impressions and clicks each increased by 1000%. |
 | [Xiaohongshu Replication and Review Loop](models/xhs-replicate/SKILL.md) | Coordinates collection, drafting, editing, screenshots, image generation, card rendering, compliance checks, and post-result review. | Commercial content created with this workflow has reached [4,000+ likes/saves and 700+ comments on a single post](http://xhslink.cn/o/37uik9K9WHr). Publishing remains manual. |
+| [Cross-platform Social Content Growth Loop](models/run-social-content-loop/SKILL.md) | Orchestrates research into independent native variants and can optionally render screenshot-led vertical product videos. | X and Xiaohongshu have real collection paths. The local video generator passed a minimal render; platform video publication remains unaccepted. Official publishing Clients still require human confirmation. |
 
 These figures describe one observed run and provide evidence for continued iteration. Results depend on the product, domain, search demand, page quality, site authority, and observation window.
 

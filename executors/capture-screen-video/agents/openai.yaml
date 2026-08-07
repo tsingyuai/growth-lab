@@ -1,0 +1,7 @@
+interface:
+  display_name: "Scripted Screen Capture"
+  short_description: "Capture every scripted Product action with evidence"
+  default_prompt: "Use $capture-screen-video to execute an approved shot script and verify every visible Product action."
+
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Review Social Content"
+  short_description: "Review social content before publishing"
+  default_prompt: "Use $review-social-content to review this social content package before any publishing action."

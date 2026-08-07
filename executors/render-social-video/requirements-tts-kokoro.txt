@@ -1,0 +1,3 @@
+kokoro==0.9.4
+misaki[zh]==0.9.4
+soundfile==0.14.0

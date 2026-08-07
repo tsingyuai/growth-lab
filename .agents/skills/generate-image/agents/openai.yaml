@@ -1,0 +1,4 @@
+interface:
+  display_name: "Generate Growth Image"
+  short_description: "Create restrained, verified growth visuals"
+  default_prompt: "Use $generate-image to define an editorial visual direction, generate the required growth asset, and inspect it by subtraction."

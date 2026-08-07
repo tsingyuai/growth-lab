@@ -1,0 +1,4 @@
+interface:
+  display_name: "Human Publishing Pack"
+  short_description: "Prepare manual publishing instructions"
+  default_prompt: "Use $prepare-human-publishing to prepare a human-assisted publishing handoff for this reviewed package."

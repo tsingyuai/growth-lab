@@ -1,0 +1,7 @@
+interface:
+  display_name: "Script-First Social Video"
+  short_description: "Script, verify, and render evidence-led product videos"
+  default_prompt: "Use $render-social-video to write and review a complete production script before collecting evidence and rendering the video."
+
+policy:
+  allow_implicit_invocation: false

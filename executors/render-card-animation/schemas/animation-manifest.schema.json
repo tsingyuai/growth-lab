@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "growth-lab/animation-manifest.schema.json",
+  "title": "Growth Lab deterministic HTML animation manifest",
+  "type": "object",
+  "required": ["schema_version", "status", "source", "render", "output", "publication_authorized"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "status": {"const": "rendered-validated"},
+    "source": {
+      "type": "object",
+      "required": ["html_file", "html_sha256", "assets"],
+      "properties": {
+        "html_file": {"type": "string", "minLength": 1},
+        "html_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "assets": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["file", "sha256"],
+            "properties": {
+              "file": {"type": "string", "minLength": 1},
+              "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "render": {
+      "type": "object",
+      "required": ["started_at", "engine", "browser_executable", "width", "height", "fps", "requested_duration_seconds", "network_disabled_by_policy"],
+      "properties": {
+        "started_at": {"type": "string", "format": "date-time"},
+        "engine": {"const": "playwright-chromium"},
+        "browser_executable": {"type": "string", "minLength": 1},
+        "width": {"const": 1080},
+        "height": {"const": 1920},
+        "fps": {"enum": [24, 25, 30]},
+        "requested_duration_seconds": {"type": "number", "minimum": 1, "maximum": 60},
+        "network_disabled_by_policy": {"const": true}
+      },
+      "additionalProperties": false
+    },
+    "output": {
+      "type": "object",
+      "required": ["file", "sha256", "duration_seconds", "width", "height", "fps", "has_audio"],
+      "properties": {
+        "file": {"type": "string", "minLength": 1},
+        "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "duration_seconds": {"type": "number", "minimum": 0.5, "maximum": 61},
+        "width": {"const": 1080},
+        "height": {"const": 1920},
+        "fps": {"type": "number", "minimum": 20, "maximum": 31},
+        "has_audio": {"const": false}
+      },
+      "additionalProperties": false
+    },
+    "publication_authorized": {"const": false}
+  },
+  "additionalProperties": false
+}

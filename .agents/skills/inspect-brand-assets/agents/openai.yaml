@@ -1,0 +1,4 @@
+interface:
+  display_name: "Inspect Brand Assets"
+  short_description: "Inventory safe product and brand visuals"
+  default_prompt: "Use $inspect-brand-assets to find safe official screenshots and assets for this content package."

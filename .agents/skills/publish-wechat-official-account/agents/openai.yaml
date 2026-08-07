@@ -1,0 +1,4 @@
+interface:
+  display_name: "Publish WeChat OA"
+  short_description: "Prepare approved WeChat official-account publishing"
+  default_prompt: "Use $publish-wechat-official-account for the explicitly approved WeChat official account action."

@@ -8,6 +8,8 @@ __pycache__/
 # Agent 现场分析产物
 seo-work/
 social-work/
+research/
+*-publish-state.json
 
 # 真实运营 Memory 默认保留在本地；目录说明和占位文件进入版本控制
 memory/**
@@ -15,5 +17,12 @@ memory/**
 !memory/README.md
 !memory/**/
 !memory/**/.gitkeep
+
+# 每个产品的真实认知、运行证据和产物仅保存在本机；只提交结构模板
+workspaces/**
+!workspaces/
+!workspaces/README.md
+!workspaces/_template/
+!workspaces/_template/**
 .vercel
 node_modules/

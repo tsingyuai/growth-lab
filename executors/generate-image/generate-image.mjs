@@ -47,7 +47,7 @@ loadRepoEnv();
 function parseArgs(argv) {
   const configuredModel = process.env.OPENAI_IMAGE_MODEL;
   const defaultModel =
-    configuredModel && MODELS.has(configuredModel)
+    process.env.OPENAI_API_KEY && configuredModel === OPENAI_MODEL
       ? configuredModel
       : process.env.OPENAI_API_KEY && !process.env.GEMINI_API_KEY
         ? OPENAI_MODEL
@@ -118,6 +118,19 @@ function saveImage(buffer, output) {
   fs.mkdirSync(path.dirname(destination), { recursive: true });
   fs.writeFileSync(destination, buffer, { mode: 0o644 });
   console.log(`Saved image: ${destination} (${buffer.length} bytes)`);
+}
+
+function describeError(error) {
+  if (!(error instanceof Error)) return 'Image generation failed';
+  const details = [error.message];
+  const cause = error.cause;
+  if (cause && typeof cause === 'object') {
+    if (typeof cause.code === 'string' && cause.code) details.push(`code=${cause.code}`);
+    if (typeof cause.message === 'string' && cause.message && cause.message !== error.message) {
+      details.push(cause.message.replace(/https?:\/\/\S+/g, '[redacted-url]'));
+    }
+  }
+  return [...new Set(details)].join(' | ');
 }
 
 function sanitizeMessage(message) {
@@ -304,6 +317,6 @@ try {
   if (options.batch) await runBatch(options);
   else await generate(options);
 } catch (error) {
-  console.error(error instanceof Error ? error.message : 'Image generation failed');
+  console.error(describeError(error));
   process.exit(1);
 }

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Render Social Video"
+  short_description: "Generate reviewed videos from cards or screenshots"
+  default_prompt: "Use $render-social-video to reuse or create scene cards and render the requested video."

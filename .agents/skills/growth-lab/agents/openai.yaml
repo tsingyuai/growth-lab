@@ -1,0 +1,4 @@
+interface:
+  display_name: "Growth Lab"
+  short_description: "Run an evidence-led product growth workflow"
+  default_prompt: "Use $growth-lab to understand this product and propose the first evidence-led growth action."

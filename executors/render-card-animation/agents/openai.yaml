@@ -1,0 +1,7 @@
+interface:
+  display_name: "Card Animation Renderer"
+  short_description: "Turn approved cards into validated HTML animation video"
+  default_prompt: "Use $render-card-animation to convert the approved card sequence into a deterministic local animation MP4."
+
+policy:
+  allow_implicit_invocation: false

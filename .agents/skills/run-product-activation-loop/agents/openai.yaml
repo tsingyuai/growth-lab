@@ -1,0 +1,4 @@
+interface:
+  display_name: "Product Activation Loop"
+  short_description: "Run Growth Lab product activation loop"
+  default_prompt: "Use $run-product-activation-loop to diagnose and improve one product activation path."

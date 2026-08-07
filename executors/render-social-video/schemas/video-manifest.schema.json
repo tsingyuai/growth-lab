@@ -1,0 +1,137 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "growth-lab/video-manifest.schema.json",
+  "title": "Growth Lab rendered social video manifest",
+  "type": "object",
+  "required": ["schema_version", "status", "plan_sha256", "renderer", "files", "evidence_mix", "video"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "status": {"const": "rendered-not-published"},
+    "plan_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "renderer": {
+      "type": "object",
+      "required": ["name", "ffmpeg_version", "external_binary"],
+      "properties": {
+        "name": {"const": "growth-lab-ffmpeg-pillow"},
+        "ffmpeg_version": {"type": "string", "minLength": 1},
+        "external_binary": {"const": true}
+      },
+      "additionalProperties": false
+    },
+    "files": {
+      "type": "object",
+      "required": ["video", "cover", "subtitles"],
+      "properties": {
+        "video": {"type": "string", "minLength": 1},
+        "cover": {"type": "string", "minLength": 1},
+        "subtitles": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "evidence_mix": {
+      "type": "object",
+      "required": ["total_duration", "screen_recording_duration", "screen_recording_ratio", "deterministic_animation_duration", "deterministic_animation_ratio"],
+      "properties": {
+        "total_duration": {"type": "number", "minimum": 3, "maximum": 45.5},
+        "screen_recording_duration": {"type": "number", "minimum": 0, "maximum": 45.5},
+        "screen_recording_ratio": {"type": "number", "minimum": 0, "maximum": 1},
+        "deterministic_animation_duration": {"type": "number", "minimum": 0, "maximum": 45.5},
+        "deterministic_animation_ratio": {"type": "number", "minimum": 0, "maximum": 1}
+      },
+      "additionalProperties": false
+    },
+    "visual_source": {
+      "type": "object",
+      "required": ["mode"],
+      "properties": {
+        "mode": {"enum": ["generated-for-video", "reused-card-pack", "mixed-product-evidence"]},
+        "manifest_file": {"type": "string", "minLength": 1},
+        "manifest_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+      },
+      "additionalProperties": false
+    },
+    "voice_source": {
+      "type": "object",
+      "required": ["provider", "engine", "model_id", "model_revision", "voice_name", "language", "speed", "license", "manifest_file", "manifest_sha256"],
+      "properties": {
+        "provider": {"const": "local-tts"},
+        "engine": {"const": "kokoro"},
+        "model_id": {"type": "string", "minLength": 1},
+        "model_revision": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+        "voice_name": {"type": "string", "minLength": 1},
+        "language": {"const": "zh"},
+        "speed": {"type": "number", "minimum": 0.8, "maximum": 1.2},
+        "license": {"type": "string", "minLength": 1},
+        "manifest_file": {"type": "string", "minLength": 1},
+        "manifest_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+      },
+      "additionalProperties": false
+    },
+    "provider_sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["provider", "model_endpoint", "task_id", "scene_id", "manifest_file", "manifest_sha256", "asset_sha256"],
+        "properties": {
+          "provider": {"const": "seedance-ark"},
+          "model_endpoint": {"type": "string", "minLength": 1},
+          "task_id": {"type": "string", "minLength": 1},
+          "scene_id": {"type": "string", "minLength": 1},
+          "manifest_file": {"type": "string", "minLength": 1},
+          "manifest_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+          "asset_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "capture_sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["source_kind", "scene_id", "manifest_file", "manifest_sha256", "asset_sha256", "privacy_review_required"],
+        "properties": {
+          "source_kind": {"enum": ["window", "region", "desktop"]},
+          "scene_id": {"type": "string", "minLength": 1},
+          "manifest_file": {"type": "string", "minLength": 1},
+          "manifest_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+          "asset_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+          "privacy_review_required": {"const": true}
+        },
+        "additionalProperties": false
+      }
+    },
+    "animation_sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["engine", "scene_id", "manifest_file", "manifest_sha256", "asset_sha256", "html_sha256"],
+        "properties": {
+          "engine": {"const": "playwright-chromium"},
+          "scene_id": {"type": "string", "minLength": 1},
+          "manifest_file": {"type": "string", "minLength": 1},
+          "manifest_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+          "asset_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+          "html_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "video": {
+      "type": "object",
+      "required": ["width", "height", "fps", "duration_seconds", "scene_count", "codec", "audio_codec", "pixel_format", "sha256"],
+      "properties": {
+        "width": {"enum": [1080, 1440]},
+        "height": {"const": 1920},
+        "fps": {"type": "number", "minimum": 23, "maximum": 31},
+        "duration_seconds": {"type": "number", "minimum": 3, "maximum": 45.5},
+        "scene_count": {"type": "integer", "minimum": 2, "maximum": 12},
+        "codec": {"const": "h264"},
+        "audio_codec": {"const": "aac"},
+        "pixel_format": {"type": "string", "pattern": "^yuv420p"},
+        "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -2,8 +2,8 @@
 
 这份映射连接两类独立证据：
 
-- 产品侧：`SOUL.md` 中已验证的产品形态与能力，以及 `memory/xhs-replicate/products/<product-slug>/` 中本轮代码/页面/截图证据。
-- 平台侧：`memory/xhs-replicate/libraries/xhs/candidates/<note-id>/entry.json` 中的真实内容样本。
+- 产品侧：当前产品工作区 `SOUL.md` 中已验证的产品形态与能力，以及该工作区 `memory/xhs-replicate/products/<product-slug>/` 中本轮代码/页面/截图证据。
+- 平台侧：当前产品工作区 `memory/xhs-replicate/libraries/xhs/candidates/<note-id>/entry.json` 中的真实内容样本。
 
 ## 渐进流程
 
@@ -14,7 +14,7 @@
 5. 对 shortlist 逐条完成差异—迁移判断。差异不是附注，而是决定调性的输入：例如课程卖方可用更强结果承诺，开发者分享开源项目则通常需要更强的过程证据、技术诚实和克制的销售感；第三方测评依赖旁观者背书，作者自述则需要用截图、代码或实际过程建立可信度。
 6. 只有候选的可迁移部分能由产品真实能力承接时，才形成内容机会。不得复制依赖不同身份、结果承诺或商业关系才能成立的表达。
 7. 需要视觉证明时调用 `screenshot-assets`，把真实页面证据保存到当前 loop Memory，并在映射中引用。
-8. 内容发布后的数据用于验证表达与场景；稳定的新产品认知再增量写回 `SOUL.md`。
+8. 内容发布后的数据用于验证表达与场景；稳定的新产品认知再增量写回当前产品工作区的 `SOUL.md`。
 
 ## 映射记录
 
