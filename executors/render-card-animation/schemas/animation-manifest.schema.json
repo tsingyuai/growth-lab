@@ -35,8 +35,8 @@
         "started_at": {"type": "string", "format": "date-time"},
         "engine": {"const": "playwright-chromium"},
         "browser_executable": {"type": "string", "minLength": 1},
-        "width": {"const": 1080},
-        "height": {"const": 1920},
+        "width": {"type": "integer", "minimum": 320, "maximum": 3840},
+        "height": {"type": "integer", "minimum": 320, "maximum": 3840},
         "fps": {"enum": [24, 25, 30]},
         "requested_duration_seconds": {"type": "number", "minimum": 1, "maximum": 60},
         "network_disabled_by_policy": {"const": true}
@@ -50,8 +50,8 @@
         "file": {"type": "string", "minLength": 1},
         "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
         "duration_seconds": {"type": "number", "minimum": 0.5, "maximum": 61},
-        "width": {"const": 1080},
-        "height": {"const": 1920},
+        "width": {"type": "integer", "minimum": 320, "maximum": 3840},
+        "height": {"type": "integer", "minimum": 320, "maximum": 3840},
         "fps": {"type": "number", "minimum": 20, "maximum": 31},
         "has_audio": {"const": false}
       },

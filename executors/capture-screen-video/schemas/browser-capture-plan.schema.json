@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "growth-lab/browser-capture-plan.schema.json",
+  "title": "Growth Lab declarative browser capture plan",
+  "type": "object",
+  "required": ["schema_version", "source_url", "viewport", "shots"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "source_url": {"type": "string", "minLength": 1},
+    "viewport": {
+      "type": "object",
+      "required": ["width", "height"],
+      "properties": {
+        "width": {"type": "integer", "minimum": 640, "maximum": 2560},
+        "height": {"type": "integer", "minimum": 480, "maximum": 1600}
+      },
+      "additionalProperties": false
+    },
+    "browser": {
+      "type": "object",
+      "properties": {
+        "executable_path": {"type": "string", "minLength": 1},
+        "headless": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "shots": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 12,
+      "items": {
+        "type": "object",
+        "required": ["id", "duration_seconds", "actions", "requirements"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,31}$"},
+          "duration_seconds": {"type": "number", "minimum": 1, "maximum": 180},
+          "duration_mode": {"enum": ["adaptive", "exact"], "default": "adaptive"},
+          "tail_hold_ms": {"type": "integer", "minimum": 250, "maximum": 5000, "default": 750},
+          "max_attempts": {"type": "integer", "minimum": 1, "maximum": 3},
+          "readiness_selectors": {
+            "type": "array", "maxItems": 12,
+            "items": {"type": "string", "minLength": 1}
+          },
+          "setup_actions": {"$ref": "#/$defs/actions"},
+          "actions": {"$ref": "#/$defs/actions"},
+          "requirements": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": ["id", "after_action", "selector", "state", "minimum_hold_ms"],
+              "properties": {
+                "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"},
+                "after_action": {"type": "string", "minLength": 1},
+                "selector": {"type": "string", "minLength": 1},
+                "state": {"enum": ["visible", "hidden", "enabled", "disabled", "checked", "unchecked", "focused"]},
+                "text_contains": {"type": "string", "minLength": 1},
+                "value_contains": {"type": "string", "minLength": 1},
+                "minimum_hold_ms": {"type": "integer", "minimum": 0, "maximum": 10000}
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "$defs": {
+    "actions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "type"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"},
+          "type": {"enum": ["click", "click-if-visible", "fill", "type", "type-append", "hover", "press", "wait", "wait-for-visible", "wait-for-hidden", "wait-for-url", "wait-for-text", "scroll-to-end"]},
+          "selector": {"type": "string", "minLength": 1},
+          "value": {"type": ["string", "number"]},
+          "delay_ms": {"type": "integer", "minimum": 0, "maximum": 1000},
+          "timeout_ms": {"type": "integer", "minimum": 250, "maximum": 120000},
+          "wait_after_ms": {"type": "integer", "minimum": 0, "maximum": 10000}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

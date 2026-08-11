@@ -2,6 +2,8 @@
 
 Use this reference for visually led assets where composition, typography, or information density affects quality. Channel-specific card contracts may add stricter requirements; they do not replace this visual direction.
 
+This independently written Growth Lab workflow adapts general design methods reviewed in Anthropic's Apache-2.0 [`canvas-design`](https://github.com/anthropics/skills/tree/b29e7cf65e5cb78a5ac33d582270551bc74a14eb/skills/canvas-design) and [`frontend-design`](https://github.com/anthropics/skills/tree/b29e7cf65e5cb78a5ac33d582270551bc74a14eb/skills/frontend-design) Skills and the MIT-licensed wshobson/agents [`visual-design-foundations`](https://github.com/wshobson/agents/tree/1ad2f007d5e9ec822a2d79e727ac1dcdf5f66f11/plugins/ui-design/skills/visual-design-foundations) Skill. No upstream Skill text, code, font, template or executable is bundled here; repository-level boundaries are recorded in [`THIRD_PARTY_NOTICES.md`](../../../THIRD_PARTY_NOTICES.md).
+
 ## 1. Start from the communication job
 
 Write one sentence for what the viewer should understand in a few seconds. Reduce the content to:

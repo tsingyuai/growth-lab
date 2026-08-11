@@ -9,6 +9,10 @@ CANONICAL = ROOT / "executors" / "generate-image" / "SKILL.md"
 EDITORIAL = ROOT / "executors" / "generate-image" / "references" / "editorial-layout.md"
 EXPOSED = ROOT / ".agents" / "skills" / "generate-image" / "SKILL.md"
 ACCEPTANCE = ROOT / "scripts" / "acceptance" / "run_acceptance.py"
+NOTICES = ROOT / "THIRD_PARTY_NOTICES.md"
+
+ANTHROPIC_REVISION = "b29e7cf65e5cb78a5ac33d582270551bc74a14eb"
+WSHOBSON_REVISION = "1ad2f007d5e9ec822a2d79e727ac1dcdf5f66f11"
 
 
 class GenerateImageSkillContractTests(unittest.TestCase):
@@ -44,6 +48,22 @@ class GenerateImageSkillContractTests(unittest.TestCase):
         self.assertIn("short dashed underline", reference)
         self.assertIn("thin closed circle or rounded outline", reference)
         self.assertIn("simple spine without arrowheads", reference)
+
+    def test_method_provenance_names_exact_reviewed_skills(self) -> None:
+        reference = EDITORIAL.read_text(encoding="utf-8")
+        notices = NOTICES.read_text(encoding="utf-8")
+        expected_sources = (
+            "skills/canvas-design",
+            "skills/frontend-design",
+            "plugins/ui-design/skills/visual-design-foundations",
+            ANTHROPIC_REVISION,
+            WSHOBSON_REVISION,
+        )
+        for source in expected_sources:
+            with self.subTest(source=source):
+                self.assertIn(source, reference)
+                self.assertIn(source, notices)
+        self.assertIn("without claiming that every directory", notices)
 
     def test_exposed_skill_keeps_methodology_in_canonical_executor(self) -> None:
         exposed = EXPOSED.read_text(encoding="utf-8")

@@ -123,6 +123,43 @@ def validate(
             evidence_file = resolve_declared(evidence_path.parent, str(result.get("evidence_file") or ""))
             if not evidence_file.is_file():
                 failures.append(f"shot {shot_id} requirement {requirement_id} evidence file is missing")
+        speech_groups = shot.get("speech_groups") or []
+        if speech_groups:
+            expected_caption_segments = {
+                (str(group["id"]), str(segment["id"])): str(segment["lane"])
+                for group in speech_groups for segment in group["segments"]
+            }
+            observed_caption_segments = {
+                (str(item.get("group_id") or ""), str(item.get("segment_id") or "")): item
+                for item in observed.get("caption_checks") or []
+            }
+            if set(observed_caption_segments) != set(expected_caption_segments):
+                failures.append(f"shot {shot_id} caption checks do not cover the exact speech segment set")
+            for key, lane in expected_caption_segments.items():
+                check = observed_caption_segments.get(key)
+                if not check:
+                    continue
+                if str(check.get("lane") or "") != lane:
+                    failures.append(f"shot {shot_id} caption {key[1]} lane does not match the script")
+                sync_error = abs(
+                    float(check.get("caption_start_seconds") or 0)
+                    - float(check.get("audio_start_seconds") or 0)
+                )
+                if sync_error > 0.18 + 1e-9:
+                    failures.append(f"shot {shot_id} caption {key[1]} starts more than 180ms from audio")
+            expected_group_ids = {str(group["id"]) for group in speech_groups}
+            observed_group_checks = {
+                str(item.get("group_id") or ""): item for item in observed.get("caption_group_checks") or []
+            }
+            if set(observed_group_checks) != expected_group_ids:
+                failures.append(f"shot {shot_id} caption group exit checks are incomplete")
+            for group_id, check in observed_group_checks.items():
+                exit_error = abs(
+                    float(check.get("caption_exit_seconds") or 0)
+                    - float(check.get("audio_end_seconds") or 0)
+                )
+                if exit_error > 0.25 + 1e-9:
+                    failures.append(f"shot {shot_id} caption group {group_id} exits more than 250ms from audio")
 
     if for_production and plan_path is None:
         failures.append("video plan is required for the production coverage gate")
@@ -147,6 +184,43 @@ def validate(
                 failures.append(f"scene {shot_id} narration does not match the script")
             if str(shot.get("subtitle") or "") != str(shot.get("narration") or ""):
                 failures.append(f"scene {shot_id} subtitle differs from narration but the renderer has one text track")
+            if shot.get("composition") and scene.get("composition") != shot.get("composition"):
+                failures.append(f"scene {shot_id} composition does not match the script")
+            speech_groups = shot.get("speech_groups") or []
+            if speech_groups:
+                expected_speech_segments = [
+                    {
+                        "id": segment["id"],
+                        "text": segment["text"],
+                        "pause_after_ms": segment["pause_after_ms"],
+                    }
+                    for group in speech_groups for segment in group["segments"]
+                ]
+                if scene.get("speech_segments") != expected_speech_segments:
+                    failures.append(f"scene {shot_id} speech segments do not match the script")
+                caption_groups = scene.get("caption_groups") or []
+                if [str(group.get("id") or "") for group in caption_groups] != [
+                    str(group["id"]) for group in speech_groups
+                ]:
+                    failures.append(f"scene {shot_id} caption group order does not match the script")
+                else:
+                    for script_group, plan_group in zip(speech_groups, caption_groups):
+                        if (
+                            plan_group.get("display_mode") != script_group.get("display_mode")
+                            or plan_group.get("vertical_anchor") != script_group.get("vertical_anchor")
+                            or bool(plan_group.get("exit_together")) != (script_group.get("exit_mode") == "group")
+                        ):
+                            failures.append(f"scene {shot_id} caption group {script_group['id']} behavior differs from script")
+                        expected_segments = [
+                            {"id": item["id"], "text": item["text"], "lane": item["lane"]}
+                            for item in script_group["segments"]
+                        ]
+                        observed_segments = [
+                            {"id": item["id"], "text": item["text"], "lane": item["lane"]}
+                            for item in plan_group.get("segments") or []
+                        ]
+                        if observed_segments != expected_segments:
+                            failures.append(f"scene {shot_id} caption group {script_group['id']} segments differ from script")
             expected_role = source_roles.get(str(shot.get("source_type") or ""))
             if expected_role and str(scene.get("asset_role") or "") != expected_role:
                 failures.append(f"scene {shot_id} asset role does not match the script source type")

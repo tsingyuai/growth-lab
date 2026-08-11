@@ -100,6 +100,43 @@ class VideoRendererTests(unittest.TestCase):
         self.assertIn("crop=1440:ih:(iw-ow)*0.85:0", value)
         self.assertIn("pad=1440:1920:0:(oh-ih)/2", value)
 
+    def test_focused_screen_uses_same_source_blurred_backdrop(self):
+        filters = renderer.screen_recording_filter_chain(
+            1440, 1920,
+            {
+                "preset": "focused-screen",
+                "foreground_width_ratio": 0.84,
+                "backdrop_blur": 26,
+                "backdrop_dim": 0.16,
+            },
+        )
+        value = ";".join(filters)
+        self.assertIn("[0:v]split=2", value)
+        self.assertIn("gblur=sigma=26.00", value)
+        self.assertIn("eq=brightness=-0.160", value)
+        self.assertIn("[background][foreground]overlay=(W-w)/2:(H-h)/2[base]", value)
+
+    def test_caption_segments_render_in_distinct_lanes(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            plan_path = self.plan(root)
+            plan = json.loads(plan_path.read_text(encoding="utf-8"))
+            group = {"vertical_anchor": "middle"}
+            centers = []
+            for lane in ("left", "center", "right"):
+                output = root / f"{lane}.png"
+                renderer.caption_segment_overlay(
+                    plan, group,
+                    {"id": lane, "text": lane, "lane": lane, "emphasis": "accent"},
+                    plan_path, output,
+                )
+                with Image.open(output) as image:
+                    box = image.getchannel("A").getbbox()
+                self.assertIsNotNone(box)
+                centers.append((box[0] + box[2]) / 2)
+            self.assertLess(centers[0], centers[1])
+            self.assertLess(centers[1], centers[2])
+
     def test_default_subtitles_are_large_on_both_canvases(self):
         plan = {"canvas": {"width": 1080}, "style": {}}
         self.assertEqual(renderer.subtitle_font_size(plan), 64)
@@ -260,6 +297,38 @@ class VideoRendererTests(unittest.TestCase):
             plan["scenes"][0]["subtitle_cues"][1]["start"] = 0.6
             path.write_text(json.dumps(plan, ensure_ascii=False), encoding="utf-8")
             with self.assertRaisesRegex(renderer.VideoError, "不重叠"):
+                renderer.read_plan(path)
+
+    def test_caption_group_accumulates_and_writes_readable_srt_states(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            path = self.plan(root)
+            plan = json.loads(path.read_text(encoding="utf-8"))
+            plan["scenes"][0]["caption_groups"] = [{
+                "id": "benefits", "display_mode": "accumulate", "exit_together": True,
+                "vertical_anchor": "middle", "end": 1.4,
+                "segments": [
+                    {"id": "auto", "text": "能自动", "lane": "left", "start": 0.1},
+                    {"id": "control", "text": "可控制", "lane": "center", "start": 0.6},
+                    {"id": "value", "text": "高性价比", "lane": "right", "start": 1.0},
+                ],
+            }]
+            path.write_text(json.dumps(plan, ensure_ascii=False), encoding="utf-8")
+            validated = renderer.read_plan(path)
+            srt = root / "captions.srt"
+            renderer.write_srt(validated["scenes"], [1.5, 1.5], srt)
+            content = srt.read_text(encoding="utf-8")
+            self.assertIn("能自动 可控制", content)
+            self.assertIn("能自动 可控制 高性价比", content)
+
+    def test_long_duration_is_reserved_for_screen_recording(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            path = self.plan(root)
+            plan = json.loads(path.read_text(encoding="utf-8"))
+            plan["scenes"][0]["duration"] = 13
+            path.write_text(json.dumps(plan), encoding="utf-8")
+            with self.assertRaisesRegex(renderer.VideoError, "1.5 到 12"):
                 renderer.read_plan(path)
 
     def test_rejects_unapproved_canvas(self):
@@ -478,6 +547,28 @@ class VideoRendererTests(unittest.TestCase):
             path.write_text(json.dumps(plan), encoding="utf-8")
             with self.assertRaisesRegex(renderer.VideoError, "Schema|状态、权限"):
                 renderer.read_plan(path)
+
+    def test_browser_capture_requires_hash_bound_semantic_evidence(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            manifest = root / "browser.capture-manifest.json"
+            capture_data = {
+                "source": {"kind": "browser"},
+                "capture": {},
+            }
+            with self.assertRaisesRegex(renderer.VideoError, "语义证据"):
+                renderer.validate_browser_capture_evidence(manifest, capture_data)
+            evidence = root / "browser-evidence.json"
+            evidence.write_text('{"status":"pass"}', encoding="utf-8")
+            capture_data["capture"]["semantic_validation"] = {
+                "status": "pass",
+                "evidence_file": evidence.name,
+                "evidence_sha256": hashlib.sha256(evidence.read_bytes()).hexdigest(),
+            }
+            renderer.validate_browser_capture_evidence(manifest, capture_data)
+            capture_data["capture"]["semantic_validation"]["evidence_sha256"] = "0" * 64
+            with self.assertRaisesRegex(renderer.VideoError, "哈希不匹配"):
+                renderer.validate_browser_capture_evidence(manifest, capture_data)
 
     def test_deterministic_animation_requires_validated_manifest(self):
         with tempfile.TemporaryDirectory() as temp:

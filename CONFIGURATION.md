@@ -149,6 +149,14 @@ SOCIAL_TTS_PYTHON=%USERPROFILE%\.growth-lab\clients\social-tts-venv\Scripts\pyth
 
 An empty `VIDEO_FFMPEG_PATH` lets `imageio-ffmpeg` provide the binary inside the external video venv. The rendered manifest records the exact FFmpeg version. Growth Lab does not vendor or redistribute FFmpeg.
 
+### Optional Remotion renderer
+
+The built-in Pillow/FFmpeg renderer remains the default. For React-driven motion, designed caption choreography or reusable programmatic video scenes, the Agent may recommend the repository-external Remotion renderer described in [`remotion-renderer.md`](executors/render-social-video/references/remotion-renderer.md).
+
+Before the first installation or use, the Agent must show the exact version and the separate [Remotion License](https://github.com/remotion-dev/remotion/blob/main/LICENSE.md), explain the current free/company eligibility boundary and ask the user to confirm that they are eligible for the free license or hold a Company License. Declining leaves the built-in renderer available. A generic request to generate a video is not installation approval.
+
+After confirmation, keep the pinned runtime, lockfile and minimal acknowledgement under `~/.growth-lab/clients/remotion/` or ignored run Memory. Do not add Remotion to Growth Lab's core dependencies, commit `node_modules`, silently upgrade an existing runtime, or copy the user's organization details into Memory. Remotion 4.0.507 does not require a watermark or attribution in the generated video or its publication description. Re-run the gate after a material license change or major-version upgrade.
+
 For optional local Mandarin narration, install the separate Kokoro environment. It is not required for collection, copy, cards, silent video, Windows SAPI, or user-provided audio:
 
 ```powershell

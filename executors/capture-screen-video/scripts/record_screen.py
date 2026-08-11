@@ -196,6 +196,38 @@ def inspect_video(ffmpeg: str, video: Path) -> dict[str, Any]:
     }
 
 
+def wait_for_capture_start(
+    process: subprocess.Popen[str],
+    partial: Path,
+    ready_file: Path | None,
+    started_at: datetime,
+    timeout: float = 10.0,
+) -> None:
+    deadline = time.monotonic() + timeout
+    while time.monotonic() < deadline:
+        if process.poll() is not None:
+            raise CaptureError("FFmpeg 在写入首帧前退出。")
+        if partial.is_file() and partial.stat().st_size > 0:
+            if ready_file:
+                ready_file.parent.mkdir(parents=True, exist_ok=True)
+                ready_file.write_text(
+                    json.dumps(
+                        {
+                            "status": "capture-started",
+                            "pid": process.pid,
+                            "started_at": started_at.isoformat(),
+                            "partial_file": str(partial),
+                        },
+                        ensure_ascii=False,
+                        indent=2,
+                    ),
+                    encoding="utf-8",
+                )
+            return
+        time.sleep(0.05)
+    raise CaptureError("FFmpeg 启动后 10 秒内没有写入首帧。")
+
+
 def record(args: argparse.Namespace) -> dict[str, Any]:
     if os.name != "nt":
         raise CaptureError("真实屏幕录制当前仅支持 Windows。")
@@ -216,6 +248,9 @@ def record(args: argparse.Namespace) -> dict[str, Any]:
     destination.parent.mkdir(parents=True, exist_ok=True)
     partial = destination.with_name(f".{destination.stem}.partial.mp4")
     partial.unlink(missing_ok=True)
+    ready_file = Path(args.ready_file).expanduser().resolve() if args.ready_file else None
+    if ready_file:
+        ready_file.unlink(missing_ok=True)
 
     ffmpeg = ffmpeg_executable(args.ffmpeg)
     capabilities = ffmpeg_capabilities(ffmpeg)
@@ -236,10 +271,29 @@ def record(args: argparse.Namespace) -> dict[str, Any]:
         draw_mouse=not args.hide_mouse,
     )
     started_at = datetime.now(timezone.utc)
-    result = subprocess.run(command, capture_output=True, text=True, timeout=args.duration + 90, check=False)
-    if result.returncode != 0 or not partial.is_file() or partial.stat().st_size == 0:
+    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    try:
+        wait_for_capture_start(process, partial, ready_file, started_at)
+        stdout, stderr = process.communicate(timeout=args.duration + 90)
+    except subprocess.TimeoutExpired as exc:
+        process.kill()
+        process.communicate()
         partial.unlink(missing_ok=True)
-        detail = (result.stderr or result.stdout).strip()
+        if ready_file:
+            ready_file.unlink(missing_ok=True)
+        raise CaptureError("FFmpeg 录屏超时。") from exc
+    except CaptureError:
+        process.kill()
+        process.communicate()
+        partial.unlink(missing_ok=True)
+        if ready_file:
+            ready_file.unlink(missing_ok=True)
+        raise
+    if process.returncode != 0 or not partial.is_file() or partial.stat().st_size == 0:
+        partial.unlink(missing_ok=True)
+        if ready_file:
+            ready_file.unlink(missing_ok=True)
+        detail = (stderr or stdout).strip()
         raise CaptureError(f"FFmpeg 录屏失败：{detail[-2000:]}")
     metadata = inspect_video(ffmpeg, partial)
     if metadata["duration_seconds"] < max(0.5, args.duration - 1.0):
@@ -305,6 +359,7 @@ def main() -> int:
     record_parser = subparsers.add_parser("record", help="Record a bounded MP4")
     record_parser.add_argument("--out", required=True)
     record_parser.add_argument("--manifest")
+    record_parser.add_argument("--ready-file", help="Write a JSON signal after FFmpeg starts writing frames")
     source = record_parser.add_mutually_exclusive_group()
     source.add_argument("--window-title")
     source.add_argument("--region", type=parse_region, metavar="X,Y,WIDTH,HEIGHT")

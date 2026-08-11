@@ -69,6 +69,34 @@ class SpeechAdapterTests(unittest.TestCase):
             with self.assertRaisesRegex(speech.SpeechError, "model_revision"):
                 speech.read_request(path)
 
+    def test_segmented_speech_inserts_declared_pause_and_records_timeline(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            request = self.request(root)
+            value = json.loads(request.read_text(encoding="utf-8"))
+            value["items"][0]["text"] = "能自动，可控制"
+            value["items"][0]["segments"] = [
+                {"id": "automatic", "text": "能自动", "pause_after_ms": 200},
+                {"id": "control", "text": "可控制", "pause_after_ms": 0},
+            ]
+            request.write_text(json.dumps(value, ensure_ascii=False), encoding="utf-8")
+
+            def factory(_config):
+                def backend(_text, output):
+                    with wave.open(str(output), "wb") as audio:
+                        audio.setnchannels(1)
+                        audio.setsampwidth(2)
+                        audio.setframerate(24000)
+                        audio.writeframes(struct.pack("<h", 500) * 2400)
+                    return {}
+                return backend
+
+            manifest = speech.synthesize_request(request, root / "out", factory)
+            output = manifest["outputs"][0]
+            self.assertEqual(output["duration_seconds"], 0.4)
+            self.assertEqual(output["segments"][0]["start_seconds"], 0.0)
+            self.assertEqual(output["segments"][1]["start_seconds"], 0.3)
+
 
 if __name__ == "__main__":
     unittest.main()

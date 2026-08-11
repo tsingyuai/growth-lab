@@ -2,6 +2,8 @@
 
 Current status is `generator-ready` for deterministic local rendering. The Seedance adapter is `adapter-ready-not-live-verified`: its offline lifecycle and B-roll integration are implemented, but no real paid task has been created in this repository acceptance cycle. Video publication remains inactive.
 
+The Remotion route is `optional-manual-runtime-validated`: version 4.0.507 has produced and passed a local product-demo render, while the reusable Growth Lab renderer remains Pillow/FFmpeg. Remotion is not bundled or installed by onboarding; each first use must pass the separate license acknowledgement in [`remotion-renderer.md`](remotion-renderer.md).
+
 ## Implementation
 
 - versioned `video-plan` and `video-manifest` schemas;
@@ -16,6 +18,7 @@ Current status is `generator-ready` for deterministic local rendering. The Seeda
 
 - a clean clone passes existing tests without video dependencies;
 - default onboarding does not request FFmpeg, TTS, GPU, or video API configuration;
+- default onboarding does not install Remotion; its runtime, lockfile, acknowledgement, compositions and outputs stay outside tracked source;
 - skipping video leaves the canonical brief and every non-video package unchanged;
 - all outputs stay under ignored Product Memory;
 - removing this directory requires no edits outside its README entry.

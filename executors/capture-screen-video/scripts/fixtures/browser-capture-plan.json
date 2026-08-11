@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "source_url": "browser-capture.html",
+  "viewport": {"width": 1280, "height": 720},
+  "browser": {"headless": true},
+  "shots": [
+    {
+      "id": "source-filter",
+      "duration_seconds": 10,
+      "duration_mode": "adaptive",
+      "tail_hold_ms": 750,
+      "max_attempts": 2,
+      "readiness_selectors": ["#title", "#open"],
+      "actions": [
+        {"id": "open-panel", "type": "click", "selector": "#open"},
+        {"id": "wait-panel", "type": "wait-for-visible", "selector": "#panel", "timeout_ms": 5000},
+        {"id": "select-arxiv", "type": "click", "selector": "#arxiv", "wait_after_ms": 200}
+      ],
+      "requirements": [
+        {"id": "initial-title", "after_action": "start", "selector": "#title", "state": "visible", "text_contains": "Product source filter", "minimum_hold_ms": 200},
+        {"id": "panel-visible", "after_action": "wait-panel", "selector": "#panel", "state": "visible", "minimum_hold_ms": 300},
+        {"id": "arxiv-checked", "after_action": "select-arxiv", "selector": "#arxiv", "state": "checked", "minimum_hold_ms": 300},
+        {"id": "selected-status", "after_action": "select-arxiv", "selector": "#status", "state": "visible", "text_contains": "Selected", "minimum_hold_ms": 500}
+      ]
+    }
+  ]
+}

@@ -67,7 +67,11 @@
         "font_file": {"type": "string", "minLength": 1},
         "layout": {"enum": ["classic", "product-demo", "card-sequence"]},
         "brand_mark": {"type": "string", "minLength": 1, "maxLength": 3},
-        "subtitle_size": {"type": "integer", "minimum": 56, "maximum": 72}
+        "subtitle_size": {"type": "integer", "minimum": 56, "maximum": 72},
+        "caption_size": {"type": "integer", "minimum": 56, "maximum": 96},
+        "caption_stroke_width": {"type": "integer", "minimum": 2, "maximum": 8},
+        "caption_font_file": {"type": "string", "minLength": 1},
+        "caption_accent": {"type": "string", "pattern": "^#[0-9a-fA-F]{6}$"}
       },
       "additionalProperties": false
     },
@@ -85,6 +89,21 @@
           "body": {"type": "string", "maxLength": 240},
           "hook": {"type": "string", "maxLength": 60},
           "narration": {"type": "string", "maxLength": 300},
+          "speech_segments": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 12,
+            "items": {
+              "type": "object",
+              "required": ["id", "text", "pause_after_ms"],
+              "properties": {
+                "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"},
+                "text": {"type": "string", "minLength": 1, "maxLength": 80},
+                "pause_after_ms": {"type": "integer", "minimum": 0, "maximum": 2000}
+              },
+              "additionalProperties": false
+            }
+          },
           "subtitle_cues": {
             "type": "array",
             "minItems": 1,
@@ -100,6 +119,52 @@
               "additionalProperties": false
             }
           },
+          "caption_groups": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 12,
+            "items": {
+              "type": "object",
+              "required": ["id", "display_mode", "exit_together", "vertical_anchor", "end", "segments"],
+              "properties": {
+                "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"},
+                "display_mode": {"enum": ["accumulate", "replace"]},
+                "exit_together": {"type": "boolean"},
+                "vertical_anchor": {"enum": ["top", "middle", "bottom"]},
+                "end": {"type": "number", "exclusiveMinimum": 0},
+                "entry": {"enum": ["fade"]},
+                "segments": {
+                  "type": "array",
+                  "minItems": 1,
+                  "maxItems": 5,
+                  "items": {
+                    "type": "object",
+                    "required": ["id", "text", "lane", "start"],
+                    "properties": {
+                      "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"},
+                      "text": {"type": "string", "minLength": 1, "maxLength": 40},
+                      "lane": {"enum": ["left", "center", "right"]},
+                      "start": {"type": "number", "minimum": 0},
+                      "emphasis": {"enum": ["none", "accent", "strong"]}
+                    },
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "composition": {
+            "type": "object",
+            "required": ["preset"],
+            "properties": {
+              "preset": {"enum": ["native", "focused-screen"]},
+              "foreground_width_ratio": {"type": "number", "minimum": 0.55, "maximum": 0.96},
+              "backdrop_blur": {"type": "number", "minimum": 8, "maximum": 48},
+              "backdrop_dim": {"type": "number", "minimum": 0, "maximum": 0.45}
+            },
+            "additionalProperties": false
+          },
           "asset": {"type": "string", "minLength": 1},
           "asset_role": {"enum": ["product-screenshot", "rendered-card", "generated-broll", "screen-recording", "deterministic-animation"]},
           "asset_source_id": {"type": "string", "minLength": 1, "maxLength": 80},
@@ -111,7 +176,7 @@
           "animation_manifest_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
           "overlay_mode": {"enum": ["full", "subtitles-only", "none"]},
           "audio_file": {"type": "string", "minLength": 1},
-          "duration": {"type": "number", "minimum": 1.5, "maximum": 12},
+          "duration": {"type": "number", "minimum": 1.5, "maximum": 90},
           "motion": {"enum": ["none", "slow-zoom", "pan-up"]},
           "highlight": {
             "type": "object",

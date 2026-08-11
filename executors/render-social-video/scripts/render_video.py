@@ -66,6 +66,22 @@ def safe_input(root: Path, raw: Any, label: str, suffixes: set[str]) -> Path:
     return path
 
 
+def validate_browser_capture_evidence(capture_manifest: Path, capture_data: dict[str, Any]) -> None:
+    if (capture_data.get("source") or {}).get("kind") != "browser":
+        return
+    semantic = (capture_data.get("capture") or {}).get("semantic_validation")
+    if not isinstance(semantic, dict) or semantic.get("status") != "pass":
+        raise VideoError("browser screen-recording 缺少通过的语义证据。")
+    evidence = safe_input(
+        capture_manifest.parent,
+        semantic.get("evidence_file"),
+        "browser semantic evidence",
+        {".json"},
+    )
+    if sha256_file(evidence) != semantic.get("evidence_sha256"):
+        raise VideoError("browser screen-recording 语义证据哈希不匹配。")
+
+
 def evidence_mix(scenes: list[dict[str, Any]], durations: list[float]) -> dict[str, float]:
     total = sum(durations)
     if total <= 0 or len(scenes) != len(durations):
@@ -178,9 +194,15 @@ def read_plan(path: Path) -> dict[str, Any]:
         if not str(scene.get("heading") or "").strip():
             raise VideoError(f"scenes[{index}].heading 不能为空。")
         duration = float(scene.get("duration") or 0)
-        if not 1.5 <= duration <= 12:
-            raise VideoError(f"scenes[{index}].duration 必须在 1.5 到 12 秒之间。")
+        duration_limit = 90 if scene.get("asset_role") == "screen-recording" else 12
+        if not 1.5 <= duration <= duration_limit:
+            raise VideoError(
+                f"scenes[{index}].duration 必须在 1.5 到 {duration_limit} 秒之间。"
+            )
         subtitle_cues = scene.get("subtitle_cues") or []
+        caption_groups = scene.get("caption_groups") or []
+        if subtitle_cues and caption_groups:
+            raise VideoError(f"scenes[{index}] 不能同时使用 subtitle_cues 和 caption_groups。")
         previous_end = 0.0
         for cue_index, cue in enumerate(subtitle_cues):
             start = float(cue["start"])
@@ -190,6 +212,39 @@ def read_plan(path: Path) -> dict[str, Any]:
                     f"scenes[{index}].subtitle_cues[{cue_index}] 时间必须有序、不重叠且位于镜头内。"
                 )
             previous_end = end
+        group_ids: set[str] = set()
+        for group_index, group in enumerate(caption_groups):
+            group_id = str(group.get("id") or "")
+            if group_id in group_ids:
+                raise VideoError(f"scenes[{index}].caption_groups[{group_index}].id 重复。")
+            group_ids.add(group_id)
+            group_end = float(group["end"])
+            if group_end > duration + 1e-6:
+                raise VideoError(f"scenes[{index}].caption_groups[{group_index}] 超出镜头时长。")
+            previous_start = -1.0
+            lanes: set[str] = set()
+            for segment_index, segment in enumerate(group["segments"]):
+                start = float(segment["start"])
+                lane = str(segment["lane"])
+                if start <= previous_start or start >= group_end:
+                    raise VideoError(
+                        f"scenes[{index}].caption_groups[{group_index}].segments[{segment_index}] "
+                        "开始时间必须递增且早于整组结束。"
+                    )
+                if group.get("display_mode") == "accumulate" and lane in lanes:
+                    raise VideoError(
+                        f"scenes[{index}].caption_groups[{group_index}] 累积字幕不能重复使用 {lane} lane。"
+                    )
+                previous_start = start
+                lanes.add(lane)
+            if group.get("display_mode") == "accumulate" and not group.get("exit_together"):
+                raise VideoError(f"scenes[{index}].caption_groups[{group_index}] 累积字幕必须整组退场。")
+        composition = scene.get("composition") or {}
+        if composition.get("preset") == "focused-screen":
+            if scene.get("asset_role") != "screen-recording":
+                raise VideoError(f"scenes[{index}] focused-screen 仅允许真实产品录屏。")
+            if str(scene.get("overlay_mode") or "full") == "full":
+                raise VideoError(f"scenes[{index}] focused-screen 必须使用 overlay_mode=none 或 subtitles-only。")
         total += duration
         if scene["type"] == "screenshot":
             safe_input(path.parent, scene.get("asset"), f"scenes[{index}].asset", {".png", ".jpg", ".jpeg", ".webp"})
@@ -282,6 +337,7 @@ def read_plan(path: Path) -> dict[str, Any]:
                     or capture.get("human_privacy_review_required") is not True
                 ):
                     raise VideoError("screen-recording capture manifest 状态、权限或素材哈希无效。")
+                validate_browser_capture_evidence(capture_manifest, capture_data)
                 asset_duration = float(output.get("duration_seconds") or 0)
                 if asset_duration + 0.05 < duration:
                     raise VideoError("screen-recording 时长短于计划场景时长。")
@@ -341,8 +397,8 @@ def read_plan(path: Path) -> dict[str, Any]:
             raise VideoError("card-sequence 的每个场景都必须使用有来源清单的 rendered-card。")
         if provider == "user-audio":
             safe_input(path.parent, scene.get("audio_file"), f"scenes[{index}].audio_file", {".wav"})
-    if not 3 <= total <= 45:
-        raise VideoError("计划总时长必须在 3 到 45 秒之间。")
+    if not 3 <= total <= 300:
+        raise VideoError("计划总时长必须在 3 到 300 秒之间。")
     validate_evidence_mix(layout, scenes, [float(scene["duration"]) for scene in scenes])
     return plan
 
@@ -359,6 +415,13 @@ def resolve_font(plan: dict[str, Any], plan_path: Path) -> Path:
     raise VideoError("未找到中文字体；请在 style.font_file 指定发布包内字体。")
 
 
+def resolve_caption_font(plan: dict[str, Any], plan_path: Path) -> Path:
+    raw = (plan.get("style") or {}).get("caption_font_file")
+    if raw:
+        return safe_input(plan_path.parent, raw, "style.caption_font_file", {".ttf", ".otf", ".ttc"})
+    return resolve_font(plan, plan_path)
+
+
 def font(path: Path, size: int) -> ImageFont.FreeTypeFont:
     return ImageFont.truetype(str(path), size=size)
 
@@ -366,6 +429,12 @@ def font(path: Path, size: int) -> ImageFont.FreeTypeFont:
 def subtitle_font_size(plan: dict[str, Any]) -> int:
     width = int(plan["canvas"]["width"])
     base_size = int((plan.get("style") or {}).get("subtitle_size", 64))
+    return round(base_size * width / 1080)
+
+
+def caption_font_size(plan: dict[str, Any]) -> int:
+    width = int(plan["canvas"]["width"])
+    base_size = int((plan.get("style") or {}).get("caption_size", 72))
     return round(base_size * width / 1080)
 
 
@@ -597,7 +666,7 @@ def product_demo_frame(
         body_y = caption_y + len(heading_lines) * round(96 * scale) + round(14 * scale)
         draw_lines(draw, wrap_text(draw, body_text, body_face, width - 2 * margin, 2), (margin, body_y), body_face, style["muted"], round(14 * scale))
     narration = str(scene.get("narration") or "").strip()
-    if narration and not scene.get("subtitle_cues") and str(scene.get("overlay_mode") or "full") != "none":
+    if narration and not scene.get("subtitle_cues") and not scene.get("caption_groups") and str(scene.get("overlay_mode") or "full") != "none":
         subtitle_face = font(font_path, subtitle_font_size(plan))
         subtitle_lines = balanced_two_lines(draw, narration, subtitle_face, width - round(120 * scale))
         line_height = round(74 * scale)
@@ -689,7 +758,7 @@ def scene_frame(plan: dict[str, Any], scene: dict[str, Any], plan_path: Path, ou
         panel_lines = wrap_text(draw, body_text or scene["heading"], panel, 780, 5)
         draw_lines(draw, panel_lines, (168, 1000), panel, style["foreground"], 24)
     narration = str(scene.get("narration") or "").strip()
-    if narration and not scene.get("subtitle_cues"):
+    if narration and not scene.get("subtitle_cues") and not scene.get("caption_groups"):
         subtitle = font(font_path, subtitle_font_size(plan))
         subtitle_lines = balanced_two_lines(draw, narration, subtitle, 930)
         total_h = len(subtitle_lines) * 72
@@ -743,7 +812,7 @@ def generated_video_overlay(plan: dict[str, Any], scene: dict[str, Any], plan_pa
                 body_face, style["muted"], round(12 * scale),
             )
     narration = str(scene.get("narration") or "").strip()
-    if narration and not scene.get("subtitle_cues") and overlay_mode != "none":
+    if narration and not scene.get("subtitle_cues") and not scene.get("caption_groups") and overlay_mode != "none":
         subtitle_face = font(font_path, subtitle_font_size(plan))
         subtitle_lines = balanced_two_lines(
             draw, narration, subtitle_face, width - round(120 * scale)
@@ -783,6 +852,50 @@ def subtitle_overlay(
     image.save(output)
 
 
+def caption_segment_overlay(
+    plan: dict[str, Any], group: dict[str, Any], segment: dict[str, Any],
+    plan_path: Path, output: Path,
+) -> None:
+    width = int(plan["canvas"]["width"])
+    height = int(plan["canvas"]["height"])
+    style = plan.get("style") or {}
+    base_size = caption_font_size(plan)
+    if segment.get("emphasis") == "strong":
+        base_size = round(base_size * 1.08)
+    font_path = resolve_caption_font(plan, plan_path)
+    image = Image.new("RGBA", (width, height), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(image)
+    text = str(segment["text"])
+    max_width = round(width * 0.29)
+    face = font(font_path, base_size)
+    while base_size > round(42 * width / 1080):
+        box = draw.textbbox((0, 0), text, font=face)
+        if box[2] - box[0] <= max_width:
+            break
+        base_size -= 2
+        face = font(font_path, base_size)
+    stroke = max(2, round(int(style.get("caption_stroke_width", 4)) * width / 1080))
+    box = draw.textbbox((0, 0), text, font=face, stroke_width=stroke)
+    text_width = box[2] - box[0]
+    text_height = box[3] - box[1]
+    lane_center = {"left": 0.2, "center": 0.5, "right": 0.8}[str(segment["lane"])]
+    anchor = {"top": 0.2, "middle": 0.5, "bottom": 0.78}[str(group["vertical_anchor"])]
+    x = round(width * lane_center - text_width / 2)
+    y = round(height * anchor - text_height / 2)
+    accent = str(style.get("caption_accent") or style.get("accent") or "#6CFF9A")
+    fill = accent if segment.get("emphasis") in {"accent", "strong"} else "#FFFFFF"
+    draw.text(
+        (x + round(3 * width / 1080), y + round(5 * width / 1080)), text,
+        font=face, fill="#000000B8", stroke_width=stroke + 2, stroke_fill="#000000B8",
+    )
+    draw.text(
+        (x, y), text, font=face, fill=fill,
+        stroke_width=stroke, stroke_fill="#10131AF2",
+    )
+    output.parent.mkdir(parents=True, exist_ok=True)
+    image.save(output)
+
+
 def srt_time(seconds: float) -> str:
     milliseconds = round(seconds * 1000)
     hours, milliseconds = divmod(milliseconds, 3_600_000)
@@ -798,7 +911,20 @@ def write_srt(scenes: list[dict[str, Any]], durations: list[float], path: Path) 
     for scene, duration in zip(scenes, durations):
         narration = str(scene.get("narration") or "").strip()
         cues = scene.get("subtitle_cues") or []
-        if cues:
+        caption_groups = scene.get("caption_groups") or []
+        if caption_groups:
+            for group in caption_groups:
+                accumulated: list[str] = []
+                segments = group["segments"]
+                for index, segment in enumerate(segments):
+                    accumulated = accumulated + [str(segment["text"])] if group["display_mode"] == "accumulate" else [str(segment["text"])]
+                    end = float(segments[index + 1]["start"]) if index + 1 < len(segments) else float(group["end"])
+                    blocks.append(
+                        f"{number}\n{srt_time(cursor + float(segment['start']))} --> "
+                        f"{srt_time(cursor + end)}\n{' '.join(accumulated)}\n"
+                    )
+                    number += 1
+        elif cues:
             for cue in cues:
                 blocks.append(
                     f"{number}\n{srt_time(cursor + float(cue['start']))} --> "
@@ -860,6 +986,7 @@ def synthesize_local_tts(scenes: list[dict[str, Any]], voice: dict[str, Any], au
             "id": scene["id"],
             "text": str(scene.get("narration") or "").strip(),
             "output": f"{index:02}-{scene['id']}.wav",
+            **({"segments": scene["speech_segments"]} if scene.get("speech_segments") else {}),
         }
         for index, scene in enumerate(narrated_scenes, start=1)
     ]
@@ -942,6 +1069,31 @@ def screen_recording_filter(width: int, height: int) -> str:
         f"crop={width}:ih:(iw-ow)*0.85:0,"
         f"pad={width}:{height}:0:(oh-ih)/2:color=0xF8F7FC"
     )
+
+
+def screen_recording_filter_chain(
+    width: int, height: int, composition: dict[str, Any] | None = None
+) -> list[str]:
+    value = composition or {}
+    if value.get("preset") != "focused-screen":
+        return [f"[0:v]{screen_recording_filter(width, height)}[base]"]
+    ratio = float(value.get("foreground_width_ratio", 0.86))
+    foreground_width = max(2, math.floor(width * ratio / 2) * 2)
+    blur = float(value.get("backdrop_blur", 24))
+    dim = float(value.get("backdrop_dim", 0.14))
+    return [
+        "[0:v]split=2[background-source][foreground-source]",
+        (
+            f"[background-source]scale={width}:{height}:force_original_aspect_ratio=increase,"
+            f"crop={width}:{height},gblur=sigma={blur:.2f},"
+            f"eq=brightness={-dim:.3f}:saturation=0.72[background]"
+        ),
+        (
+            f"[foreground-source]scale={foreground_width}:-2:force_original_aspect_ratio=decrease,"
+            "setsar=1[foreground]"
+        ),
+        "[background][foreground]overlay=(W-w)/2:(H-h)/2[base]",
+    ]
 
 
 def video_metadata(path: Path) -> dict[str, Any]:
@@ -1028,6 +1180,23 @@ def render(plan_path: Path, output_dir: Path) -> dict[str, Any]:
             cue_frame = subtitle_frames_dir / f"{index:02}-{scene['id']}-{cue_index:02}.png"
             subtitle_overlay(plan, scene, str(cue["text"]), plan_path, cue_frame)
             subtitle_frames.append(cue_frame)
+        caption_overlays: list[tuple[Path, float, float]] = []
+        for group_index, group in enumerate(scene.get("caption_groups") or [], start=1):
+            group_segments = group["segments"]
+            for segment_index, caption_segment in enumerate(group_segments, start=1):
+                caption_frame = subtitle_frames_dir / (
+                    f"{index:02}-{scene['id']}-group-{group_index:02}-{segment_index:02}.png"
+                )
+                caption_segment_overlay(plan, group, caption_segment, plan_path, caption_frame)
+                if group["display_mode"] == "accumulate":
+                    caption_end = float(group["end"])
+                else:
+                    caption_end = (
+                        float(group_segments[segment_index]["start"])
+                        if segment_index < len(group_segments)
+                        else float(group["end"])
+                    )
+                caption_overlays.append((caption_frame, float(caption_segment["start"]), caption_end))
         audio: Path | None = None
         duration = float(scene["duration"])
         narration = str(scene.get("narration") or "").strip()
@@ -1043,8 +1212,9 @@ def render(plan_path: Path, output_dir: Path) -> dict[str, Any]:
         elif provider == "user-audio":
             audio = safe_input(plan_path.parent, scene["audio_file"], f"scene {scene['id']} audio", {".wav"})
             duration = max(duration, wav_duration(audio) + 0.2)
-        if duration > 12:
-            raise VideoError(f"场景 {scene['id']} 配音后超过 12 秒；请缩短旁白。")
+        duration_limit = 90 if scene.get("asset_role") == "screen-recording" else 12
+        if duration > duration_limit:
+            raise VideoError(f"场景 {scene['id']} 配音后超过 {duration_limit} 秒；请缩短旁白。")
         if is_generated_video and duration > float(scene["_asset_duration"]) + 0.05:
             raise VideoError(f"场景 {scene['id']} 的配音时长超过视频素材。")
         durations.append(duration)
@@ -1059,26 +1229,45 @@ def render(plan_path: Path, output_dir: Path) -> dict[str, Any]:
             ]
             for subtitle_frame in subtitle_frames:
                 command += ["-loop", "1", "-framerate", str(fps), "-i", str(subtitle_frame)]
+            for caption_frame, _, _ in caption_overlays:
+                command += ["-loop", "1", "-framerate", str(fps), "-i", str(caption_frame)]
             if audio:
                 command += ["-i", str(audio)]
             else:
                 command += ["-f", "lavfi", "-i", "anullsrc=r=48000:cl=stereo"]
-            audio_input = 2 + len(subtitle_frames)
+            audio_input = 2 + len(subtitle_frames) + len(caption_overlays)
             fade_out = max(0.0, duration - 0.22)
             if scene.get("asset_role") == "screen-recording":
-                source_filter = screen_recording_filter(width, height)
+                filters = screen_recording_filter_chain(width, height, scene.get("composition"))
             else:
                 source_filter = (
                     f"scale={width}:{height}:force_original_aspect_ratio=increase,"
                     f"crop={width}:{height}"
                 )
-            filters = [f"[0:v]{source_filter}[base]", "[base][1:v]overlay=0:0[visual0]"]
+                filters = [f"[0:v]{source_filter}[base]"]
+            filters.append("[base][1:v]overlay=0:0[visual0]")
             current = "visual0"
             for cue_index, cue in enumerate(subtitle_cues, start=1):
                 next_label = f"visual{cue_index}"
                 filters.append(
                     f"[{current}][{cue_index + 1}:v]overlay=0:0:"
                     f"enable='between(t,{float(cue['start']):.3f},{float(cue['end']):.3f})'[{next_label}]"
+                )
+                current = next_label
+            caption_input_start = 2 + len(subtitle_frames)
+            for caption_index, (_, caption_start, caption_end) in enumerate(caption_overlays, start=1):
+                input_index = caption_input_start + caption_index - 1
+                caption_label = f"caption{caption_index}"
+                next_label = f"caption-visual{caption_index}"
+                caption_fade_out = max(caption_start, caption_end - 0.16)
+                filters.append(
+                    f"[{input_index}:v]format=rgba,"
+                    f"fade=t=in:st={caption_start:.3f}:d=0.16:alpha=1,"
+                    f"fade=t=out:st={caption_fade_out:.3f}:d=0.16:alpha=1[{caption_label}]"
+                )
+                filters.append(
+                    f"[{current}][{caption_label}]overlay=0:0:"
+                    f"enable='between(t,{caption_start:.3f},{caption_end:.3f})'[{next_label}]"
                 )
                 current = next_label
             filters.append(
@@ -1096,12 +1285,14 @@ def render(plan_path: Path, output_dir: Path) -> dict[str, Any]:
             command = [ffmpeg, "-y", "-loop", "1", "-framerate", str(fps), "-i", str(frame)]
             for subtitle_frame in subtitle_frames:
                 command += ["-loop", "1", "-framerate", str(fps), "-i", str(subtitle_frame)]
+            for caption_frame, _, _ in caption_overlays:
+                command += ["-loop", "1", "-framerate", str(fps), "-i", str(caption_frame)]
             if audio:
                 command += ["-i", str(audio)]
             else:
                 command += ["-f", "lavfi", "-i", "anullsrc=r=48000:cl=stereo"]
-            audio_input = 1 + len(subtitle_frames)
-            if subtitle_frames:
+            audio_input = 1 + len(subtitle_frames) + len(caption_overlays)
+            if subtitle_frames or caption_overlays:
                 filters = [f"[0:v]{motion_filter(scene['motion'], duration, fps, width, height)}[visual0]"]
                 current = "visual0"
                 for cue_index, cue in enumerate(subtitle_cues, start=1):
@@ -1109,6 +1300,22 @@ def render(plan_path: Path, output_dir: Path) -> dict[str, Any]:
                     filters.append(
                         f"[{current}][{cue_index}:v]overlay=0:0:"
                         f"enable='between(t,{float(cue['start']):.3f},{float(cue['end']):.3f})'[{next_label}]"
+                    )
+                    current = next_label
+                caption_input_start = 1 + len(subtitle_frames)
+                for caption_index, (_, caption_start, caption_end) in enumerate(caption_overlays, start=1):
+                    input_index = caption_input_start + caption_index - 1
+                    caption_label = f"caption{caption_index}"
+                    next_label = f"caption-visual{caption_index}"
+                    caption_fade_out = max(caption_start, caption_end - 0.16)
+                    filters.append(
+                        f"[{input_index}:v]format=rgba,"
+                        f"fade=t=in:st={caption_start:.3f}:d=0.16:alpha=1,"
+                        f"fade=t=out:st={caption_fade_out:.3f}:d=0.16:alpha=1[{caption_label}]"
+                    )
+                    filters.append(
+                        f"[{current}][{caption_label}]overlay=0:0:"
+                        f"enable='between(t,{caption_start:.3f},{caption_end:.3f})'[{next_label}]"
                     )
                     current = next_label
                 filters.append(f"[{current}]format=yuv420p[v]")
@@ -1124,8 +1331,8 @@ def render(plan_path: Path, output_dir: Path) -> dict[str, Any]:
         run_ffmpeg(command)
         segments.append(segment)
     total_duration = sum(durations)
-    if total_duration > 45.5:
-        raise VideoError("配音扩展后的总时长超过 45 秒。")
+    if total_duration > 300.5:
+        raise VideoError("配音扩展后的总时长超过 300 秒。")
     final_evidence_mix = validate_evidence_mix(
         (plan.get("style") or {}).get("layout", "classic"), scenes, durations
     )
@@ -1140,7 +1347,7 @@ def render(plan_path: Path, output_dir: Path) -> dict[str, Any]:
     metadata = video_metadata(final_video)
     size = metadata.get("size") or (0, 0)
     actual_duration = float(metadata.get("duration") or total_duration)
-    if tuple(size) != (width, height) or not 3 <= actual_duration <= 45.5:
+    if tuple(size) != (width, height) or not 3 <= actual_duration <= 300.5:
         raise VideoError(f"成片元数据不合格：size={size}, duration={actual_duration}")
     if metadata.get("codec") != "h264" or metadata.get("audio_codec") != "aac":
         raise VideoError(

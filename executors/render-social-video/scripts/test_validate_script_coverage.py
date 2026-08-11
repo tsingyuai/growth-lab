@@ -106,6 +106,59 @@ class ScriptCoverageTests(unittest.TestCase):
             self.assertEqual(result["status"], "failed")
             self.assertTrue(any("readable hold is too short" in item for item in result["failures"]))
 
+    def test_caption_timing_and_lanes_are_enforced(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            script, evidence, plan = self.fixture(Path(temp))
+            script_data = json.loads(script.read_text(encoding="utf-8"))
+            shot = script_data["shots"][0]
+            shot["speech_groups"] = [{
+                "id": "benefits", "display_mode": "accumulate", "exit_mode": "group",
+                "vertical_anchor": "middle",
+                "segments": [
+                    {"id": "automatic", "text": "能自动", "lane": "left", "pause_after_ms": 200},
+                    {"id": "control", "text": "可控制", "lane": "center", "pause_after_ms": 0},
+                ],
+            }]
+            shot["narration"] = shot["subtitle"] = "能自动，可控制"
+            script.write_text(json.dumps(script_data, ensure_ascii=False), encoding="utf-8")
+
+            evidence_data = json.loads(evidence.read_text(encoding="utf-8"))
+            evidence_data["script_sha256"] = sha256(script)
+            evidence_shot = evidence_data["shots"][0]
+            evidence_shot["caption_checks"] = [
+                {"group_id": "benefits", "segment_id": "automatic", "status": "pass", "lane": "left", "audio_start_seconds": 0.2, "caption_start_seconds": 0.3},
+                {"group_id": "benefits", "segment_id": "control", "status": "pass", "lane": "center", "audio_start_seconds": 1.0, "caption_start_seconds": 1.1},
+            ]
+            evidence_shot["caption_group_checks"] = [
+                {"group_id": "benefits", "status": "pass", "audio_end_seconds": 1.8, "caption_exit_seconds": 1.95}
+            ]
+            evidence.write_text(json.dumps(evidence_data, ensure_ascii=False), encoding="utf-8")
+
+            plan_data = json.loads(plan.read_text(encoding="utf-8"))
+            plan_scene = plan_data["scenes"][0]
+            plan_scene["narration"] = "能自动，可控制"
+            plan_scene["speech_segments"] = [
+                {"id": "automatic", "text": "能自动", "pause_after_ms": 200},
+                {"id": "control", "text": "可控制", "pause_after_ms": 0},
+            ]
+            plan_scene["caption_groups"] = [{
+                "id": "benefits", "display_mode": "accumulate", "exit_together": True,
+                "vertical_anchor": "middle", "end": 1.95,
+                "segments": [
+                    {"id": "automatic", "text": "能自动", "lane": "left", "start": 0.3},
+                    {"id": "control", "text": "可控制", "lane": "center", "start": 1.1},
+                ],
+            }]
+            plan.write_text(json.dumps(plan_data, ensure_ascii=False), encoding="utf-8")
+            result = MODULE.validate(script.resolve(), evidence.resolve(), True, plan.resolve())
+            self.assertEqual(result["status"], "pass")
+
+            evidence_data["shots"][0]["caption_checks"][1]["caption_start_seconds"] = 1.3
+            evidence.write_text(json.dumps(evidence_data, ensure_ascii=False), encoding="utf-8")
+            result = MODULE.validate(script.resolve(), evidence.resolve(), True, plan.resolve())
+            self.assertEqual(result["status"], "failed")
+            self.assertTrue(any("180ms" in item for item in result["failures"]))
+
 
 if __name__ == "__main__":
     unittest.main()

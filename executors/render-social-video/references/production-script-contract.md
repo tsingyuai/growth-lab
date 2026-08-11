@@ -22,7 +22,7 @@ Default to `human-reviewed` when the user has not explicitly requested an autono
 
 ## Shot requirements
 
-Inventory the meaningful Product actions before fixing the shot count. For a multi-step walkthrough, preserve each distinct input, option, action, result or verification state that helps the viewer understand the workflow. Default to 5-8 independently recordable Product-action shots when the workflow supports them; do not replace useful operations with repeated cards or generic HTML motion. The video plan may contain up to 12 scenes.
+Inventory the complete user goal before fixing shot count or duration. For a multi-step walkthrough, preserve each distinct input, option, submission, loading, output and result-inspection state that helps the viewer understand the workflow. Default to at least 5-8 verifiable Product-action beats when the workflow supports them. Group the dependent beats, including navigation to the result page, into a continuous adaptive master and keep that master as one renderer scene; duration follows the executed workflow and `duration_seconds` is only a safety ceiling. Do not create a scene boundary merely because a new control is used, and do not accept configuration without output as a complete walkthrough. Do not replace useful operations with repeated cards or generic HTML motion. The video plan may contain up to 12 scenes.
 
 Define every intended visible beat as a requirement. Each requirement must contain:
 
@@ -34,7 +34,13 @@ Define every intended visible beat as a requirement. Each requirement must conta
 
 Narration and subtitle text in the script are locked copy. The later video plan must preserve them exactly unless the user approves a script revision.
 
-After narration audio exists, split the locked subtitle copy into short `subtitle_cues` at measured speech pauses. Preserve the exact words and order. Use a 64 px subtitle base at 1080 width by default, keep each cue to at most two lines, and require evidence for phrase appearance, pause disappearance and the following phrase when checking synchronization.
+When one spoken sentence contains meaningful pauses or parallel claims, declare `speech_groups` before synthesis. Give every segment locked text, a stable ID, left/center/right lane, emphasis and `pause_after_ms`. Use `display_mode=accumulate` and `exit_mode=group` when earlier phrases must remain while later phrases appear. The ordered segment text must preserve the narration wording.
+
+For a focused Product composition, declare `composition.preset=focused-screen` in the script. The blurred backdrop and centered foreground must use the same unchanged recording and frame time. The sharp foreground remains the evidence; the blurred copy is only spatial fill.
+
+After narration audio exists, split ordinary subtitle copy into short `subtitle_cues` at measured speech pauses, or resolve scripted `speech_groups` into timed `caption_groups`. Never infer final timing from punctuation. Segmented local TTS must synthesize each phrase separately, insert the declared silence, and record actual phrase boundaries. User audio requires measured alignment. Preserve exact words and order.
+
+Use a 64 px ordinary-subtitle base at 1080 width by default. Designed caption groups may use 56-96 px, a locally declared licensed font, bold weight, dark outline and no rectangular background. Keep ordinary cues to at most two lines. For an accumulating group, each phrase appears within 180 ms of its audio onset, stays in its stable lane, and the whole group exits within 250 ms of the spoken group end.
 
 ## Asset collection
 
@@ -46,6 +52,8 @@ Collect only assets requested by the locked script. For each shot:
 4. Save an evidence frame or deterministic state artifact for every requirement.
 5. Record the observed timestamp and visible state in `asset-evidence-ledger.json`.
 6. Reject and retry the shot when any required state is missing, unreadable, mistimed or cropped.
+
+For `speech_groups`, also record one `caption_check` per segment and one `caption_group_check` per group. Reject lane changes, collisions, audio/caption timing outside tolerance, foreground/background time drift, unreadable sharp Product UI, or captions covering the active control.
 
 Do not accept a clip merely because it is nonblank or contains generic motion. Do not rewrite the script after capture to hide missing actions.
 

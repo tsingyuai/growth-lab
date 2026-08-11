@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 from pathlib import Path
 import tempfile
 import unittest
@@ -54,6 +55,25 @@ class RecordScreenTests(unittest.TestCase):
                 recorder.sha256_file(path),
                 "47d1475319e7ced47d296fed0596c7859d134a89e51eba6d22800cead65e3b21",
             )
+
+    def test_ready_signal_is_written_only_after_partial_has_data(self):
+        class FakeProcess:
+            pid = 1234
+
+            @staticmethod
+            def poll():
+                return None
+
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            partial = root / ".capture.partial.mp4"
+            ready = root / "capture.ready.json"
+            partial.write_bytes(b"first-frame")
+            started_at = recorder.datetime.now(recorder.timezone.utc)
+            recorder.wait_for_capture_start(FakeProcess(), partial, ready, started_at, timeout=0.2)
+            payload = json.loads(ready.read_text(encoding="utf-8"))
+            self.assertEqual(payload["status"], "capture-started")
+            self.assertEqual(payload["pid"], 1234)
 
 
 if __name__ == "__main__":

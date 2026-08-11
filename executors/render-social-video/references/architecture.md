@@ -9,7 +9,7 @@ Produce simple 9:16 or 3:4 product-demo videos from real screenshots, approved c
 1. `video-plan`: convert one approved platform draft into timed scenes with narration, on-screen text, asset references, crops, annotations, and preset names.
 2. `asset preparation`: reuse Product-owned screenshots and the existing screenshot/privacy rules. Use `capture-screen-video` for user-approved real interaction sequences and bind its MP4 to a validated capture manifest. Never ask a model to redraw Product UI or exact claims.
 3. `speech adapter`: default to no speech or user audio; add a separately installed, license-reviewed TTS worker later. Voice cloning requires explicit rights and authorization.
-4. `timeline renderer`: use the repository-local Pillow/FFmpeg compiler and a repository-external FFmpeg binary. Static layers are rendered by Pillow; FFmpeg owns timing, bounded motion, audio, fades, concatenation and encoding. Keep FFmpeg build/license information in the manifest.
+4. `timeline renderer`: default to the repository-local Pillow/FFmpeg compiler and a repository-external FFmpeg binary. Static layers are rendered by Pillow; FFmpeg owns timing, bounded motion, audio, fades, concatenation and encoding. A reviewed script may instead use repository-external Remotion when it passes the separate first-use license gate in [`remotion-renderer.md`](remotion-renderer.md). Keep the selected renderer version and license provenance in the manifest.
 5. `subtitle alignment`: derive timing from final narration; retain SRT separately and optionally burn a reviewed subtitle layer into the MP4.
 6. `quality gate`: use ffprobe plus representative frame extraction to validate duration, dimensions, frame rate, codecs, audio, blank frames, text fit, privacy, and manifest correspondence.
 7. `capture adapter`: `capture-screen-video` uses FFmpeg `gdigrab` for a bounded Windows window, region or explicitly approved desktop recording. It disables audio, validates decode/duration/dimensions and records privacy confirmation plus hashes before handoff.
@@ -25,4 +25,4 @@ Produce simple 9:16 or 3:4 product-demo videos from real screenshots, approved c
 
 ## Dependency boundary
 
-Do not vendor FFmpeg, TTS weights, fonts, browser profiles, or generated clips. Keep optional Python dependencies in a dedicated external venv and pin them only when the renderer milestone begins. The rest of Growth Lab must install and test without these dependencies.
+Do not vendor FFmpeg, Remotion, `node_modules`, TTS weights, fonts, browser profiles, or generated clips. Keep optional Python and Node runtimes outside the repository and pin them only when the selected renderer milestone begins. The rest of Growth Lab must install and test without these dependencies.

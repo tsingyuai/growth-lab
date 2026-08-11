@@ -11,8 +11,11 @@
       "type": "object",
       "required": ["kind"],
       "properties": {
-        "kind": {"enum": ["window", "region", "desktop"]},
+        "kind": {"enum": ["window", "region", "desktop", "browser"]},
         "window_title": {"type": "string", "minLength": 1},
+        "url": {"type": "string", "minLength": 1},
+        "viewport_width": {"type": "integer", "minimum": 640},
+        "viewport_height": {"type": "integer", "minimum": 480},
         "x": {"type": "integer", "minimum": 0},
         "y": {"type": "integer", "minimum": 0},
         "width": {"type": "integer", "minimum": 64},
@@ -29,6 +32,17 @@
         "draw_mouse": {"type": "boolean"},
         "scope_confirmed": {"const": true},
         "human_privacy_review_required": {"const": true}
+        ,"semantic_validation": {
+          "type": "object",
+          "required": ["status", "requirement_count", "evidence_file", "evidence_sha256"],
+          "properties": {
+            "status": {"const": "pass"},
+            "requirement_count": {"type": "integer", "minimum": 1},
+            "evidence_file": {"type": "string", "minLength": 1},
+            "evidence_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+          },
+          "additionalProperties": false
+        }
       },
       "additionalProperties": false
     },
@@ -36,7 +50,7 @@
       "type": "object",
       "required": ["name", "ffmpeg_version", "external_binary"],
       "properties": {
-        "name": {"const": "ffmpeg-gdigrab"},
+        "name": {"enum": ["ffmpeg-gdigrab", "playwright-chromium"]},
         "ffmpeg_version": {"type": "string", "minLength": 1},
         "external_binary": {"const": true}
       },

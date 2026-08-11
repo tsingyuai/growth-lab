@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Browser Capture Fixture</title>
+  <style>
+    body { margin: 0; font-family: Arial, sans-serif; background: #f7f7fb; color: #15151b; }
+    main { width: min(960px, calc(100% - 80px)); margin: 80px auto; }
+    h1 { font-size: 44px; margin: 0 0 28px; }
+    button { padding: 14px 20px; font-size: 20px; }
+    #panel { margin-top: 22px; padding: 28px; border: 2px solid #4d2cdf; background: white; }
+    label { display: flex; gap: 12px; align-items: center; font-size: 24px; }
+    #status { margin-top: 24px; font-size: 28px; font-weight: 700; color: #13795b; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1 id="title">Product source filter</h1>
+    <button id="open" type="button">Open sources</button>
+    <section id="panel" hidden>
+      <label><input id="arxiv" type="checkbox"> arXiv preprints</label>
+      <div id="status">Not selected</div>
+    </section>
+  </main>
+  <script>
+    const panel = document.querySelector('#panel');
+    const checkbox = document.querySelector('#arxiv');
+    const status = document.querySelector('#status');
+    document.querySelector('#open').addEventListener('click', () => {
+      window.setTimeout(() => { panel.hidden = false; }, 600);
+    });
+    checkbox.addEventListener('change', () => { status.textContent = checkbox.checked ? 'Selected' : 'Not selected'; });
+  </script>
+</body>
+</html>

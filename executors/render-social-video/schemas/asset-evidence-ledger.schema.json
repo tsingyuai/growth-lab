@@ -35,6 +35,36 @@
               },
               "additionalProperties": false
             }
+          },
+          "caption_checks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["group_id", "segment_id", "status", "lane", "audio_start_seconds", "caption_start_seconds"],
+              "properties": {
+                "group_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"},
+                "segment_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"},
+                "status": {"const": "pass"},
+                "lane": {"enum": ["left", "center", "right"]},
+                "audio_start_seconds": {"type": "number", "minimum": 0, "maximum": 300},
+                "caption_start_seconds": {"type": "number", "minimum": 0, "maximum": 300}
+              },
+              "additionalProperties": false
+            }
+          },
+          "caption_group_checks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["group_id", "status", "audio_end_seconds", "caption_exit_seconds"],
+              "properties": {
+                "group_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"},
+                "status": {"const": "pass"},
+                "audio_end_seconds": {"type": "number", "minimum": 0, "maximum": 300},
+                "caption_exit_seconds": {"type": "number", "minimum": 0, "maximum": 300}
+              },
+              "additionalProperties": false
+            }
           }
         },
         "additionalProperties": false

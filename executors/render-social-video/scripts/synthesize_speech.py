@@ -70,8 +70,64 @@ def read_request(path: Path) -> dict[str, Any]:
             raise SpeechError(f"items[{index}].text 必须为 1 到 300 个字符。")
         if output != f"{index + 1:02}-{scene_id}.wav":
             raise SpeechError(f"items[{index}].output 不符合受控命名规则。")
+        segments = item.get("segments") or []
+        segment_ids: set[str] = set()
+        for segment_index, segment in enumerate(segments):
+            if not isinstance(segment, dict):
+                raise SpeechError(f"items[{index}].segments[{segment_index}] 必须是对象。")
+            segment_id = str(segment.get("id") or "")
+            segment_text = str(segment.get("text") or "").strip()
+            pause_after_ms = segment.get("pause_after_ms")
+            if not re.fullmatch(r"[a-z0-9][a-z0-9-]{0,47}", segment_id) or segment_id in segment_ids:
+                raise SpeechError(f"items[{index}].segments[{segment_index}].id 无效或重复。")
+            if not segment_text or len(segment_text) > 80:
+                raise SpeechError(f"items[{index}].segments[{segment_index}].text 必须为 1 到 80 个字符。")
+            if not isinstance(pause_after_ms, int) or not 0 <= pause_after_ms <= 2000:
+                raise SpeechError(f"items[{index}].segments[{segment_index}].pause_after_ms 无效。")
+            segment_ids.add(segment_id)
         ids.add(scene_id)
     return request
+
+
+def combine_segment_wavs(
+    parts: list[tuple[dict[str, Any], Path]], output: Path
+) -> list[dict[str, Any]]:
+    if not parts:
+        raise SpeechError("分段 TTS 没有可合并的音频。")
+    timeline: list[dict[str, Any]] = []
+    total_frames = 0
+    expected: tuple[int, int, int] | None = None
+    with wave.open(str(output), "wb") as target:
+        for segment, part in parts:
+            try:
+                with wave.open(str(part), "rb") as source:
+                    current = (source.getnchannels(), source.getsampwidth(), source.getframerate())
+                    if expected is None:
+                        expected = current
+                        target.setnchannels(current[0])
+                        target.setsampwidth(current[1])
+                        target.setframerate(current[2])
+                    elif current != expected:
+                        raise SpeechError("分段 TTS 返回了不一致的 WAV 参数。")
+                    start = total_frames / current[2]
+                    frames = source.getnframes()
+                    target.writeframes(source.readframes(frames))
+                    total_frames += frames
+                    end = total_frames / current[2]
+                    pause_frames = round(current[2] * int(segment["pause_after_ms"]) / 1000)
+                    if pause_frames:
+                        target.writeframes(b"\x00" * pause_frames * current[0] * current[1])
+                        total_frames += pause_frames
+                    timeline.append({
+                        "id": segment["id"],
+                        "text": segment["text"],
+                        "start_seconds": round(start, 3),
+                        "end_seconds": round(end, 3),
+                        "pause_after_ms": int(segment["pause_after_ms"]),
+                    })
+            except (OSError, wave.Error) as exc:
+                raise SpeechError(f"分段 WAV 无效：{part.name}") from exc
+    return timeline
 
 
 def make_kokoro_backend(config: dict[str, Any]) -> Callable[[str, Path], dict[str, Any]]:
@@ -131,7 +187,20 @@ def synthesize_request(
     outputs = []
     for item in request["items"]:
         output = output_dir / item["output"]
-        backend(item["text"], output)
+        segment_timeline: list[dict[str, Any]] = []
+        if item.get("segments"):
+            parts: list[tuple[dict[str, Any], Path]] = []
+            try:
+                for segment_index, segment in enumerate(item["segments"], start=1):
+                    part = output_dir / f".{output.stem}.segment-{segment_index:02}.wav"
+                    backend(segment["text"], part)
+                    parts.append((segment, part))
+                segment_timeline = combine_segment_wavs(parts, output)
+            finally:
+                for _, part in parts:
+                    part.unlink(missing_ok=True)
+        else:
+            backend(item["text"], output)
         if not output.is_file():
             raise SpeechError(f"TTS 未生成 {output.name}。")
         media = wave_metadata(output)
@@ -141,6 +210,7 @@ def synthesize_request(
             "text_sha256": hashlib.sha256(item["text"].encode("utf-8")).hexdigest(),
             "sha256": sha256_file(output),
             **media,
+            **({"segments": segment_timeline} if segment_timeline else {}),
         })
     try:
         engine_version = importlib.metadata.version("kokoro")
