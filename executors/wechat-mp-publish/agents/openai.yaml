@@ -1,0 +1,4 @@
+interface:
+  display_name: "公众号草稿与发布"
+  short_description: "预览公众号文章、同步微信草稿，并在三重确认下受控发布"
+  default_prompt: "Use $wechat-mp-publish to 预览这篇公众号文章并同步到微信草稿箱，不要发布。"

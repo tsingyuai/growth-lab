@@ -1,0 +1,27 @@
+# 与服务器专属 .env 放在同一目录。对公网提供服务时放在 HTTPS 反向代理之后。
+services:
+  wechat-publisher:
+    container_name: wechat-publisher
+    image: wechat-publisher:latest
+    restart: unless-stopped
+    cpus: ${CPU_LIMIT:-1}
+    env_file:
+      - .env
+    ports:
+      - "127.0.0.1:${WECHAT_PUBLISH_HOST_PORT:-8080}:8080"
+    volumes:
+      - ./.env:/app/.env:ro
+      - ./data/wechat-posts:/data/wechat-posts
+      - ./data/wechat-token:/data/wechat-token
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/healthz', timeout=3).read()",
+        ]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s

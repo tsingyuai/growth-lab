@@ -25,6 +25,7 @@
 | Bing Webmaster 数据 | `BING_WEBMASTER_API_KEY` | Bing Webmaster Tools 账号的 API access | 不做 SEO 需求/表现研究可绕过 |
 | IndexNow | `INDEXNOW_KEY` + 正确的 `SITE_URL`;站点可访问 key 文件 | key 由站点所有者自行生成，不需向第三方申请 | 不主动提交 URL 可绕过；`INDEXNOW_KEY_LOCATION` 可选 |
 | AI 生图 | `GEMINI_API_KEY` 或 `OPENAI_API_KEY` 任一条有效 | Google AI Studio / Google Cloud；OpenAI Platform | 不生图可绕过；兼容代理才配置对应 base URL |
+| 微信公众号草稿与发布 | 本机直连：`WECHAT_MP_APP_ID` + `WECHAT_MP_APP_SECRET`，本机出口 IP 在白名单；或远程服务：`WECHAT_PUBLISH_SERVICE_URL` + `WECHAT_PUBLISH_SERVICE_TOKEN` | 公众号后台“设置与开发 → 基本配置”获取 AppID/AppSecret 并配置 API IP 白名单；远程服务按 `executors/wechat-mp-publish/references/remote-service.md` 自行部署 | 两种模式任一条即可。账号主体须具备草稿/发布接口权限。`WECHAT_ENABLE_AUTO_PUBLISH` 默认 false，onboarding 不替用户打开。不同步草稿、改为人类协作发布时可绕过 |
 
 API key 默认由用户自行写入根目录 `.env.local` 或通过系统密钥管理器注入，该文件已被 Git 忽略。Agent 必须先给出 [`CONFIGURATION.md`](../../../CONFIGURATION.md) 的字段和步骤；只有用户明确同意后 Agent 才能写，且不得回显值。
 
@@ -69,6 +70,12 @@ Onboarding SEO 时分别检查“API 数据读取”和“浏览器批量调研�
 - 安装前提示用户核对上游 LICENSE；不自动升级或覆盖已有目录。
 
 具体操作与平台检查入口见 [`collectors/media-crawler`](../../../collectors/media-crawler/SKILL.md)。小红书已有链接的详情和图片由独立 `xiaohongshu-mcp` Collector 完成。
+
+## 微信公众号验证
+
+- “配置存在”只说明变量非空。直连模式的最小有效性检查是一次 `get_access_token`（不产生内容、不消耗素材额度）：`40164` 表示 IP 不在白名单，`40001`/`40125` 表示凭据错误。执行前取得用户同意，不输出 token。
+- 远程模式先请求 `GET <WECHAT_PUBLISH_SERVICE_URL>/healthz`；鉴权是否正确以一次 `status` 查询返回 404“远端文章不存在”而非 401 为准。
+- 接口权限（`48001 api unauthorized`）只在创建草稿时暴露，状态表中标注“凭据有效，接口权限待首次草稿验证”。
 
 ## 本地工具与用户会话
 

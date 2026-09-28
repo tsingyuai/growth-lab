@@ -9,7 +9,15 @@ import { fileURLToPath } from 'node:url';
 
 const GEMINI_MODEL = 'gemini-3.1-flash-image-2k';
 const OPENAI_MODEL = 'gpt-image-2';
-const MODELS = new Set([GEMINI_MODEL, OPENAI_MODEL]);
+// Route by model family so compatible gateways can expose newer or tiered model IDs.
+const OPENAI_MODEL_PATTERN = /^gpt-image-/;
+const GEMINI_MODEL_PATTERN = /^(gemini-.*image|nano-banana)/;
+
+function providerFor(model) {
+  if (OPENAI_MODEL_PATTERN.test(model)) return 'openai';
+  if (GEMINI_MODEL_PATTERN.test(model)) return 'gemini';
+  return null;
+}
 const GEMINI_BASE_URL = 'https://generativelanguage.googleapis.com';
 const OPENAI_BASE_URL = 'https://api.openai.com';
 const TIMEOUT_MS = 300_000;
@@ -47,7 +55,7 @@ loadRepoEnv();
 function parseArgs(argv) {
   const configuredModel = process.env.OPENAI_IMAGE_MODEL;
   const defaultModel =
-    configuredModel && MODELS.has(configuredModel)
+    configuredModel && providerFor(configuredModel)
       ? configuredModel
       : process.env.OPENAI_API_KEY && !process.env.GEMINI_API_KEY
         ? OPENAI_MODEL
@@ -248,9 +256,10 @@ async function generateWithOpenAI(options) {
 
 async function generate(options) {
   if (!options.output || !options.prompt) throw new Error('Each job requires prompt and output');
-  if (!MODELS.has(options.model)) throw new Error(`Unsupported model. Choose one of: ${[...MODELS].join(', ')}`);
+  const provider = providerFor(options.model);
+  if (!provider) throw new Error('Unsupported model. Use a gpt-image-* model (OpenAI API) or a gemini-*image* / nano-banana* model (Gemini API)');
   if (options.force && fs.existsSync(path.resolve(options.output))) fs.unlinkSync(path.resolve(options.output));
-  if (options.model === OPENAI_MODEL) await generateWithOpenAI(options);
+  if (provider === 'openai') await generateWithOpenAI(options);
   else await generateWithGemini(options);
 }
 

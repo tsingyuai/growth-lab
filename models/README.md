@@ -32,3 +32,4 @@ Model 文件承载闭环方法论，Memory 承载方法运行后产生的历史�
 - [`run-seo-page-loop`](run-seo-page-loop/SKILL.md)：从热词调研、页面创作和生图，到 IndexNow 与 Bing 数据复盘的 SEO 页面闭环。
 - [`xhs-replicate`](xhs-replicate/SKILL.md)：执行“找 idea → 锚定爆款 → 复刻骨架 → 填入真实内容 → 生图与自动检查”的小红书主流程。
 - `xhs-replicate` 内部包含结果回收与复盘阶段；发布日志不再对应独立 Model。
+- [`run-wechat-article-loop`](run-wechat-article-loop/SKILL.md)：从选题、公众号长文创作、预览与合规检查，到微信草稿同步、受控发布和阅读/转化数据复盘。

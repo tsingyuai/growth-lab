@@ -1,0 +1,13 @@
+account: "{账号标签，不写凭据}"
+title: "{公众号标题}"
+author: ""
+digest: "{摘要，不超过一两句话}"
+content_source_url: ""
+cover: "cover.png"
+theme: default
+need_open_comment: 0
+only_fans_can_comment: 0
+
+publish:
+  mode: draft_only
+  approved: false
