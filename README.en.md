@@ -104,7 +104,7 @@ Check which Growth Lab configuration is still missing.
 Set up Xiaohongshu collection and image generation; skip SEO for now.
 ```
 
-The Agent checks API keys, third-party clients, external repositories, browsers, and authentication, explains where missing configuration comes from, and lets the user configure or bypass each capability for the current session. Third-party clients and authentication remain outside the repository; secrets, cookies, and browser profiles do not enter Memory.
+The Agent checks API keys, third-party clients, external repositories, browsers, and authentication, explains where missing configuration comes from, and lets the user configure or bypass each capability for the current session. Xiaohongshu uses the local browser-first `xiaohongshu-mcp` with a recommended first batch of 25; AI image generation needs either local OpenAI or Gemini credentials. See [CONFIGURATION.md](CONFIGURATION.md) for exact fields, storage, and removal. Third-party clients and authentication remain outside the repository; secrets, cookies, and browser profiles do not enter Memory.
 
 Methods and executable scripts stay with their owning Collector, Executor, or Model Skill. Private product materials, collected samples, generated outputs, and historical operating Memory are not distributed with the repository. A Model creates its own Memory namespace when the user runs it.
 

@@ -1,13 +1,12 @@
 ---
 name: media-crawler
-description: Install, authenticate, configure, operate, and troubleshoot the external MediaCrawler client shared by Xiaohongshu, Douyin, Kuaishou, Bilibili, Weibo, Tieba, and Zhihu collectors. Use when auditing this client, onboarding a platform account, selecting search/detail/creator modes, enabling comments or media, locating outputs, or diagnosing crawler failures. Do not use it as the platform research methodology; hand that work to the matching media-crawler-* collector skill.
+description: Install, authenticate, configure, operate, and troubleshoot the external MediaCrawler client shared by Douyin, Kuaishou, Bilibili, Weibo, Tieba, and Zhihu collectors. Xiaohongshu uses the separate browser-first xiaohongshu-mcp Collector. Use when auditing this client, onboarding a supported platform account, selecting search/detail/creator modes, enabling comments or media, locating outputs, or diagnosing crawler failures.
 ---
 
 # MediaCrawler
 
 This is the shared tool layer. Read [operations.md](references/operations.md) before changing the external checkout. Then invoke exactly one platform Skill:
 
-- [Xiaohongshu](../media-crawler-xhs/SKILL.md)
 - [Douyin](../media-crawler-douyin/SKILL.md)
 - [Kuaishou](../media-crawler-kuaishou/SKILL.md)
 - [Bilibili](../media-crawler-bilibili/SKILL.md)
@@ -32,7 +31,7 @@ MediaCrawler does not support Twitter/X or Reddit. Do not imply otherwise.
 
 ```bash
 cd "${MEDIACRAWLER_DIR:-${GROWTHLAB_CLIENT_ROOT:-$HOME/.growth-lab/clients}/MediaCrawler}"
-uv run main.py --platform <xhs|dy|ks|bili|wb|tieba|zhihu> --lt qrcode --type <search|detail|creator>
+uv run main.py --platform <dy|ks|bili|wb|tieba|zhihu> --lt qrcode --type <search|detail|creator>
 ```
 
 Use `--lt qrcode` with CDP and an existing Chrome session. Do not fall back to standard Playwright, a newly launched clean browser, or Cookie injection.
