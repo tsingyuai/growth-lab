@@ -33,6 +33,8 @@ memory/run-seo-page-loop/
 ```text
 memory/xhs-replicate/                 # 运行时生成；不随仓库分发私有基线内容
 memory/xhs-replicate/publish-log/     # 该 loop 运行时产生的 24h / 48h / 7d 数据
+memory/run-wechat-article-loop/outputs/<slug>/   # 公众号文章生产单元与 publish-state.json
+memory/run-wechat-article-loop/publish-log/       # 公众号 24h / 7d 数据
 ```
 
 仓库不内置任何私有 `knowledge`、`products`、`samples`、`outputs` 或 `assets`。这些内容只能由使用者在自己的运行中产生。密钥、第三方 client 和浏览器登录 profile 也不属于 Memory。

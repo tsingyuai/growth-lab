@@ -54,7 +54,7 @@ Loop methodology lives in the Model and evolves through direct edits to its Skil
 
 ### Every channel, through its full lifecycle
 
-Growth Lab is designed to cover every growth channel from understanding the opportunity and choosing an action to execution, measurement, and the next decision. It currently supports SEO page growth plus Xiaohongshu content collection, high-performing-content research, writing, image generation, card rendering, compliance checks, and post-result feedback.
+Growth Lab is designed to cover every growth channel from understanding the opportunity and choosing an action to execution, measurement, and the next decision. It currently supports SEO page growth plus Xiaohongshu content collection, high-performing-content research, writing, image generation, card rendering, compliance checks, and post-result feedback, plus WeChat Official Account article writing, draft sync, and gated publishing.
 
 ### Continuous collaboration through natural language
 
@@ -123,12 +123,13 @@ One capability is one complete observation-action-review loop, represented by on
 |---|---|---|
 | [SEO Page Growth Loop](models/run-seo-page-loop/SKILL.md) | Identify the situations in which users may need your product, research what they actually search for in those situations, and create informative SEO pages that solve their problems and lead them to the product. | In our own run, new pages were indexed within 1–2 days. On a 7-day average basis, overall CTR decreased by 50%, while impressions and clicks each increased by 1000%. |
 | [Xiaohongshu Replication and Review Loop](models/xhs-replicate/SKILL.md) | Coordinates collection, drafting, editing, screenshots, image generation, card rendering, compliance checks, and post-result review. | Commercial content created with this workflow has reached [4,000+ likes/saves and 700+ comments on a single post](http://xhslink.cn/o/37uik9K9WHr). Publishing remains manual. |
+| [WeChat Official Account Article Loop](models/run-wechat-article-loop/SKILL.md) | Chooses a topic from a reader problem and a proven reference article, writes a verifiable long-form article, previews and compliance-checks it, syncs it to the WeChat draft box through the official API, publishes only after three explicit approvals, and reviews read and conversion data. | Newly added; no measured results yet. Creates drafts by default. |
 
 These figures describe one observed run and provide evidence for continued iteration. Results depend on the product, domain, search demand, page quality, site authority, and observation window.
 
 ## Status
 
-Growth Lab includes a working SEO Page Growth Loop and a Xiaohongshu replication and review workflow. Reusable Skills, scripts, CLIs, and automated checks remain in their owning capability directories. Private product data, samples, screenshots, generated posts, and historical Memory are intentionally excluded. Xiaohongshu publishing remains manual.
+Growth Lab includes a working SEO Page Growth Loop and a Xiaohongshu replication and review workflow. Reusable Skills, scripts, CLIs, and automated checks remain in their owning capability directories. Private product data, samples, screenshots, generated posts, and historical Memory are intentionally excluded. Xiaohongshu publishing remains manual. WeChat Official Account articles stop at the draft box by default; automated publishing requires an environment switch, per-article approval, and an explicit command flag.
 
 If this direction resonates with you, open an issue and tell us what product you are growing, where the current workflow breaks, and which tools the Runtime should be able to use.
 

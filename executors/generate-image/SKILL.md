@@ -39,6 +39,8 @@ node executors/generate-image/generate-image.mjs \
   --prompt-file <prompt.txt>
 ```
 
+`--model` accepts any `gpt-image-*` ID (sent to the OpenAI Images API at `OPENAI_BASE_URL`) or any `gemini-*image*` / `nano-banana*` ID (sent to the Gemini API at `GOOGLE_GEMINI_BASE_URL`). Compatible gateways may expose suffixed or tiered model IDs; list them with the gateway's `/v1/models` before choosing.
+
 Add one `--ref <image>` argument for each reference image used in an edit.
 
 For JSONL batch generation, put one job per line with `prompt` or `prompt_file`, `out`, and optional `model`, `refs`, `size`, or `quality`:

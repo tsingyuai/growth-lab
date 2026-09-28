@@ -13,3 +13,4 @@ memory/**
 !memory/**/.gitkeep
 .vercel
 node_modules/
+__pycache__/

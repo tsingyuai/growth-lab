@@ -32,3 +32,5 @@ Human-assisted publishing follows platform rules and preserves human judgment fo
 - [`indexnow/`](indexnow/)：向 IndexNow 提交已经上线、更新或删除的 URL。
 - [`xhs-render-cards`](xhs-render-cards/SKILL.md)：以一条总 SOP 完成强制 DAI、image-plan、视觉参考图与真实浏览器截图共同生图和质量检查。
 - [`screenshot-assets`](screenshot-assets/SKILL.md)：截取、归档并复用小红书内容所需的真实产品 workspace 截图。
+- [`wechat-article-compose`](wechat-article-compose/SKILL.md)：以复刻锚和用户价值三问写出公众号长文，并通过公众号通用合规检查。
+- [`wechat-mp-publish`](wechat-mp-publish/SKILL.md)：通过微信官方 API 预览、创建草稿，并在三重确认下受控发布与查询状态；支持固定 IP 远程发布服务。

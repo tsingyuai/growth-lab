@@ -1,0 +1,4 @@
+interface:
+  display_name: "公众号长文闭环"
+  short_description: "从选题、长文创作、预览与合规检查，到微信草稿同步、受控发布和数据复盘"
+  default_prompt: "Use $run-wechat-article-loop to 为当前产品写一篇公众号长文并同步到微信草稿箱，不要发布。"
