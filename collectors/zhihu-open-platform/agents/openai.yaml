@@ -1,0 +1,4 @@
+interface:
+  display_name: "知乎开放平台"
+  short_description: "通过知乎官方 CLI 采集站内内容、热榜与问题回答摘要"
+  default_prompt: "Use $zhihu-open-platform to 采集这个知乎主题，并保留原文链接和采集来源。"

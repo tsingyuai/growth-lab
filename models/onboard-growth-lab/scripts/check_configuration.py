@@ -5,6 +5,8 @@ from __future__ import annotations
 
 import json
 import os
+import subprocess
+import sys
 from pathlib import Path
 from typing import Mapping
 
@@ -21,6 +23,8 @@ ALLOWED = {
     "XHS_MCP_LOGIN_BINARY",
     "XHS_MCP_COOKIES_PATH",
     "DEFAULT_SAMPLE_LIMIT",
+    "ZHIHU_CLI_BIN",
+    "ZHIHU_CLI_HOME",
 }
 
 
@@ -55,6 +59,70 @@ def configured_file(value: str) -> bool:
         return False
     expanded = os.path.expandvars(os.path.expanduser(value))
     return Path(expanded).is_file()
+
+
+def audit_zhihu(values: Mapping[str, str], environ: Mapping[str, str]) -> dict:
+    script = ROOT / "models" / "onboard-growth-lab" / "scripts" / "onboard_zhihu.py"
+    command = [sys.executable, str(script), "status"]
+    configured_binary = values.get("ZHIHU_CLI_BIN", "")
+    if configured_binary and not configured_file(configured_binary):
+        return {
+            "status": "configured-binary-not-found",
+            "provenance": "zhihu-official-cli",
+        }
+    if configured_binary:
+        command.extend(["--binary", os.path.expanduser(values["ZHIHU_CLI_BIN"])])
+
+    process_env = os.environ.copy()
+    process_env.pop("ZHIHU_CLI_BIN", None)
+    process_env.pop("ZHIHU_CLI_HOME", None)
+    process_env.update(environ)
+    if values.get("ZHIHU_CLI_HOME"):
+        process_env["ZHIHU_CLI_HOME"] = values["ZHIHU_CLI_HOME"]
+    try:
+        completed = subprocess.run(
+            command,
+            text=True,
+            capture_output=True,
+            timeout=20,
+            check=False,
+            env=process_env,
+        )
+        payload = json.loads(completed.stdout) if completed.stdout.strip() else {}
+    except (OSError, subprocess.TimeoutExpired, json.JSONDecodeError) as exc:
+        return {
+            "status": "inspection-error",
+            "error": type(exc).__name__,
+            "provenance": "zhihu-official-cli",
+        }
+
+    if completed.returncode != 0 or not payload.get("ok"):
+        return {
+            "status": "inspection-error",
+            "error": payload.get("error", {}).get("code", f"exit-{completed.returncode}"),
+            "provenance": "zhihu-official-cli",
+        }
+    readiness = payload.get("readiness")
+    auth = payload.get("auth") if isinstance(payload.get("auth"), dict) else {}
+    mapped_status = {
+        "missing-cli": "missing-cli",
+        "incompatible-cli": "incompatible-cli",
+        "needs-access-secret": "needs-access-secret",
+        "ready-to-verify": "configured-not-verified",
+        "ready": "ready",
+    }.get(readiness, "inspection-error")
+    action = payload.get("action") if isinstance(payload.get("action"), dict) else {}
+    return {
+        "status": mapped_status,
+        "readiness": readiness,
+        "version": payload.get("version"),
+        "minimum_version": payload.get("minimum_version"),
+        "binary_path": payload.get("binary_path"),
+        "auth_source": auth.get("source"),
+        "next_action": action.get("next_action"),
+        "command": action.get("command"),
+        "provenance": "zhihu-official-cli",
+    }
 
 
 def audit(root: Path, environ: Mapping[str, str]) -> dict:
@@ -99,6 +167,7 @@ def audit(root: Path, environ: Mapping[str, str]) -> dict:
             "recommended": 25,
             "requires_api_key": False,
         },
+        "zhihu": audit_zhihu(values, environ),
         "image_generation": {
             "status": image_status,
             "configured_providers": providers,

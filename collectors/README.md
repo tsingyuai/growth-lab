@@ -33,5 +33,6 @@ Use official APIs, authorized access, public sources, and user-provided data. Fo
 - [`research-seo-demand`](research-seo-demand/SKILL.md)：扩展关键词族、验证热度、研究实时 SERP 并选择 SEO 页面机会。
 - [`research-product`](research-product/SKILL.md)：在真实 loop 中渐进研究产品，并把稳定认知增量写入 `SOUL.md`。
 - [`xiaohongshu-mcp`](xiaohongshu-mcp/SKILL.md)：通过本机 browser-first 服务只读搜索小红书、下载视觉候选并脱敏归档，首次默认推荐 25 条。
-- [`media-crawler`](media-crawler/SKILL.md)：统一安装、认证、配置、运行和诊断其他平台使用的外部 MediaCrawler。
-- 其他平台方法论：[`抖音`](media-crawler-douyin/SKILL.md) · [`快手`](media-crawler-kuaishou/SKILL.md) · [`B站`](media-crawler-bilibili/SKILL.md) · [`微博`](media-crawler-weibo/SKILL.md) · [`贴吧`](media-crawler-tieba/SKILL.md) · [`知乎`](media-crawler-zhihu/SKILL.md)。
+- [`zhihu-open-platform`](zhihu-open-platform/SKILL.md)：通过知乎官方 CLI 与开放平台只读采集站内搜索、热榜和问题回答摘要，保留原始链接和响应。
+- [`media-crawler`](media-crawler/SKILL.md)：统一安装、认证、配置、运行和诊断抖音、快手、B站、微博与贴吧使用的外部 MediaCrawler。
+- 其他平台方法论：[`抖音`](media-crawler-douyin/SKILL.md) · [`快手`](media-crawler-kuaishou/SKILL.md) · [`B站`](media-crawler-bilibili/SKILL.md) · [`微博`](media-crawler-weibo/SKILL.md) · [`贴吧`](media-crawler-tieba/SKILL.md)。

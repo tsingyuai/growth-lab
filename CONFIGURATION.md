@@ -34,6 +34,55 @@ DEFAULT_SAMPLE_LIMIT=25
 
 When login is missing, Growth Lab must explain the read-only boundary and ask before opening the QR-login window. Login authorizes reading public research evidence only, not likes, saves, comments, follows, uploads, or publication.
 
+## Zhihu collection
+
+Zhihu collection uses the official `zhihu-cli` from the [Zhihu Open Platform](https://developer.zhihu.com/docs?key=zhihu_cli). It does not use MediaCrawler, browser cookies, or page scraping.
+
+First check whether the official CLI is already installed:
+
+```bash
+python3 models/onboard-growth-lab/scripts/onboard_zhihu.py status
+```
+
+If it is missing, the agreed installation command is:
+
+```bash
+python3 models/onboard-growth-lab/scripts/onboard_zhihu.py install --yes
+```
+
+The installer downloads only from `developer-cdn.zhihu.com`, verifies the official release manifest, artifact size, and SHA-256, then installs under the current user's application data directory. It does not use `sudo` or modify `PATH`.
+
+Optional path overrides:
+
+```dotenv
+ZHIHU_CLI_BIN=/absolute/path/to/official/zhihu-cli
+ZHIHU_CLI_HOME=/absolute/path/to/zhihu-cli-install-root
+```
+
+Leave both empty unless the workspace needs a non-default installation location. `ZHIHU_CLI_BIN` must point to a binary obtained from Zhihu's official CLI release.
+
+Generate an Access Secret at <https://developer.zhihu.com/profile>. Give it to the Agent only in the private conversation; the Agent must pass it to the official binary through standard input with `auth set --secret-stdin`. Do not put the secret in a command-line argument, repository file, Memory, screenshot, or shared transcript.
+
+On desktop systems the official CLI stores the credential in the operating-system keychain. In headless or container environments, the host Secret Store should inject `ZHIHU_ACCESS_SECRET` into the process that runs the CLI. The CLI does not read project `.env` files automatically. If the variable exists and is invalid, the CLI should not silently fall back to another credential.
+
+The preferred local setup path is the no-echo onboarding prompt:
+
+```bash
+python3 models/onboard-growth-lab/scripts/onboard_zhihu.py auth
+```
+
+`auth status` only checks local configuration. After approval for online verification and possible quota use, complete onboarding with one real query:
+
+```bash
+python3 models/onboard-growth-lab/scripts/onboard_zhihu.py verify \
+  --query "a real research query" \
+  --yes
+```
+
+`verify` runs the official online credential check and requires at least one returned content item. Use `--hot` instead when a real query is not available, but still require one returned hot-list item.
+
+Remove the CLI with the official installer's documented rollback or remove the user application-data directory after confirming no other workspace uses it. Remove the credential with the official `auth logout` command or revoke the Access Secret in the Open Platform profile. Removing `.env.local` does not remove an OS-keychain credential.
+
 ## AI image generation
 
 AI image generation is optional. Collection, copywriting, review, and deterministic card rendering can proceed without an image API. Configure one provider only when generated effects or layers are needed.

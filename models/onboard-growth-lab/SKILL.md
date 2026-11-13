@@ -10,7 +10,7 @@ description: 通过自然语言完成 Growth Lab 的统一依赖审计与配置�
 ## 工作方式
 
 1. 完整读取 [依赖清单](references/dependencies.md)。
-2. 先运行 `python models/onboard-growth-lab/scripts/check_configuration.py`，再只读检查当前机器、已声明的第三方 Client 和认证 profile。脚本与回复都不得输出 secret、cookie、token 或认证文件内容。
+2. 先运行 `python models/onboard-growth-lab/scripts/check_configuration.py`，再只读检查当前机器、已声明的第三方 Client 和认证 profile。知乎状态由同一 onboarding 下的 `onboard_zhihu.py status` 提供。脚本与回复都不得输出 secret、cookie、token 或认证文件内容。
 3. 向用户给出一张统一状态表：`已就绪`、`缺失`、`可选`、`本轮绕过`。
 4. 用自然语言询问用户要启用哪些缺失能力、哪些本轮绕过。不要替用户安装所有可选项。
 5. 对用户选择启用的项目逐项处理：
@@ -40,10 +40,46 @@ MediaCrawler 的安装、登录和实际抓取必须在本统一 onboarding 中�
    - 不要使用正式账号、主账号或承载重要资产的账号；使用者应准备可损失的专用账号。
    - 账号被封后，部分公开内容在不需要该账号的路径上仍可能采集，但不保证持续可用，也不得尝试绕过平台风控。
 2. 请用户明确回复类似“我已了解封号风险，并确认使用非正式、可损失的专用账号”。沉默、模糊回复或仅要求“继续”不构成确认。未取得确认就停在风险门禁，不启动登录和抓取。
-3. 确认后，让用户选择需要启用的平台：抖音、快手、B 站、微博、贴吧、知乎。小红书使用独立的 browser-first 就绪门禁。未启用的平台必须由用户明确说“本轮绕过”，不得默认忽略。
+3. 确认后，让用户选择需要启用的平台：抖音、快手、B 站、微博、贴吧。小红书使用独立的 browser-first 就绪门禁，知乎使用官方 Open Platform CLI，二者都不经过 MediaCrawler。未启用的平台必须由用户明确说“本轮绕过”，不得默认忽略。
 4. 只要启用任一 MediaCrawler 平台，必须先完成不可绕过的 Chrome CDP onboarding：Chrome 版本至少 144；为 MediaCrawler 启动一个使用仓库外持久化 profile 的专用 Chrome 实例，同时显式传入 `--remote-debugging-port=<port>` 和 `--user-data-dir=<profile-dir>`；`curl --noproxy '*' http://127.0.0.1:<port>/json/version` 必须返回可解析的 Chrome DevTools JSON；MediaCrawler 配置为 `ENABLE_CDP_MODE = True`、`CDP_CONNECT_EXISTING = True` 且 `CDP_DEBUG_PORT = <port>`。Chrome 144+ 在 `chrome://inspect/#remote-debugging` 中的 GUI auto-connect 服务不提供 MediaCrawler 所需的 `/json/version`，不得把“Server running”字样单独当成通过。任一项失败就报告 `CDP 未就绪`并停止，不得回退到标准 Playwright、临时干净浏览器或 Cookie 注入。CDP 不允许本轮绕过；用户只能绕过整个 MediaCrawler 能力或某个平台。
 5. 对每个启用平台依次执行 [MediaCrawler operations](../../collectors/media-crawler/references/operations.md) 的登录就绪检查。必须同时满足：CDP 连接已验证、页面显示已登录、最小真实读取成功、产出非空且无登录/风控信号。
 6. 只有上述四项全部通过才报告该平台为 `已就绪，可立即抓取`。其他状态使用 `CDP 未就绪`、`待登录`、`验证失败`、`触发风控` 或 `本轮绕过`；不维护额外状态文件。
+
+## 知乎官方 CLI 就绪门禁
+
+知乎采集不得再经过 MediaCrawler、浏览器 Cookie 抓取或第三方爬虫。统一 onboarding 通过 [`onboard_zhihu.py`](scripts/onboard_zhihu.py) 管理知乎官方 CLI 的完整就绪状态，并复用 [`zhihu-open-platform`](../../collectors/zhihu-open-platform/SKILL.md) 的官方 CLI 调用：
+
+1. 只读检查：
+
+   ```bash
+   python3 models/onboard-growth-lab/scripts/onboard_zhihu.py status
+   ```
+
+   根据 `readiness` 报告 `missing-cli`、`incompatible-cli`、`needs-access-secret` 或 `ready-to-verify`。
+2. 未安装且用户明确同意后安装官方 CLI：
+
+   ```bash
+   python3 models/onboard-growth-lab/scripts/onboard_zhihu.py install --yes
+   ```
+
+   安装器只从 `developer-cdn.zhihu.com` 下载，校验官方 manifest、大小与 SHA-256，并安装到用户应用数据目录。
+3. 未认证时先让用户打开 <https://developer.zhihu.com/profile> 生成 Access Secret。优先让用户在自己的终端执行：
+
+   ```bash
+   python3 models/onboard-growth-lab/scripts/onboard_zhihu.py auth
+   ```
+
+   该命令使用隐藏输入，经官方 CLI 的 `auth set --secret-stdin` 写入系统密钥链。Agent 不得要求用户把凭证写入 `.env.local`、命令行参数、Memory 或仓库。
+4. 用户明确同意联网验证和额度消耗后，用真实研究查询做一次最小内容读取：
+
+   ```bash
+   python3 models/onboard-growth-lab/scripts/onboard_zhihu.py verify \
+     --query "真实的用户问题或品类词" \
+     --yes
+   ```
+
+   如本轮没有真实查询，可使用 `--hot` 读取 1 条热榜内容，但不得用虚构查询冒充内容就绪。
+5. 只有 `verify` 同时完成凭证在线验证和至少 1 条真实内容读取，才报告 `已就绪，可立即采集`。`auth.configured=true` 只表示本地配置存在；空内容、鉴权失败、额度限制或服务错误都不是就绪。
 
 ## 依赖边界
 
@@ -57,7 +93,7 @@ MediaCrawler 的安装、登录和实际抓取必须在本统一 onboarding 中�
 - “配置存在”与“配置有效”分开报告。环境变量非空只能证明存在；只有安全的 health check 或一次真实调用成功才能证明有效。MediaCrawler 的安装、CDP 和登录页各自通过仍不足以证明可用，必须完成最小真实读取。
 - 用户可随时说“我不需要 SEO / 不需要生图 / 不需要小红书详情提取”。将相关依赖标成`本轮绕过`，不要继续追问。
 - MediaCrawler 的 Chrome CDP 是不可分割的强制依赖，不是可选项。用户可以绕过 MediaCrawler 或某个平台，不得在保留抓取能力的同时绕过 CDP。
-- 替代关系必须显式呈现。例如生图只需 Gemini 或 OpenAI 其中一条；小红书使用 `xiaohongshu-mcp`，其余六个已声明媒体平台共用 MediaCrawler。
+- 替代关系必须显式呈现。例如生图只需 Gemini 或 OpenAI 其中一条；小红书使用 `xiaohongshu-mcp`，知乎使用官方 `zhihu-cli`，其余五个已声明媒体平台共用 MediaCrawler。
 - 不把“本轮绕过”持久化成全局状态。下一次 onboarding 重新检查并结合当次目标询问。
 - 不修改业务 Memory 来保存环境状态。Memory 只保存增长过程与结果。
 - 安装、登录或联网验证属于有副作用操作；先说明动作并获得用户确认。只读检查可直接执行。
@@ -73,6 +109,7 @@ MediaCrawler 的安装、登录和实际抓取必须在本统一 onboarding 中�
 | IndexNow 提交 | 本轮绕过 | 用户不需要主动提交 URL |
 | AI 生图 | 已就绪 | OpenAI 凭据存在；尚未做付费调用验证 |
 | 小红书只读采集 | 缺失 | 按 `CONFIGURATION.md` 配置本机 xiaohongshu-mcp 二进制并完成可见扫码登录 |
+| 知乎内容采集 | 待验证 | 运行 `onboard_zhihu.py status`；按状态安装、配置 Access Secret，并用真实查询执行一次 `verify --yes` |
 | 媒体平台采集 | CDP 未就绪 | Chrome GUI auto-connect 已开启，但 `/json/version` 为 404；需启动带持久化 profile 和显式 debug port 的专用 Chrome |
 
 最后只问当前确实需要用户决策或提供的信息，不把完整清单再次变成问卷。

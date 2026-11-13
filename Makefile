@@ -1,4 +1,4 @@
-.PHONY: lint-post test-xhs wechat-post-required wechat-lint wechat-preview wechat-render wechat-draft wechat-publish wechat-status \
+.PHONY: lint-post test-xhs test-zhihu wechat-post-required wechat-lint wechat-preview wechat-render wechat-draft wechat-publish wechat-status \
 	wechat-remote-draft wechat-remote-publish wechat-remote-status wechat-publisher-build
 
 WECHAT_CLI := python3 executors/wechat-mp-publish/scripts/cli.py
@@ -17,6 +17,10 @@ test-xhs:
 	@python3 models/onboard-growth-lab/scripts/test_check_configuration.py
 	@python3 executors/xhs-render-cards/scripts/test_validate_social_card_pack.py
 	@node --check executors/generate-image/generate-image.mjs
+
+test-zhihu:
+	@python3 collectors/zhihu-open-platform/scripts/test_zhihu_cli.py
+	@python3 models/onboard-growth-lab/scripts/test_onboard_zhihu.py
 
 # 微信公众号。用法: make wechat-<target> POST=memory/run-wechat-article-loop/outputs/<slug>
 wechat-post-required:

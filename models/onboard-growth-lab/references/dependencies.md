@@ -26,8 +26,9 @@
 | IndexNow | `INDEXNOW_KEY` + 正确的 `SITE_URL`;站点可访问 key 文件 | key 由站点所有者自行生成，不需向第三方申请 | 不主动提交 URL 可绕过；`INDEXNOW_KEY_LOCATION` 可选 |
 | AI 生图 | `GEMINI_API_KEY` 或 `OPENAI_API_KEY` 任一条有效 | Google AI Studio / Google Cloud；OpenAI Platform | 不生图可绕过；兼容代理才配置对应 base URL |
 | 微信公众号草稿与发布 | 本机直连：`WECHAT_MP_APP_ID` + `WECHAT_MP_APP_SECRET`，本机出口 IP 在白名单；或远程服务：`WECHAT_PUBLISH_SERVICE_URL` + `WECHAT_PUBLISH_SERVICE_TOKEN` | 公众号后台“设置与开发 → 基本配置”获取 AppID/AppSecret 并配置 API IP 白名单；远程服务按 `executors/wechat-mp-publish/references/remote-service.md` 自行部署 | 两种模式任一条即可。账号主体须具备草稿/发布接口权限。`WECHAT_ENABLE_AUTO_PUBLISH` 默认 false，onboarding 不替用户打开。不同步草稿、改为人类协作发布时可绕过 |
+| 知乎内容采集 | 官方 `zhihu-cli` 已安装且兼容；Access Secret 已配置；一次最小请求成功 | 官方 CLI 文档 <https://developer.zhihu.com/docs?key=zhihu_cli>；Access Secret 从 <https://developer.zhihu.com/profile> 生成 | 不做知乎研究时可绕过。CLI 可从官方 CDN 安装；桌面端凭证存系统密钥链，headless 场景可由 Secret Store 注入 `ZHIHU_ACCESS_SECRET` |
 
-API key 默认由用户自行写入根目录 `.env.local` 或通过系统密钥管理器注入，该文件已被 Git 忽略。Agent 必须先给出 [`CONFIGURATION.md`](../../../CONFIGURATION.md) 的字段和步骤；只有用户明确同意后 Agent 才能写，且不得回显值。
+API key 默认由用户自行写入根目录 `.env.local` 或通过系统密钥管理器注入，该文件已被 Git 忽略。Agent 必须先给出 [`CONFIGURATION.md`](../../../CONFIGURATION.md) 的字段和步骤；只有用户明确同意后 Agent 才能写，且不得回显值。知乎 Access Secret 是例外：桌面端通过官方 CLI 写入系统密钥链，headless 端由宿主 Secret Store 注入进程环境，不写入 `.env.local`。
 
 ## SEO 调研脚本
 
@@ -56,9 +57,21 @@ Onboarding SEO 时分别检查“API 数据读取”和“浏览器批量调研�
 
 具体运行和停止规则见 [`collectors/xiaohongshu-mcp`](../../../collectors/xiaohongshu-mcp/SKILL.md)。
 
+### 知乎官方 CLI
+
+- 用途：通过知乎数据开放平台采集站内搜索、全网搜索、热榜和问题回答摘要；本人 `me` 能力可读取当前 Access Secret 所属账号的内容、关注和收藏。
+- 来源：<https://developer.zhihu.com/docs?key=zhihu_cli>；发布清单为 <https://developer-cdn.zhihu.com/zhihu-cli/releases/stable/manifest.json>。
+- 仓库入口：统一 onboarding 使用 `models/onboard-growth-lab/scripts/onboard_zhihu.py`；实际采集使用 `collectors/zhihu-open-platform/scripts/zhihu_cli.py`。安装器只从 `developer-cdn.zhihu.com` 下载，校验官方 manifest 中的大小与 SHA-256，再安装到用户应用数据目录；CLI 二进制保持在仓库外。
+- 状态检查：`python3 models/onboard-growth-lab/scripts/onboard_zhihu.py status`。需要同时确认 `installed=true`、`compatible=true` 和 `auth.configured=true`，最后用 `verify` 完成一次非空真实读取。
+- 配置覆盖：`ZHIHU_CLI_BIN` 可指定官方二进制绝对路径；`ZHIHU_CLI_HOME` 可指定安装根目录。不要把来源不明的 `zhihu-cli` 从 PATH 自动当成官方客户端。
+- 认证：用户从官方个人中心生成 Access Secret，通过官方 CLI 的标准输入写入系统密钥链。不得作为命令行参数传入，也不得写入 `.env.local`、Memory 或仓库。仅 headless 场景由宿主 Secret Store 注入进程级 `ZHIHU_ACCESS_SECRET`。
+- 验证：统一执行 `onboard_zhihu.py verify --query "<真实查询>" --yes`，它会运行 `auth status --verify` 并读取至少 1 条真实内容。`--yes` 表示用户已同意联网验证和可能发生的额度消耗。
+- 数据边界：搜索结果和问题回答是摘要，不是全文；本人全文只能读取 Access Secret 所属账号。不能查询其他用户的私有数据。
+- 绕过：不做知乎内容研究时可绕过；不得降级到 MediaCrawler、浏览器 Cookie 抓取或页面爬虫。
+
 ### MediaCrawler
 
-- 用途：抖音、快手、B站、微博、贴吧、知乎的搜索、详情、评论、媒体和创作者采集。
+- 用途：抖音、快手、B站、微博、贴吧的搜索、详情、评论、媒体和创作者采集。
 - 状态检查：目标目录存在，含 `main.py` 和 `.git`；依赖环境可解析。
 - 来源：<https://github.com/NanmiCoder/MediaCrawler>。
 - 安装：用户确认许可证和目录后执行 `git clone`，进入目录运行 `uv sync`；记录 `git rev-parse HEAD`。
@@ -69,7 +82,7 @@ Onboarding SEO 时分别检查“API 数据读取”和“浏览器批量调研�
 - 绕过：可逐平台选择“不配置”，也可绕过整个 MediaCrawler；一旦启用任一平台，CDP 不可绕过。Twitter/X、Reddit 不在该 Client 支持范围。
 - 安装前提示用户核对上游 LICENSE；不自动升级或覆盖已有目录。
 
-具体操作与平台检查入口见 [`collectors/media-crawler`](../../../collectors/media-crawler/SKILL.md)。小红书已有链接的详情和图片由独立 `xiaohongshu-mcp` Collector 完成。
+具体操作与平台检查入口见 [`collectors/media-crawler`](../../../collectors/media-crawler/SKILL.md)。小红书使用独立 `xiaohongshu-mcp`，知乎使用独立官方 CLI Collector。
 
 ## 微信公众号验证
 
